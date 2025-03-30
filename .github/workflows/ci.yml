@@ -1,0 +1,52 @@
+name: ci
+
+on: [push]
+
+jobs:
+ compile:
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: Checkout repo
+     uses: actions/checkout@v3
+
+   - name: Set up go
+     uses: actions/setup-go@v4
+
+   - name: Build
+     run: go build ./...
+
+ test:
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: Checkout repo
+     uses: actions/checkout@v3
+
+   - name: Set up go
+     uses: actions/setup-go@v4
+
+   - name: Run Tests
+     run: go test ./...
+
+ publish:
+  needs: [compile, test]
+  if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: Checkout repo
+     uses: actions/checkout@v3
+
+   - name: Set up Go
+     uses: actions/setup-go@v4
+     with:
+      go-version: '1.21'
+
+   - name: Build SDK
+     run: go build ./...
+
+   - name: Create GitHub Release
+     uses: softprops/action-gh-release@v1
+     with:
+      generate_release_notes: true
