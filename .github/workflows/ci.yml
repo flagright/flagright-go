@@ -3,37 +3,7 @@ name: ci
 on: [push]
 
 jobs:
- fern-check:
-  runs-on: ubuntu-latest
-  steps:
-   - name: Checkout repo
-     uses: actions/checkout@v4
-
-   - name: Install Fern
-     run: npm install -g fern-api
-
-   - name: Check Fern API is valid
-     run: fern check
-
- fern-release:
-  needs: [fern-check]
-  if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-  runs-on: ubuntu-latest
-  steps:
-   - name: Checkout repo
-     uses: actions/checkout@v3
-
-   - name: Setup node
-     uses: actions/setup-node@v3
-
-   - name: Download Fern
-     run: npm install -g fern-api
-
-   - name: Release Go SDK
-     run: fern generate --group external --version ${{ github.ref_name }} --log-level debug
-
  compile:
-  needs: [fern-check, fern-release]
   runs-on: ubuntu-latest
 
   steps:
@@ -50,7 +20,7 @@ jobs:
      run: go build ./...
 
  test:
-  needs: [fern-check, fern-release, compile]
+  needs: [compile]
   runs-on: ubuntu-latest
 
   steps:
@@ -64,7 +34,7 @@ jobs:
      run: go test ./...
 
  publish:
-  needs: [fern-check, fern-release, compile, test]
+  needs: [compile, test]
   if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
   runs-on: ubuntu-latest
 
@@ -76,7 +46,6 @@ jobs:
      uses: actions/setup-go@v4
      with:
       go-version: '1.24'
-
    - name: Create GitHub Release
      uses: softprops/action-gh-release@v1
      with:
