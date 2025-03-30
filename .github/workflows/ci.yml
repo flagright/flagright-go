@@ -3,7 +3,37 @@ name: ci
 on: [push]
 
 jobs:
+ fern-check:
+  runs-on: ubuntu-latest
+  steps:
+   - name: Checkout repo
+     uses: actions/checkout@v4
+
+   - name: Install Fern
+     run: npm install -g fern-api
+
+   - name: Check Fern API is valid
+     run: fern check
+
+ fern-release:
+  needs: [fern-check]
+  if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+  runs-on: ubuntu-latest
+  steps:
+   - name: Checkout repo
+     uses: actions/checkout@v3
+
+   - name: Setup node
+     uses: actions/setup-node@v3
+
+   - name: Download Fern
+     run: npm install -g fern-api
+
+   - name: Release Go SDK
+     run: fern generate --group external --version ${{ github.ref_name }} --log-level debug
+
  compile:
+  needs: [fern-check, fern-release]
   runs-on: ubuntu-latest
 
   steps:
@@ -13,10 +43,14 @@ jobs:
    - name: Set up go
      uses: actions/setup-go@v4
 
+   - name: Install dependency
+     run: go mod tidy
+
    - name: Build
      run: go build ./...
 
  test:
+  needs: [fern-check, fern-release, compile]
   runs-on: ubuntu-latest
 
   steps:
@@ -30,7 +64,7 @@ jobs:
      run: go test ./...
 
  publish:
-  needs: [compile, test]
+  needs: [fern-check, fern-release, compile, test]
   if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
   runs-on: ubuntu-latest
 
@@ -41,10 +75,7 @@ jobs:
    - name: Set up Go
      uses: actions/setup-go@v4
      with:
-      go-version: '1.21'
-
-   - name: Build SDK
-     run: go build ./...
+      go-version: '1.24'
 
    - name: Create GitHub Release
      uses: softprops/action-gh-release@v1

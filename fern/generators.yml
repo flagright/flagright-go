@@ -1,0 +1,12 @@
+groups:
+ external:
+  generators:
+   - name: fernapi/fern-go-sdk
+     version: 0.36.5
+     output:
+      location: local-file-system
+      path: ../sdk
+     config:
+      importPath: github.com/flagright/flagright-go/sdk
+api:
+ path: openapi/openapi-sanitized.yml
