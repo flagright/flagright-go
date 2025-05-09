@@ -28,7 +28,7 @@ func do() () {
         context.TODO(),
         &flagright.TransactionsVerifyRequest{
             Body: &flagright.Transaction{
-                Type: flagright.TransactionTypeDeposit,
+                Type: "DEPOSIT",
                 TransactionId: "7b80a539eea6e78acbd6d458e5971482",
                 Timestamp: 1641654664000,
                 OriginUserId: flagright.String(

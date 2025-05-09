@@ -90,7 +90,8 @@ func (t *TransactionMonitoringResult) String() string {
 }
 
 type TransactionWithRulesResult struct {
-	Type TransactionType `json:"type" url:"type"`
+	// Type of transaction (ex: DEPOSIT, WITHDRAWAL, TRANSFER, EXTERNAL_PAYMENT, REFUND, OTHER)
+	Type string `json:"type" url:"type"`
 	// Unique transaction identifier
 	TransactionId string `json:"transactionId" url:"transactionId"`
 	// Timestamp of when transaction took place
@@ -127,7 +128,7 @@ type TransactionWithRulesResult struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TransactionWithRulesResult) GetType() TransactionType {
+func (t *TransactionWithRulesResult) GetType() string {
 	if t == nil {
 		return ""
 	}

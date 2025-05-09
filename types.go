@@ -9833,14 +9833,16 @@ func (s SanctionsDetailsEntityType) Ptr() *SanctionsDetailsEntityType {
 }
 
 type SanctionsHitContext struct {
-	Entity         SanctionsScreeningEntity    `json:"entity" url:"entity"`
-	EntityType     *SanctionsDetailsEntityType `json:"entityType,omitempty" url:"entityType,omitempty"`
-	UserId         *string                     `json:"userId,omitempty" url:"userId,omitempty"`
-	TransactionId  *string                     `json:"transactionId,omitempty" url:"transactionId,omitempty"`
-	RuleInstanceId *string                     `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
-	Iban           *string                     `json:"iban,omitempty" url:"iban,omitempty"`
-	YearOfBirth    *float64                    `json:"yearOfBirth,omitempty" url:"yearOfBirth,omitempty"`
-	SearchTerm     *string                     `json:"searchTerm,omitempty" url:"searchTerm,omitempty"`
+	Entity          SanctionsScreeningEntity    `json:"entity" url:"entity"`
+	EntityType      *SanctionsDetailsEntityType `json:"entityType,omitempty" url:"entityType,omitempty"`
+	UserId          *string                     `json:"userId,omitempty" url:"userId,omitempty"`
+	TransactionId   *string                     `json:"transactionId,omitempty" url:"transactionId,omitempty"`
+	RuleInstanceId  *string                     `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
+	RuleId          *string                     `json:"ruleId,omitempty" url:"ruleId,omitempty"`
+	Iban            *string                     `json:"iban,omitempty" url:"iban,omitempty"`
+	YearOfBirth     *float64                    `json:"yearOfBirth,omitempty" url:"yearOfBirth,omitempty"`
+	SearchTerm      *string                     `json:"searchTerm,omitempty" url:"searchTerm,omitempty"`
+	PaymentMethodId *string                     `json:"paymentMethodId,omitempty" url:"paymentMethodId,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -9881,6 +9883,13 @@ func (s *SanctionsHitContext) GetRuleInstanceId() *string {
 	return s.RuleInstanceId
 }
 
+func (s *SanctionsHitContext) GetRuleId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.RuleId
+}
+
 func (s *SanctionsHitContext) GetIban() *string {
 	if s == nil {
 		return nil
@@ -9900,6 +9909,13 @@ func (s *SanctionsHitContext) GetSearchTerm() *string {
 		return nil
 	}
 	return s.SearchTerm
+}
+
+func (s *SanctionsHitContext) GetPaymentMethodId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.PaymentMethodId
 }
 
 func (s *SanctionsHitContext) GetExtraProperties() map[string]interface{} {
@@ -10105,7 +10121,8 @@ func (t *Tag) String() string {
 }
 
 type Transaction struct {
-	Type TransactionType `json:"type" url:"type"`
+	// Type of transaction (ex: DEPOSIT, WITHDRAWAL, TRANSFER, EXTERNAL_PAYMENT, REFUND, OTHER)
+	Type string `json:"type" url:"type"`
 	// Unique transaction identifier
 	TransactionId string `json:"transactionId" url:"transactionId"`
 	// Timestamp of when transaction took place
@@ -10138,7 +10155,7 @@ type Transaction struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *Transaction) GetType() TransactionType {
+func (t *Transaction) GetType() string {
 	if t == nil {
 		return ""
 	}
@@ -10432,7 +10449,8 @@ func (t *TransactionAmountLimit) String() string {
 
 // Model for transaction base Payload
 type TransactionBase struct {
-	Type TransactionType `json:"type" url:"type"`
+	// Type of transaction (ex: DEPOSIT, WITHDRAWAL, TRANSFER, EXTERNAL_PAYMENT, REFUND, OTHER)
+	Type string `json:"type" url:"type"`
 	// Unique transaction identifier
 	TransactionId string `json:"transactionId" url:"transactionId"`
 	// Timestamp of when transaction took place
@@ -10446,7 +10464,7 @@ type TransactionBase struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TransactionBase) GetType() TransactionType {
+func (t *TransactionBase) GetType() string {
 	if t == nil {
 		return ""
 	}
@@ -11830,40 +11848,6 @@ func (t *TransactionStatusDetails) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", t)
-}
-
-type TransactionType string
-
-const (
-	TransactionTypeDeposit         TransactionType = "DEPOSIT"
-	TransactionTypeTransfer        TransactionType = "TRANSFER"
-	TransactionTypeExternalPayment TransactionType = "EXTERNAL_PAYMENT"
-	TransactionTypeWithdrawal      TransactionType = "WITHDRAWAL"
-	TransactionTypeRefund          TransactionType = "REFUND"
-	TransactionTypeOther           TransactionType = "OTHER"
-)
-
-func NewTransactionTypeFromString(s string) (TransactionType, error) {
-	switch s {
-	case "DEPOSIT":
-		return TransactionTypeDeposit, nil
-	case "TRANSFER":
-		return TransactionTypeTransfer, nil
-	case "EXTERNAL_PAYMENT":
-		return TransactionTypeExternalPayment, nil
-	case "WITHDRAWAL":
-		return TransactionTypeWithdrawal, nil
-	case "REFUND":
-		return TransactionTypeRefund, nil
-	case "OTHER":
-		return TransactionTypeOther, nil
-	}
-	var t TransactionType
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (t TransactionType) Ptr() *TransactionType {
-	return &t
 }
 
 // Model for transaction additional payload
