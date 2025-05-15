@@ -326,6 +326,7 @@ type TransactionWithRulesResultDestinationPaymentDetails struct {
 	Mpesa              *MpesaDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewTransactionWithRulesResultDestinationPaymentDetailsFromCard(value *CardDetails) *TransactionWithRulesResultDestinationPaymentDetails {
@@ -366,6 +367,10 @@ func NewTransactionWithRulesResultDestinationPaymentDetailsFromCheck(value *Chec
 
 func NewTransactionWithRulesResultDestinationPaymentDetailsFromCash(value *CashDetails) *TransactionWithRulesResultDestinationPaymentDetails {
 	return &TransactionWithRulesResultDestinationPaymentDetails{Method: "CASH", Cash: value}
+}
+
+func NewTransactionWithRulesResultDestinationPaymentDetailsFromNpp(value *NppDetails) *TransactionWithRulesResultDestinationPaymentDetails {
+	return &TransactionWithRulesResultDestinationPaymentDetails{Method: "NPP", Npp: value}
 }
 
 func (t *TransactionWithRulesResultDestinationPaymentDetails) GetMethod() string {
@@ -445,6 +450,13 @@ func (t *TransactionWithRulesResultDestinationPaymentDetails) GetCash() *CashDet
 	return t.Cash
 }
 
+func (t *TransactionWithRulesResultDestinationPaymentDetails) GetNpp() *NppDetails {
+	if t == nil {
+		return nil
+	}
+	return t.Npp
+}
+
 func (t *TransactionWithRulesResultDestinationPaymentDetails) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -517,6 +529,12 @@ func (t *TransactionWithRulesResultDestinationPaymentDetails) UnmarshalJSON(data
 			return err
 		}
 		t.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		t.Npp = value
 	}
 	return nil
 }
@@ -548,6 +566,8 @@ func (t TransactionWithRulesResultDestinationPaymentDetails) MarshalJSON() ([]by
 		return internal.MarshalJSONWithExtraProperty(t.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(t.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(t.Npp, "method", "NPP")
 	}
 }
 
@@ -562,6 +582,7 @@ type TransactionWithRulesResultDestinationPaymentDetailsVisitor interface {
 	VisitMpesa(*MpesaDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (t *TransactionWithRulesResultDestinationPaymentDetails) Accept(visitor TransactionWithRulesResultDestinationPaymentDetailsVisitor) error {
@@ -588,6 +609,8 @@ func (t *TransactionWithRulesResultDestinationPaymentDetails) Accept(visitor Tra
 		return visitor.VisitCheck(t.Check)
 	case "CASH":
 		return visitor.VisitCash(t.Cash)
+	case "NPP":
+		return visitor.VisitNpp(t.Npp)
 	}
 }
 
@@ -626,6 +649,9 @@ func (t *TransactionWithRulesResultDestinationPaymentDetails) validate() error {
 	if t.Cash != nil {
 		fields = append(fields, "CASH")
 	}
+	if t.Npp != nil {
+		fields = append(fields, "NPP")
+	}
 	if len(fields) == 0 {
 		if t.Method != "" {
 			return fmt.Errorf("type %T defines a discriminant set to %q but the field is not set", t, t.Method)
@@ -662,6 +688,7 @@ type TransactionWithRulesResultOriginPaymentDetails struct {
 	Wallet             *WalletDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewTransactionWithRulesResultOriginPaymentDetailsFromCard(value *CardDetails) *TransactionWithRulesResultOriginPaymentDetails {
@@ -702,6 +729,10 @@ func NewTransactionWithRulesResultOriginPaymentDetailsFromCheck(value *CheckDeta
 
 func NewTransactionWithRulesResultOriginPaymentDetailsFromCash(value *CashDetails) *TransactionWithRulesResultOriginPaymentDetails {
 	return &TransactionWithRulesResultOriginPaymentDetails{Method: "CASH", Cash: value}
+}
+
+func NewTransactionWithRulesResultOriginPaymentDetailsFromNpp(value *NppDetails) *TransactionWithRulesResultOriginPaymentDetails {
+	return &TransactionWithRulesResultOriginPaymentDetails{Method: "NPP", Npp: value}
 }
 
 func (t *TransactionWithRulesResultOriginPaymentDetails) GetMethod() string {
@@ -781,6 +812,13 @@ func (t *TransactionWithRulesResultOriginPaymentDetails) GetCash() *CashDetails 
 	return t.Cash
 }
 
+func (t *TransactionWithRulesResultOriginPaymentDetails) GetNpp() *NppDetails {
+	if t == nil {
+		return nil
+	}
+	return t.Npp
+}
+
 func (t *TransactionWithRulesResultOriginPaymentDetails) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -853,6 +891,12 @@ func (t *TransactionWithRulesResultOriginPaymentDetails) UnmarshalJSON(data []by
 			return err
 		}
 		t.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		t.Npp = value
 	}
 	return nil
 }
@@ -884,6 +928,8 @@ func (t TransactionWithRulesResultOriginPaymentDetails) MarshalJSON() ([]byte, e
 		return internal.MarshalJSONWithExtraProperty(t.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(t.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(t.Npp, "method", "NPP")
 	}
 }
 
@@ -898,6 +944,7 @@ type TransactionWithRulesResultOriginPaymentDetailsVisitor interface {
 	VisitWallet(*WalletDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (t *TransactionWithRulesResultOriginPaymentDetails) Accept(visitor TransactionWithRulesResultOriginPaymentDetailsVisitor) error {
@@ -924,6 +971,8 @@ func (t *TransactionWithRulesResultOriginPaymentDetails) Accept(visitor Transact
 		return visitor.VisitCheck(t.Check)
 	case "CASH":
 		return visitor.VisitCash(t.Cash)
+	case "NPP":
+		return visitor.VisitNpp(t.Npp)
 	}
 }
 
@@ -961,6 +1010,9 @@ func (t *TransactionWithRulesResultOriginPaymentDetails) validate() error {
 	}
 	if t.Cash != nil {
 		fields = append(fields, "CASH")
+	}
+	if t.Npp != nil {
+		fields = append(fields, "NPP")
 	}
 	if len(fields) == 0 {
 		if t.Method != "" {

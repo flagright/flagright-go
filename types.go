@@ -265,6 +265,8 @@ func (a *Address) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type AdverseMediaStatus = bool
+
 type AlertClosedDetails struct {
 	AlertId                   *string  `json:"alertId,omitempty" url:"alertId,omitempty"`
 	Status                    *string  `json:"status,omitempty" url:"status,omitempty"`
@@ -1089,6 +1091,7 @@ type BusinessOptionalSavedPaymentDetailsItem struct {
 	Wallet             *WalletDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewBusinessOptionalSavedPaymentDetailsItemFromCard(value *CardDetails) *BusinessOptionalSavedPaymentDetailsItem {
@@ -1129,6 +1132,10 @@ func NewBusinessOptionalSavedPaymentDetailsItemFromCheck(value *CheckDetails) *B
 
 func NewBusinessOptionalSavedPaymentDetailsItemFromCash(value *CashDetails) *BusinessOptionalSavedPaymentDetailsItem {
 	return &BusinessOptionalSavedPaymentDetailsItem{Method: "CASH", Cash: value}
+}
+
+func NewBusinessOptionalSavedPaymentDetailsItemFromNpp(value *NppDetails) *BusinessOptionalSavedPaymentDetailsItem {
+	return &BusinessOptionalSavedPaymentDetailsItem{Method: "NPP", Npp: value}
 }
 
 func (b *BusinessOptionalSavedPaymentDetailsItem) GetMethod() string {
@@ -1208,6 +1215,13 @@ func (b *BusinessOptionalSavedPaymentDetailsItem) GetCash() *CashDetails {
 	return b.Cash
 }
 
+func (b *BusinessOptionalSavedPaymentDetailsItem) GetNpp() *NppDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Npp
+}
+
 func (b *BusinessOptionalSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -1280,6 +1294,12 @@ func (b *BusinessOptionalSavedPaymentDetailsItem) UnmarshalJSON(data []byte) err
 			return err
 		}
 		b.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Npp = value
 	}
 	return nil
 }
@@ -1311,6 +1331,8 @@ func (b BusinessOptionalSavedPaymentDetailsItem) MarshalJSON() ([]byte, error) {
 		return internal.MarshalJSONWithExtraProperty(b.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(b.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(b.Npp, "method", "NPP")
 	}
 }
 
@@ -1325,6 +1347,7 @@ type BusinessOptionalSavedPaymentDetailsItemVisitor interface {
 	VisitWallet(*WalletDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (b *BusinessOptionalSavedPaymentDetailsItem) Accept(visitor BusinessOptionalSavedPaymentDetailsItemVisitor) error {
@@ -1351,6 +1374,8 @@ func (b *BusinessOptionalSavedPaymentDetailsItem) Accept(visitor BusinessOptiona
 		return visitor.VisitCheck(b.Check)
 	case "CASH":
 		return visitor.VisitCash(b.Cash)
+	case "NPP":
+		return visitor.VisitNpp(b.Npp)
 	}
 }
 
@@ -1389,6 +1414,9 @@ func (b *BusinessOptionalSavedPaymentDetailsItem) validate() error {
 	if b.Cash != nil {
 		fields = append(fields, "CASH")
 	}
+	if b.Npp != nil {
+		fields = append(fields, "NPP")
+	}
 	if len(fields) == 0 {
 		if b.Method != "" {
 			return fmt.Errorf("type %T defines a discriminant set to %q but the field is not set", b, b.Method)
@@ -1424,6 +1452,7 @@ type BusinessSavedPaymentDetailsItem struct {
 	Wallet             *WalletDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewBusinessSavedPaymentDetailsItemFromCard(value *CardDetails) *BusinessSavedPaymentDetailsItem {
@@ -1464,6 +1493,10 @@ func NewBusinessSavedPaymentDetailsItemFromCheck(value *CheckDetails) *BusinessS
 
 func NewBusinessSavedPaymentDetailsItemFromCash(value *CashDetails) *BusinessSavedPaymentDetailsItem {
 	return &BusinessSavedPaymentDetailsItem{Method: "CASH", Cash: value}
+}
+
+func NewBusinessSavedPaymentDetailsItemFromNpp(value *NppDetails) *BusinessSavedPaymentDetailsItem {
+	return &BusinessSavedPaymentDetailsItem{Method: "NPP", Npp: value}
 }
 
 func (b *BusinessSavedPaymentDetailsItem) GetMethod() string {
@@ -1543,6 +1576,13 @@ func (b *BusinessSavedPaymentDetailsItem) GetCash() *CashDetails {
 	return b.Cash
 }
 
+func (b *BusinessSavedPaymentDetailsItem) GetNpp() *NppDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Npp
+}
+
 func (b *BusinessSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -1615,6 +1655,12 @@ func (b *BusinessSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		b.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Npp = value
 	}
 	return nil
 }
@@ -1646,6 +1692,8 @@ func (b BusinessSavedPaymentDetailsItem) MarshalJSON() ([]byte, error) {
 		return internal.MarshalJSONWithExtraProperty(b.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(b.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(b.Npp, "method", "NPP")
 	}
 }
 
@@ -1660,6 +1708,7 @@ type BusinessSavedPaymentDetailsItemVisitor interface {
 	VisitWallet(*WalletDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (b *BusinessSavedPaymentDetailsItem) Accept(visitor BusinessSavedPaymentDetailsItemVisitor) error {
@@ -1686,6 +1735,8 @@ func (b *BusinessSavedPaymentDetailsItem) Accept(visitor BusinessSavedPaymentDet
 		return visitor.VisitCheck(b.Check)
 	case "CASH":
 		return visitor.VisitCash(b.Cash)
+	case "NPP":
+		return visitor.VisitNpp(b.Npp)
 	}
 }
 
@@ -1723,6 +1774,9 @@ func (b *BusinessSavedPaymentDetailsItem) validate() error {
 	}
 	if b.Cash != nil {
 		fields = append(fields, "CASH")
+	}
+	if b.Npp != nil {
+		fields = append(fields, "NPP")
 	}
 	if len(fields) == 0 {
 		if b.Method != "" {
@@ -2110,6 +2164,7 @@ type BusinessWithRulesResultSavedPaymentDetailsItem struct {
 	Wallet             *WalletDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewBusinessWithRulesResultSavedPaymentDetailsItemFromCard(value *CardDetails) *BusinessWithRulesResultSavedPaymentDetailsItem {
@@ -2150,6 +2205,10 @@ func NewBusinessWithRulesResultSavedPaymentDetailsItemFromCheck(value *CheckDeta
 
 func NewBusinessWithRulesResultSavedPaymentDetailsItemFromCash(value *CashDetails) *BusinessWithRulesResultSavedPaymentDetailsItem {
 	return &BusinessWithRulesResultSavedPaymentDetailsItem{Method: "CASH", Cash: value}
+}
+
+func NewBusinessWithRulesResultSavedPaymentDetailsItemFromNpp(value *NppDetails) *BusinessWithRulesResultSavedPaymentDetailsItem {
+	return &BusinessWithRulesResultSavedPaymentDetailsItem{Method: "NPP", Npp: value}
 }
 
 func (b *BusinessWithRulesResultSavedPaymentDetailsItem) GetMethod() string {
@@ -2229,6 +2288,13 @@ func (b *BusinessWithRulesResultSavedPaymentDetailsItem) GetCash() *CashDetails 
 	return b.Cash
 }
 
+func (b *BusinessWithRulesResultSavedPaymentDetailsItem) GetNpp() *NppDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Npp
+}
+
 func (b *BusinessWithRulesResultSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -2301,6 +2367,12 @@ func (b *BusinessWithRulesResultSavedPaymentDetailsItem) UnmarshalJSON(data []by
 			return err
 		}
 		b.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Npp = value
 	}
 	return nil
 }
@@ -2332,6 +2404,8 @@ func (b BusinessWithRulesResultSavedPaymentDetailsItem) MarshalJSON() ([]byte, e
 		return internal.MarshalJSONWithExtraProperty(b.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(b.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(b.Npp, "method", "NPP")
 	}
 }
 
@@ -2346,6 +2420,7 @@ type BusinessWithRulesResultSavedPaymentDetailsItemVisitor interface {
 	VisitWallet(*WalletDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (b *BusinessWithRulesResultSavedPaymentDetailsItem) Accept(visitor BusinessWithRulesResultSavedPaymentDetailsItemVisitor) error {
@@ -2372,6 +2447,8 @@ func (b *BusinessWithRulesResultSavedPaymentDetailsItem) Accept(visitor Business
 		return visitor.VisitCheck(b.Check)
 	case "CASH":
 		return visitor.VisitCash(b.Cash)
+	case "NPP":
+		return visitor.VisitNpp(b.Npp)
 	}
 }
 
@@ -2409,6 +2486,9 @@ func (b *BusinessWithRulesResultSavedPaymentDetailsItem) validate() error {
 	}
 	if b.Cash != nil {
 		fields = append(fields, "CASH")
+	}
+	if b.Npp != nil {
+		fields = append(fields, "NPP")
 	}
 	if len(fields) == 0 {
 		if b.Method != "" {
@@ -7161,7 +7241,11 @@ type GenericBankAccountDetails struct {
 	BankCode *string      `json:"bankCode,omitempty" url:"bankCode,omitempty"`
 	Country  *CountryCode `json:"country,omitempty" url:"country,omitempty"`
 	// Name of the account holder
-	Name        *string  `json:"name,omitempty" url:"name,omitempty"`
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Country of nationality of the account holder
+	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	// Date of birth of the account holder (YYYY-MM-DD)
+	DateOfBirth *string  `json:"dateOfBirth,omitempty" url:"dateOfBirth,omitempty"`
 	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	EmailId     *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Special instructions to be specified if any
@@ -7223,6 +7307,20 @@ func (g *GenericBankAccountDetails) GetName() *string {
 		return nil
 	}
 	return g.Name
+}
+
+func (g *GenericBankAccountDetails) GetCountryOfNationality() *CountryCode {
+	if g == nil {
+		return nil
+	}
+	return g.CountryOfNationality
+}
+
+func (g *GenericBankAccountDetails) GetDateOfBirth() *string {
+	if g == nil {
+		return nil
+	}
+	return g.DateOfBirth
 }
 
 func (g *GenericBankAccountDetails) GetBankAddress() *Address {
@@ -8663,6 +8761,225 @@ func (m MpesaTransactionType) Ptr() *MpesaTransactionType {
 	return &m
 }
 
+// New Payment Platform Details for Australia
+type NppDetails struct {
+	// Account number
+	AccountNumber *string       `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	Name          *ConsumerName `json:"name,omitempty" url:"name,omitempty"`
+	EmailId       *EmailId      `json:"emailId,omitempty" url:"emailId,omitempty"`
+	// Contact number
+	ContactNumber *string `json:"contactNumber,omitempty" url:"contactNumber,omitempty"`
+	// BSB number
+	Bsb *string `json:"bsb,omitempty" url:"bsb,omitempty"`
+	// PayID
+	PayId *string `json:"payId,omitempty" url:"payId,omitempty"`
+	// End to End ID
+	EndToEndId string `json:"endToEndId" url:"endToEndId"`
+	// OSKO reference
+	OskoReference *string `json:"oskoReference,omitempty" url:"oskoReference,omitempty"`
+	// PayID reference
+	PayIdReference *string `json:"payIdReference,omitempty" url:"payIdReference,omitempty"`
+	// Whether the payment is instant
+	IsInstant *bool `json:"isInstant,omitempty" url:"isInstant,omitempty"`
+	// Remittance information
+	RemittanceInformation *string `json:"remittanceInformation,omitempty" url:"remittanceInformation,omitempty"`
+	// Remittance advice
+	RemittanceAdvice *string `json:"remittanceAdvice,omitempty" url:"remittanceAdvice,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	// Timestamp of the event
+	ProcessingDate *float64 `json:"processingDate,omitempty" url:"processingDate,omitempty"`
+	// Timestamp of the event
+	SettlementDate *float64 `json:"settlementDate,omitempty" url:"settlementDate,omitempty"`
+	// Unique reference number for transaction reconciliation
+	ReferenceNumber *string `json:"referenceNumber,omitempty" url:"referenceNumber,omitempty"`
+	// Trace number for tracking the payment through the NPP system
+	TraceNumber *string `json:"traceNumber,omitempty" url:"traceNumber,omitempty"`
+	// Format of the NPP message (e.g., JSON, XML)
+	MessageFormat *string `json:"messageFormat,omitempty" url:"messageFormat,omitempty"`
+	// Name of the bank associated with the account
+	BankName *string  `json:"bankName,omitempty" url:"bankName,omitempty"`
+	Address  *Address `json:"address,omitempty" url:"address,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (n *NppDetails) GetAccountNumber() *string {
+	if n == nil {
+		return nil
+	}
+	return n.AccountNumber
+}
+
+func (n *NppDetails) GetName() *ConsumerName {
+	if n == nil {
+		return nil
+	}
+	return n.Name
+}
+
+func (n *NppDetails) GetEmailId() *EmailId {
+	if n == nil {
+		return nil
+	}
+	return n.EmailId
+}
+
+func (n *NppDetails) GetContactNumber() *string {
+	if n == nil {
+		return nil
+	}
+	return n.ContactNumber
+}
+
+func (n *NppDetails) GetBsb() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Bsb
+}
+
+func (n *NppDetails) GetPayId() *string {
+	if n == nil {
+		return nil
+	}
+	return n.PayId
+}
+
+func (n *NppDetails) GetEndToEndId() string {
+	if n == nil {
+		return ""
+	}
+	return n.EndToEndId
+}
+
+func (n *NppDetails) GetOskoReference() *string {
+	if n == nil {
+		return nil
+	}
+	return n.OskoReference
+}
+
+func (n *NppDetails) GetPayIdReference() *string {
+	if n == nil {
+		return nil
+	}
+	return n.PayIdReference
+}
+
+func (n *NppDetails) GetIsInstant() *bool {
+	if n == nil {
+		return nil
+	}
+	return n.IsInstant
+}
+
+func (n *NppDetails) GetRemittanceInformation() *string {
+	if n == nil {
+		return nil
+	}
+	return n.RemittanceInformation
+}
+
+func (n *NppDetails) GetRemittanceAdvice() *string {
+	if n == nil {
+		return nil
+	}
+	return n.RemittanceAdvice
+}
+
+func (n *NppDetails) GetTags() []*Tag {
+	if n == nil {
+		return nil
+	}
+	return n.Tags
+}
+
+func (n *NppDetails) GetProcessingDate() *float64 {
+	if n == nil {
+		return nil
+	}
+	return n.ProcessingDate
+}
+
+func (n *NppDetails) GetSettlementDate() *float64 {
+	if n == nil {
+		return nil
+	}
+	return n.SettlementDate
+}
+
+func (n *NppDetails) GetReferenceNumber() *string {
+	if n == nil {
+		return nil
+	}
+	return n.ReferenceNumber
+}
+
+func (n *NppDetails) GetTraceNumber() *string {
+	if n == nil {
+		return nil
+	}
+	return n.TraceNumber
+}
+
+func (n *NppDetails) GetMessageFormat() *string {
+	if n == nil {
+		return nil
+	}
+	return n.MessageFormat
+}
+
+func (n *NppDetails) GetBankName() *string {
+	if n == nil {
+		return nil
+	}
+	return n.BankName
+}
+
+func (n *NppDetails) GetAddress() *Address {
+	if n == nil {
+		return nil
+	}
+	return n.Address
+}
+
+func (n *NppDetails) GetExtraProperties() map[string]interface{} {
+	return n.extraProperties
+}
+
+func (n *NppDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler NppDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*n = NppDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
+	if err != nil {
+		return err
+	}
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (n *NppDetails) String() string {
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(n); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", n)
+}
+
+// Classify the method of payment as "NPP" for NPPDetails (New Payment Platform Details for Australia)
+type NppPaymentMethod = string
+
 // Model for origin funds information
 type OriginFundsInfo struct {
 	// Source of funds for the transaction
@@ -8917,6 +9234,7 @@ const (
 	PaymentMethodWallet             PaymentMethod = "WALLET"
 	PaymentMethodCheck              PaymentMethod = "CHECK"
 	PaymentMethodCash               PaymentMethod = "CASH"
+	PaymentMethodNpp                PaymentMethod = "NPP"
 )
 
 func NewPaymentMethodFromString(s string) (PaymentMethod, error) {
@@ -8941,6 +9259,8 @@ func NewPaymentMethodFromString(s string) (PaymentMethod, error) {
 		return PaymentMethodCheck, nil
 	case "CASH":
 		return PaymentMethodCash, nil
+	case "NPP":
+		return PaymentMethodNpp, nil
 	}
 	var t PaymentMethod
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -9978,6 +10298,8 @@ func (s SanctionsScreeningEntity) Ptr() *SanctionsScreeningEntity {
 	return &s
 }
 
+type SanctionsStatus = bool
+
 type SourceOfFunds string
 
 const (
@@ -10613,6 +10935,7 @@ type TransactionDestinationPaymentDetails struct {
 	Mpesa              *MpesaDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewTransactionDestinationPaymentDetailsFromCard(value *CardDetails) *TransactionDestinationPaymentDetails {
@@ -10653,6 +10976,10 @@ func NewTransactionDestinationPaymentDetailsFromCheck(value *CheckDetails) *Tran
 
 func NewTransactionDestinationPaymentDetailsFromCash(value *CashDetails) *TransactionDestinationPaymentDetails {
 	return &TransactionDestinationPaymentDetails{Method: "CASH", Cash: value}
+}
+
+func NewTransactionDestinationPaymentDetailsFromNpp(value *NppDetails) *TransactionDestinationPaymentDetails {
+	return &TransactionDestinationPaymentDetails{Method: "NPP", Npp: value}
 }
 
 func (t *TransactionDestinationPaymentDetails) GetMethod() string {
@@ -10732,6 +11059,13 @@ func (t *TransactionDestinationPaymentDetails) GetCash() *CashDetails {
 	return t.Cash
 }
 
+func (t *TransactionDestinationPaymentDetails) GetNpp() *NppDetails {
+	if t == nil {
+		return nil
+	}
+	return t.Npp
+}
+
 func (t *TransactionDestinationPaymentDetails) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -10804,6 +11138,12 @@ func (t *TransactionDestinationPaymentDetails) UnmarshalJSON(data []byte) error 
 			return err
 		}
 		t.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		t.Npp = value
 	}
 	return nil
 }
@@ -10835,6 +11175,8 @@ func (t TransactionDestinationPaymentDetails) MarshalJSON() ([]byte, error) {
 		return internal.MarshalJSONWithExtraProperty(t.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(t.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(t.Npp, "method", "NPP")
 	}
 }
 
@@ -10849,6 +11191,7 @@ type TransactionDestinationPaymentDetailsVisitor interface {
 	VisitMpesa(*MpesaDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (t *TransactionDestinationPaymentDetails) Accept(visitor TransactionDestinationPaymentDetailsVisitor) error {
@@ -10875,6 +11218,8 @@ func (t *TransactionDestinationPaymentDetails) Accept(visitor TransactionDestina
 		return visitor.VisitCheck(t.Check)
 	case "CASH":
 		return visitor.VisitCash(t.Cash)
+	case "NPP":
+		return visitor.VisitNpp(t.Npp)
 	}
 }
 
@@ -10912,6 +11257,9 @@ func (t *TransactionDestinationPaymentDetails) validate() error {
 	}
 	if t.Cash != nil {
 		fields = append(fields, "CASH")
+	}
+	if t.Npp != nil {
+		fields = append(fields, "NPP")
 	}
 	if len(fields) == 0 {
 		if t.Method != "" {
@@ -11324,6 +11672,7 @@ type TransactionOriginPaymentDetails struct {
 	Wallet             *WalletDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewTransactionOriginPaymentDetailsFromCard(value *CardDetails) *TransactionOriginPaymentDetails {
@@ -11364,6 +11713,10 @@ func NewTransactionOriginPaymentDetailsFromCheck(value *CheckDetails) *Transacti
 
 func NewTransactionOriginPaymentDetailsFromCash(value *CashDetails) *TransactionOriginPaymentDetails {
 	return &TransactionOriginPaymentDetails{Method: "CASH", Cash: value}
+}
+
+func NewTransactionOriginPaymentDetailsFromNpp(value *NppDetails) *TransactionOriginPaymentDetails {
+	return &TransactionOriginPaymentDetails{Method: "NPP", Npp: value}
 }
 
 func (t *TransactionOriginPaymentDetails) GetMethod() string {
@@ -11443,6 +11796,13 @@ func (t *TransactionOriginPaymentDetails) GetCash() *CashDetails {
 	return t.Cash
 }
 
+func (t *TransactionOriginPaymentDetails) GetNpp() *NppDetails {
+	if t == nil {
+		return nil
+	}
+	return t.Npp
+}
+
 func (t *TransactionOriginPaymentDetails) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -11515,6 +11875,12 @@ func (t *TransactionOriginPaymentDetails) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		t.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		t.Npp = value
 	}
 	return nil
 }
@@ -11546,6 +11912,8 @@ func (t TransactionOriginPaymentDetails) MarshalJSON() ([]byte, error) {
 		return internal.MarshalJSONWithExtraProperty(t.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(t.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(t.Npp, "method", "NPP")
 	}
 }
 
@@ -11560,6 +11928,7 @@ type TransactionOriginPaymentDetailsVisitor interface {
 	VisitWallet(*WalletDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (t *TransactionOriginPaymentDetails) Accept(visitor TransactionOriginPaymentDetailsVisitor) error {
@@ -11586,6 +11955,8 @@ func (t *TransactionOriginPaymentDetails) Accept(visitor TransactionOriginPaymen
 		return visitor.VisitCheck(t.Check)
 	case "CASH":
 		return visitor.VisitCash(t.Cash)
+	case "NPP":
+		return visitor.VisitNpp(t.Npp)
 	}
 }
 
@@ -11623,6 +11994,9 @@ func (t *TransactionOriginPaymentDetails) validate() error {
 	}
 	if t.Cash != nil {
 		fields = append(fields, "CASH")
+	}
+	if t.Npp != nil {
+		fields = append(fields, "NPP")
 	}
 	if len(fields) == 0 {
 		if t.Method != "" {
@@ -12011,6 +12385,7 @@ type TransactionUpdatableDestinationPaymentDetails struct {
 	Mpesa              *MpesaDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewTransactionUpdatableDestinationPaymentDetailsFromCard(value *CardDetails) *TransactionUpdatableDestinationPaymentDetails {
@@ -12051,6 +12426,10 @@ func NewTransactionUpdatableDestinationPaymentDetailsFromCheck(value *CheckDetai
 
 func NewTransactionUpdatableDestinationPaymentDetailsFromCash(value *CashDetails) *TransactionUpdatableDestinationPaymentDetails {
 	return &TransactionUpdatableDestinationPaymentDetails{Method: "CASH", Cash: value}
+}
+
+func NewTransactionUpdatableDestinationPaymentDetailsFromNpp(value *NppDetails) *TransactionUpdatableDestinationPaymentDetails {
+	return &TransactionUpdatableDestinationPaymentDetails{Method: "NPP", Npp: value}
 }
 
 func (t *TransactionUpdatableDestinationPaymentDetails) GetMethod() string {
@@ -12130,6 +12509,13 @@ func (t *TransactionUpdatableDestinationPaymentDetails) GetCash() *CashDetails {
 	return t.Cash
 }
 
+func (t *TransactionUpdatableDestinationPaymentDetails) GetNpp() *NppDetails {
+	if t == nil {
+		return nil
+	}
+	return t.Npp
+}
+
 func (t *TransactionUpdatableDestinationPaymentDetails) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -12202,6 +12588,12 @@ func (t *TransactionUpdatableDestinationPaymentDetails) UnmarshalJSON(data []byt
 			return err
 		}
 		t.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		t.Npp = value
 	}
 	return nil
 }
@@ -12233,6 +12625,8 @@ func (t TransactionUpdatableDestinationPaymentDetails) MarshalJSON() ([]byte, er
 		return internal.MarshalJSONWithExtraProperty(t.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(t.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(t.Npp, "method", "NPP")
 	}
 }
 
@@ -12247,6 +12641,7 @@ type TransactionUpdatableDestinationPaymentDetailsVisitor interface {
 	VisitMpesa(*MpesaDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (t *TransactionUpdatableDestinationPaymentDetails) Accept(visitor TransactionUpdatableDestinationPaymentDetailsVisitor) error {
@@ -12273,6 +12668,8 @@ func (t *TransactionUpdatableDestinationPaymentDetails) Accept(visitor Transacti
 		return visitor.VisitCheck(t.Check)
 	case "CASH":
 		return visitor.VisitCash(t.Cash)
+	case "NPP":
+		return visitor.VisitNpp(t.Npp)
 	}
 }
 
@@ -12311,6 +12708,9 @@ func (t *TransactionUpdatableDestinationPaymentDetails) validate() error {
 	if t.Cash != nil {
 		fields = append(fields, "CASH")
 	}
+	if t.Npp != nil {
+		fields = append(fields, "NPP")
+	}
 	if len(fields) == 0 {
 		if t.Method != "" {
 			return fmt.Errorf("type %T defines a discriminant set to %q but the field is not set", t, t.Method)
@@ -12347,6 +12747,7 @@ type TransactionUpdatableOriginPaymentDetails struct {
 	Wallet             *WalletDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewTransactionUpdatableOriginPaymentDetailsFromCard(value *CardDetails) *TransactionUpdatableOriginPaymentDetails {
@@ -12387,6 +12788,10 @@ func NewTransactionUpdatableOriginPaymentDetailsFromCheck(value *CheckDetails) *
 
 func NewTransactionUpdatableOriginPaymentDetailsFromCash(value *CashDetails) *TransactionUpdatableOriginPaymentDetails {
 	return &TransactionUpdatableOriginPaymentDetails{Method: "CASH", Cash: value}
+}
+
+func NewTransactionUpdatableOriginPaymentDetailsFromNpp(value *NppDetails) *TransactionUpdatableOriginPaymentDetails {
+	return &TransactionUpdatableOriginPaymentDetails{Method: "NPP", Npp: value}
 }
 
 func (t *TransactionUpdatableOriginPaymentDetails) GetMethod() string {
@@ -12466,6 +12871,13 @@ func (t *TransactionUpdatableOriginPaymentDetails) GetCash() *CashDetails {
 	return t.Cash
 }
 
+func (t *TransactionUpdatableOriginPaymentDetails) GetNpp() *NppDetails {
+	if t == nil {
+		return nil
+	}
+	return t.Npp
+}
+
 func (t *TransactionUpdatableOriginPaymentDetails) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -12538,6 +12950,12 @@ func (t *TransactionUpdatableOriginPaymentDetails) UnmarshalJSON(data []byte) er
 			return err
 		}
 		t.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		t.Npp = value
 	}
 	return nil
 }
@@ -12569,6 +12987,8 @@ func (t TransactionUpdatableOriginPaymentDetails) MarshalJSON() ([]byte, error) 
 		return internal.MarshalJSONWithExtraProperty(t.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(t.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(t.Npp, "method", "NPP")
 	}
 }
 
@@ -12583,6 +13003,7 @@ type TransactionUpdatableOriginPaymentDetailsVisitor interface {
 	VisitWallet(*WalletDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (t *TransactionUpdatableOriginPaymentDetails) Accept(visitor TransactionUpdatableOriginPaymentDetailsVisitor) error {
@@ -12609,6 +13030,8 @@ func (t *TransactionUpdatableOriginPaymentDetails) Accept(visitor TransactionUpd
 		return visitor.VisitCheck(t.Check)
 	case "CASH":
 		return visitor.VisitCash(t.Cash)
+	case "NPP":
+		return visitor.VisitNpp(t.Npp)
 	}
 }
 
@@ -12646,6 +13069,9 @@ func (t *TransactionUpdatableOriginPaymentDetails) validate() error {
 	}
 	if t.Cash != nil {
 		fields = append(fields, "CASH")
+	}
+	if t.Npp != nil {
+		fields = append(fields, "NPP")
 	}
 	if len(fields) == 0 {
 		if t.Method != "" {
@@ -12791,6 +13217,8 @@ type User struct {
 	SourceOfFunds           []SourceOfFunds      `json:"sourceOfFunds,omitempty" url:"sourceOfFunds,omitempty"`
 	UserSegment             *ConsumerUserSegment `json:"userSegment,omitempty" url:"userSegment,omitempty"`
 	PepStatus               []*PepStatus         `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	SanctionsStatus         *SanctionsStatus     `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	AdverseMediaStatus      *AdverseMediaStatus  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// Timestamp of the last successful transaction of the user
 	LastTransactionTimestamp *float64                       `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
 	LinkedEntities           *UserEntityLink                `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
@@ -12949,6 +13377,20 @@ func (u *User) GetPepStatus() []*PepStatus {
 		return nil
 	}
 	return u.PepStatus
+}
+
+func (u *User) GetSanctionsStatus() *SanctionsStatus {
+	if u == nil {
+		return nil
+	}
+	return u.SanctionsStatus
+}
+
+func (u *User) GetAdverseMediaStatus() *AdverseMediaStatus {
+	if u == nil {
+		return nil
+	}
+	return u.AdverseMediaStatus
 }
 
 func (u *User) GetLastTransactionTimestamp() *float64 {
@@ -13266,6 +13708,8 @@ type UserOptional struct {
 	SourceOfFunds           []SourceOfFunds      `json:"sourceOfFunds,omitempty" url:"sourceOfFunds,omitempty"`
 	UserSegment             *ConsumerUserSegment `json:"userSegment,omitempty" url:"userSegment,omitempty"`
 	PepStatus               []*PepStatus         `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	SanctionsStatus         *SanctionsStatus     `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	AdverseMediaStatus      *AdverseMediaStatus  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// Timestamp of the last successful transaction of the user
 	LastTransactionTimestamp *float64                               `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
 	LinkedEntities           *UserEntityLink                        `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
@@ -13412,6 +13856,20 @@ func (u *UserOptional) GetPepStatus() []*PepStatus {
 	return u.PepStatus
 }
 
+func (u *UserOptional) GetSanctionsStatus() *SanctionsStatus {
+	if u == nil {
+		return nil
+	}
+	return u.SanctionsStatus
+}
+
+func (u *UserOptional) GetAdverseMediaStatus() *AdverseMediaStatus {
+	if u == nil {
+		return nil
+	}
+	return u.AdverseMediaStatus
+}
+
 func (u *UserOptional) GetLastTransactionTimestamp() *float64 {
 	if u == nil {
 		return nil
@@ -13491,6 +13949,7 @@ type UserOptionalSavedPaymentDetailsItem struct {
 	Wallet             *WalletDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewUserOptionalSavedPaymentDetailsItemFromCard(value *CardDetails) *UserOptionalSavedPaymentDetailsItem {
@@ -13531,6 +13990,10 @@ func NewUserOptionalSavedPaymentDetailsItemFromCheck(value *CheckDetails) *UserO
 
 func NewUserOptionalSavedPaymentDetailsItemFromCash(value *CashDetails) *UserOptionalSavedPaymentDetailsItem {
 	return &UserOptionalSavedPaymentDetailsItem{Method: "CASH", Cash: value}
+}
+
+func NewUserOptionalSavedPaymentDetailsItemFromNpp(value *NppDetails) *UserOptionalSavedPaymentDetailsItem {
+	return &UserOptionalSavedPaymentDetailsItem{Method: "NPP", Npp: value}
 }
 
 func (u *UserOptionalSavedPaymentDetailsItem) GetMethod() string {
@@ -13610,6 +14073,13 @@ func (u *UserOptionalSavedPaymentDetailsItem) GetCash() *CashDetails {
 	return u.Cash
 }
 
+func (u *UserOptionalSavedPaymentDetailsItem) GetNpp() *NppDetails {
+	if u == nil {
+		return nil
+	}
+	return u.Npp
+}
+
 func (u *UserOptionalSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -13682,6 +14152,12 @@ func (u *UserOptionalSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		u.Npp = value
 	}
 	return nil
 }
@@ -13713,6 +14189,8 @@ func (u UserOptionalSavedPaymentDetailsItem) MarshalJSON() ([]byte, error) {
 		return internal.MarshalJSONWithExtraProperty(u.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(u.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(u.Npp, "method", "NPP")
 	}
 }
 
@@ -13727,6 +14205,7 @@ type UserOptionalSavedPaymentDetailsItemVisitor interface {
 	VisitWallet(*WalletDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (u *UserOptionalSavedPaymentDetailsItem) Accept(visitor UserOptionalSavedPaymentDetailsItemVisitor) error {
@@ -13753,6 +14232,8 @@ func (u *UserOptionalSavedPaymentDetailsItem) Accept(visitor UserOptionalSavedPa
 		return visitor.VisitCheck(u.Check)
 	case "CASH":
 		return visitor.VisitCash(u.Cash)
+	case "NPP":
+		return visitor.VisitNpp(u.Npp)
 	}
 }
 
@@ -13790,6 +14271,9 @@ func (u *UserOptionalSavedPaymentDetailsItem) validate() error {
 	}
 	if u.Cash != nil {
 		fields = append(fields, "CASH")
+	}
+	if u.Npp != nil {
+		fields = append(fields, "NPP")
 	}
 	if len(fields) == 0 {
 		if u.Method != "" {
@@ -13980,6 +14464,7 @@ type UserSavedPaymentDetailsItem struct {
 	Wallet             *WalletDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewUserSavedPaymentDetailsItemFromCard(value *CardDetails) *UserSavedPaymentDetailsItem {
@@ -14020,6 +14505,10 @@ func NewUserSavedPaymentDetailsItemFromCheck(value *CheckDetails) *UserSavedPaym
 
 func NewUserSavedPaymentDetailsItemFromCash(value *CashDetails) *UserSavedPaymentDetailsItem {
 	return &UserSavedPaymentDetailsItem{Method: "CASH", Cash: value}
+}
+
+func NewUserSavedPaymentDetailsItemFromNpp(value *NppDetails) *UserSavedPaymentDetailsItem {
+	return &UserSavedPaymentDetailsItem{Method: "NPP", Npp: value}
 }
 
 func (u *UserSavedPaymentDetailsItem) GetMethod() string {
@@ -14099,6 +14588,13 @@ func (u *UserSavedPaymentDetailsItem) GetCash() *CashDetails {
 	return u.Cash
 }
 
+func (u *UserSavedPaymentDetailsItem) GetNpp() *NppDetails {
+	if u == nil {
+		return nil
+	}
+	return u.Npp
+}
+
 func (u *UserSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -14171,6 +14667,12 @@ func (u *UserSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		u.Npp = value
 	}
 	return nil
 }
@@ -14202,6 +14704,8 @@ func (u UserSavedPaymentDetailsItem) MarshalJSON() ([]byte, error) {
 		return internal.MarshalJSONWithExtraProperty(u.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(u.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(u.Npp, "method", "NPP")
 	}
 }
 
@@ -14216,6 +14720,7 @@ type UserSavedPaymentDetailsItemVisitor interface {
 	VisitWallet(*WalletDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (u *UserSavedPaymentDetailsItem) Accept(visitor UserSavedPaymentDetailsItemVisitor) error {
@@ -14242,6 +14747,8 @@ func (u *UserSavedPaymentDetailsItem) Accept(visitor UserSavedPaymentDetailsItem
 		return visitor.VisitCheck(u.Check)
 	case "CASH":
 		return visitor.VisitCash(u.Cash)
+	case "NPP":
+		return visitor.VisitNpp(u.Npp)
 	}
 }
 
@@ -14279,6 +14786,9 @@ func (u *UserSavedPaymentDetailsItem) validate() error {
 	}
 	if u.Cash != nil {
 		fields = append(fields, "CASH")
+	}
+	if u.Npp != nil {
+		fields = append(fields, "NPP")
 	}
 	if len(fields) == 0 {
 		if u.Method != "" {
@@ -14539,6 +15049,8 @@ type UserWithRulesResult struct {
 	SourceOfFunds           []SourceOfFunds      `json:"sourceOfFunds,omitempty" url:"sourceOfFunds,omitempty"`
 	UserSegment             *ConsumerUserSegment `json:"userSegment,omitempty" url:"userSegment,omitempty"`
 	PepStatus               []*PepStatus         `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	SanctionsStatus         *SanctionsStatus     `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	AdverseMediaStatus      *AdverseMediaStatus  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// Timestamp of the last successful transaction of the user
 	LastTransactionTimestamp *float64                                      `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
 	LinkedEntities           *UserEntityLink                               `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
@@ -14702,6 +15214,20 @@ func (u *UserWithRulesResult) GetPepStatus() []*PepStatus {
 	return u.PepStatus
 }
 
+func (u *UserWithRulesResult) GetSanctionsStatus() *SanctionsStatus {
+	if u == nil {
+		return nil
+	}
+	return u.SanctionsStatus
+}
+
+func (u *UserWithRulesResult) GetAdverseMediaStatus() *AdverseMediaStatus {
+	if u == nil {
+		return nil
+	}
+	return u.AdverseMediaStatus
+}
+
 func (u *UserWithRulesResult) GetLastTransactionTimestamp() *float64 {
 	if u == nil {
 		return nil
@@ -14802,6 +15328,7 @@ type UserWithRulesResultSavedPaymentDetailsItem struct {
 	Wallet             *WalletDetails
 	Check              *CheckDetails
 	Cash               *CashDetails
+	Npp                *NppDetails
 }
 
 func NewUserWithRulesResultSavedPaymentDetailsItemFromCard(value *CardDetails) *UserWithRulesResultSavedPaymentDetailsItem {
@@ -14842,6 +15369,10 @@ func NewUserWithRulesResultSavedPaymentDetailsItemFromCheck(value *CheckDetails)
 
 func NewUserWithRulesResultSavedPaymentDetailsItemFromCash(value *CashDetails) *UserWithRulesResultSavedPaymentDetailsItem {
 	return &UserWithRulesResultSavedPaymentDetailsItem{Method: "CASH", Cash: value}
+}
+
+func NewUserWithRulesResultSavedPaymentDetailsItemFromNpp(value *NppDetails) *UserWithRulesResultSavedPaymentDetailsItem {
+	return &UserWithRulesResultSavedPaymentDetailsItem{Method: "NPP", Npp: value}
 }
 
 func (u *UserWithRulesResultSavedPaymentDetailsItem) GetMethod() string {
@@ -14921,6 +15452,13 @@ func (u *UserWithRulesResultSavedPaymentDetailsItem) GetCash() *CashDetails {
 	return u.Cash
 }
 
+func (u *UserWithRulesResultSavedPaymentDetailsItem) GetNpp() *NppDetails {
+	if u == nil {
+		return nil
+	}
+	return u.Npp
+}
+
 func (u *UserWithRulesResultSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
 	var unmarshaler struct {
 		Method string `json:"method"`
@@ -14993,6 +15531,12 @@ func (u *UserWithRulesResultSavedPaymentDetailsItem) UnmarshalJSON(data []byte) 
 			return err
 		}
 		u.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		u.Npp = value
 	}
 	return nil
 }
@@ -15024,6 +15568,8 @@ func (u UserWithRulesResultSavedPaymentDetailsItem) MarshalJSON() ([]byte, error
 		return internal.MarshalJSONWithExtraProperty(u.Check, "method", "CHECK")
 	case "CASH":
 		return internal.MarshalJSONWithExtraProperty(u.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(u.Npp, "method", "NPP")
 	}
 }
 
@@ -15038,6 +15584,7 @@ type UserWithRulesResultSavedPaymentDetailsItemVisitor interface {
 	VisitWallet(*WalletDetails) error
 	VisitCheck(*CheckDetails) error
 	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
 }
 
 func (u *UserWithRulesResultSavedPaymentDetailsItem) Accept(visitor UserWithRulesResultSavedPaymentDetailsItemVisitor) error {
@@ -15064,6 +15611,8 @@ func (u *UserWithRulesResultSavedPaymentDetailsItem) Accept(visitor UserWithRule
 		return visitor.VisitCheck(u.Check)
 	case "CASH":
 		return visitor.VisitCash(u.Cash)
+	case "NPP":
+		return visitor.VisitNpp(u.Npp)
 	}
 }
 
@@ -15101,6 +15650,9 @@ func (u *UserWithRulesResultSavedPaymentDetailsItem) validate() error {
 	}
 	if u.Cash != nil {
 		fields = append(fields, "CASH")
+	}
+	if u.Npp != nil {
+		fields = append(fields, "NPP")
 	}
 	if len(fields) == 0 {
 		if u.Method != "" {
@@ -15780,18 +16332,20 @@ func (w WebhookEventTriggeredBy) Ptr() *WebhookEventTriggeredBy {
 type WebhookEventType string
 
 const (
-	WebhookEventTypeCaseClosed               WebhookEventType = "CASE_CLOSED"
-	WebhookEventTypeUserStateUpdated         WebhookEventType = "USER_STATE_UPDATED"
-	WebhookEventTypeAlertClosed              WebhookEventType = "ALERT_CLOSED"
-	WebhookEventTypeTransactionStatusUpdated WebhookEventType = "TRANSACTION_STATUS_UPDATED"
-	WebhookEventTypeKycStatusUpdated         WebhookEventType = "KYC_STATUS_UPDATED"
-	WebhookEventTypeCaseOpened               WebhookEventType = "CASE_OPENED"
-	WebhookEventTypeAlertOpened              WebhookEventType = "ALERT_OPENED"
-	WebhookEventTypePepStatusUpdated         WebhookEventType = "PEP_STATUS_UPDATED"
-	WebhookEventTypeUserTagsUpdated          WebhookEventType = "USER_TAGS_UPDATED"
-	WebhookEventTypeUserTagsDeleted          WebhookEventType = "USER_TAGS_DELETED"
-	WebhookEventTypeCraRiskLevelUpdated      WebhookEventType = "CRA_RISK_LEVEL_UPDATED"
-	WebhookEventTypeListUpdated              WebhookEventType = "LIST_UPDATED"
+	WebhookEventTypeCaseClosed                WebhookEventType = "CASE_CLOSED"
+	WebhookEventTypeUserStateUpdated          WebhookEventType = "USER_STATE_UPDATED"
+	WebhookEventTypeAlertClosed               WebhookEventType = "ALERT_CLOSED"
+	WebhookEventTypeTransactionStatusUpdated  WebhookEventType = "TRANSACTION_STATUS_UPDATED"
+	WebhookEventTypeKycStatusUpdated          WebhookEventType = "KYC_STATUS_UPDATED"
+	WebhookEventTypeCaseOpened                WebhookEventType = "CASE_OPENED"
+	WebhookEventTypeAlertOpened               WebhookEventType = "ALERT_OPENED"
+	WebhookEventTypePepStatusUpdated          WebhookEventType = "PEP_STATUS_UPDATED"
+	WebhookEventTypeUserTagsUpdated           WebhookEventType = "USER_TAGS_UPDATED"
+	WebhookEventTypeUserTagsDeleted           WebhookEventType = "USER_TAGS_DELETED"
+	WebhookEventTypeCraRiskLevelUpdated       WebhookEventType = "CRA_RISK_LEVEL_UPDATED"
+	WebhookEventTypeListUpdated               WebhookEventType = "LIST_UPDATED"
+	WebhookEventTypeSanctionsStatusUpdated    WebhookEventType = "SANCTIONS_STATUS_UPDATED"
+	WebhookEventTypeAdverseMediaStatusUpdated WebhookEventType = "ADVERSE_MEDIA_STATUS_UPDATED"
 )
 
 func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
@@ -15820,6 +16374,10 @@ func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
 		return WebhookEventTypeCraRiskLevelUpdated, nil
 	case "LIST_UPDATED":
 		return WebhookEventTypeListUpdated, nil
+	case "SANCTIONS_STATUS_UPDATED":
+		return WebhookEventTypeSanctionsStatusUpdated, nil
+	case "ADVERSE_MEDIA_STATUS_UPDATED":
+		return WebhookEventTypeAdverseMediaStatusUpdated, nil
 	}
 	var t WebhookEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
