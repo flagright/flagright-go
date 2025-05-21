@@ -8772,7 +8772,7 @@ type NppDetails struct {
 	// BSB number
 	Bsb *string `json:"bsb,omitempty" url:"bsb,omitempty"`
 	// PayID
-	PayId *string `json:"payId,omitempty" url:"payId,omitempty"`
+	PayId string `json:"payId" url:"payId"`
 	// End to End ID
 	EndToEndId string `json:"endToEndId" url:"endToEndId"`
 	// OSKO reference
@@ -8840,9 +8840,9 @@ func (n *NppDetails) GetBsb() *string {
 	return n.Bsb
 }
 
-func (n *NppDetails) GetPayId() *string {
+func (n *NppDetails) GetPayId() string {
 	if n == nil {
-		return nil
+		return ""
 	}
 	return n.PayId
 }
