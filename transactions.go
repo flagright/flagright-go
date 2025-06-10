@@ -1131,10 +1131,7 @@ type TransactionsVerifyRequest struct {
 	ValidateOriginUserId *BooleanString `json:"-" url:"validateOriginUserId,omitempty"`
 	// Boolean string whether Flagright should validate if provided destinationUserId exist. True by default
 	ValidateDestinationUserId *BooleanString `json:"-" url:"validateDestinationUserId,omitempty"`
-	// Boolean string whether Flagright should validate if provided transactionId exist. True by default
-	ValidateTransactionId *BooleanString `json:"-" url:"validateTransactionId,omitempty"`
-	TrsOnly               *BooleanString `json:"-" url:"_trsOnly,omitempty"`
-	Body                  *Transaction   `json:"-" url:"-"`
+	Body                      *Transaction   `json:"-" url:"-"`
 }
 
 func (t *TransactionsVerifyRequest) UnmarshalJSON(data []byte) error {

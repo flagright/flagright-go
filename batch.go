@@ -33,6 +33,174 @@ type TransactionEventBatchRequest struct {
 	Data    []*TransactionEvent `json:"data,omitempty" url:"-"`
 }
 
+type BatchGetRequest struct {
+	// Page size (default 20)
+	PageSize *PageSize `json:"-" url:"pageSize,omitempty"`
+	// Page
+	Page *Page `json:"-" url:"page,omitempty"`
+}
+
+type BatchBusinessUserEventWithRulesResult struct {
+	// Timestamp of the event
+	Timestamp float64 `json:"timestamp" url:"timestamp"`
+	// Transaction ID the event pertains to
+	UserId string `json:"userId" url:"userId"`
+	// Unique event ID
+	EventId *string `json:"eventId,omitempty" url:"eventId,omitempty"`
+	// Reason for the event or a state change
+	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
+	// Event description
+	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
+	UpdatedBusinessUserAttributes *BusinessOptional      `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetTimestamp() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.Timestamp
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetUserId() string {
+	if b == nil {
+		return ""
+	}
+	return b.UserId
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetEventId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.EventId
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetReason() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Reason
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetEventDescription() *string {
+	if b == nil {
+		return nil
+	}
+	return b.EventDescription
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetUpdatedBusinessUserAttributes() *BusinessOptional {
+	if b == nil {
+		return nil
+	}
+	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.ExecutedRules
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetRiskScoreDetails() *UserRiskScoreDetails {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScoreDetails
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchBusinessUserEventWithRulesResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchBusinessUserEventWithRulesResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchBusinessUserEventsWithRulesResult struct {
+	BusinessUserEvents []*BatchBusinessUserEventWithRulesResult `json:"businessUserEvents,omitempty" url:"businessUserEvents,omitempty"`
+	TotalCount         float64                                  `json:"totalCount" url:"totalCount"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchBusinessUserEventsWithRulesResult) GetBusinessUserEvents() []*BatchBusinessUserEventWithRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.BusinessUserEvents
+}
+
+func (b *BatchBusinessUserEventsWithRulesResult) GetTotalCount() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.TotalCount
+}
+
+func (b *BatchBusinessUserEventsWithRulesResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchBusinessUserEventsWithRulesResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchBusinessUserEventsWithRulesResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchBusinessUserEventsWithRulesResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchBusinessUserEventsWithRulesResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 // Response from creation of a batch
 type BatchResponse struct {
 	Status        BatchResponseStatus          `json:"status" url:"status"`
@@ -200,6 +368,10 @@ func NewBatchResponseStatusFromString(s string) (BatchResponseStatus, error) {
 func (b BatchResponseStatus) Ptr() *BatchResponseStatus {
 	return &b
 }
+
+type Page = float64
+
+type PageSize = float64
 
 type TransactionBatchRequest struct {
 	// Boolean string whether Flagright should validate if provided originUserId exist. True by default

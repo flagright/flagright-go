@@ -94,6 +94,72 @@ func (c *Client) VerifyTransaction(
 	return response, nil
 }
 
+func (c *Client) Get(
+	ctx context.Context,
+	// Unique Batch Identifier
+	batchId string,
+	request *flagrightgo.BatchGetRequest,
+	opts ...option.RequestOption,
+) (*flagrightgo.BatchBusinessUserEventsWithRulesResult, error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		c.baseURL,
+		"https://sandbox.api.flagright.com",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/batch/events/business/user/%v",
+		batchId,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		c.header.Clone(),
+		options.ToHeader(),
+	)
+	errorCodes := internal.ErrorCodes{
+		401: func(apiError *core.APIError) error {
+			return &flagrightgo.UnauthorizedError{
+				APIError: apiError,
+			}
+		},
+		404: func(apiError *core.APIError) error {
+			return &flagrightgo.NotFoundError{
+				APIError: apiError,
+			}
+		},
+		429: func(apiError *core.APIError) error {
+			return &flagrightgo.TooManyRequestsError{
+				APIError: apiError,
+			}
+		},
+	}
+
+	var response *flagrightgo.BatchBusinessUserEventsWithRulesResult
+	if err := c.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (c *Client) CreateTransactionEvents(
 	ctx context.Context,
 	request *flagrightgo.TransactionEventBatchRequest,

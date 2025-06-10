@@ -55,6 +55,30 @@ func (c *ConflictError) Unwrap() error {
 	return c.APIError
 }
 
+// NotFound
+type NotFoundError struct {
+	*core.APIError
+	Body *ApiErrorResponse
+}
+
+func (n *NotFoundError) UnmarshalJSON(data []byte) error {
+	var body *ApiErrorResponse
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	n.StatusCode = 404
+	n.Body = body
+	return nil
+}
+
+func (n *NotFoundError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(n.Body)
+}
+
+func (n *NotFoundError) Unwrap() error {
+	return n.APIError
+}
+
 // Too Many Requests
 type TooManyRequestsError struct {
 	*core.APIError

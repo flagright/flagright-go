@@ -613,6 +613,1861 @@ func (a *ApiErrorResponse) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type BatchBusinessUserWithRulesResult struct {
+	// Unique user ID for the user
+	UserId string `json:"userId" url:"userId"`
+	// Timestamp when the user was created
+	CreatedTimestamp float64      `json:"createdTimestamp" url:"createdTimestamp"`
+	LegalEntity      *LegalEntity `json:"legalEntity,omitempty" url:"legalEntity,omitempty"`
+	// Timestamp when the user was activated
+	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
+	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
+	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
+	ShareHolders []*Person `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
+	// Director(s) of the company. Must be at least one
+	Directors             []*Person          `json:"directors,omitempty" url:"directors,omitempty"`
+	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	RiskLevel             *RiskLevel         `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel          *RiskLevel         `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AllowedPaymentMethods []PaymentMethod    `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
+	// Timestamp of the last successful transaction of the user
+	LastTransactionTimestamp *float64                                                   `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
+	LinkedEntities           *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	AcquisitionChannel       *AcquisitionChannel                                        `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	SavedPaymentDetails      []*BatchBusinessUserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	MccDetails               *MccDetails                                                `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
+	// User's attachments uploaded by business user
+	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetUserId() string {
+	if b == nil {
+		return ""
+	}
+	return b.UserId
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetCreatedTimestamp() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.CreatedTimestamp
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetLegalEntity() *LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntity
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetActivatedTimestamp() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.ActivatedTimestamp
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetUserStateDetails() *UserStateDetails {
+	if b == nil {
+		return nil
+	}
+	return b.UserStateDetails
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetKycStatusDetails() *KycStatusDetails {
+	if b == nil {
+		return nil
+	}
+	return b.KycStatusDetails
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetShareHolders() []*Person {
+	if b == nil {
+		return nil
+	}
+	return b.ShareHolders
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetDirectors() []*Person {
+	if b == nil {
+		return nil
+	}
+	return b.Directors
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetTransactionLimits() *TransactionLimits {
+	if b == nil {
+		return nil
+	}
+	return b.TransactionLimits
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetRiskLevel() *RiskLevel {
+	if b == nil {
+		return nil
+	}
+	return b.RiskLevel
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetKycRiskLevel() *RiskLevel {
+	if b == nil {
+		return nil
+	}
+	return b.KycRiskLevel
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetAllowedPaymentMethods() []PaymentMethod {
+	if b == nil {
+		return nil
+	}
+	return b.AllowedPaymentMethods
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetLastTransactionTimestamp() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.LastTransactionTimestamp
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetLinkedEntities() *UserEntityLink {
+	if b == nil {
+		return nil
+	}
+	return b.LinkedEntities
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetAcquisitionChannel() *AcquisitionChannel {
+	if b == nil {
+		return nil
+	}
+	return b.AcquisitionChannel
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetSavedPaymentDetails() []*BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	if b == nil {
+		return nil
+	}
+	return b.SavedPaymentDetails
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetMccDetails() *MccDetails {
+	if b == nil {
+		return nil
+	}
+	return b.MccDetails
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetTags() []*UserTag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetAttachments() []*PersonAttachment {
+	if b == nil {
+		return nil
+	}
+	return b.Attachments
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.ExecutedRules
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetRiskScoreDetails() *UserRiskScoreDetails {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScoreDetails
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchBusinessUserWithRulesResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchBusinessUserWithRulesResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchBusinessUserWithRulesResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchBusinessUserWithRulesResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchBusinessUserWithRulesResultSavedPaymentDetailsItem struct {
+	Method             string
+	Card               *CardDetails
+	GenericBankAccount *GenericBankAccountDetails
+	Iban               *IbanDetails
+	Ach                *AchDetails
+	Swift              *SwiftDetails
+	Mpesa              *MpesaDetails
+	Upi                *UpiDetails
+	Wallet             *WalletDetails
+	Check              *CheckDetails
+	Cash               *CashDetails
+	Npp                *NppDetails
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromCard(value *CardDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "CARD", Card: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromGenericBankAccount(value *GenericBankAccountDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "GENERIC_BANK_ACCOUNT", GenericBankAccount: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromIban(value *IbanDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "IBAN", Iban: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromAch(value *AchDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "ACH", Ach: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromSwift(value *SwiftDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "SWIFT", Swift: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromMpesa(value *MpesaDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "MPESA", Mpesa: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromUpi(value *UpiDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "UPI", Upi: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromWallet(value *WalletDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "WALLET", Wallet: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromCheck(value *CheckDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "CHECK", Check: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromCash(value *CashDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "CASH", Cash: value}
+}
+
+func NewBatchBusinessUserWithRulesResultSavedPaymentDetailsItemFromNpp(value *NppDetails) *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchBusinessUserWithRulesResultSavedPaymentDetailsItem{Method: "NPP", Npp: value}
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetMethod() string {
+	if b == nil {
+		return ""
+	}
+	return b.Method
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetCard() *CardDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Card
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetGenericBankAccount() *GenericBankAccountDetails {
+	if b == nil {
+		return nil
+	}
+	return b.GenericBankAccount
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetIban() *IbanDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Iban
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetAch() *AchDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Ach
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetSwift() *SwiftDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Swift
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetMpesa() *MpesaDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Mpesa
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetUpi() *UpiDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Upi
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetWallet() *WalletDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Wallet
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetCheck() *CheckDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Check
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetCash() *CashDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Cash
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) GetNpp() *NppDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Npp
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
+	var unmarshaler struct {
+		Method string `json:"method"`
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	b.Method = unmarshaler.Method
+	if unmarshaler.Method == "" {
+		return fmt.Errorf("%T did not include discriminant method", b)
+	}
+	switch unmarshaler.Method {
+	case "CARD":
+		value := new(CardDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Card = value
+	case "GENERIC_BANK_ACCOUNT":
+		value := new(GenericBankAccountDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.GenericBankAccount = value
+	case "IBAN":
+		value := new(IbanDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Iban = value
+	case "ACH":
+		value := new(AchDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Ach = value
+	case "SWIFT":
+		value := new(SwiftDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Swift = value
+	case "MPESA":
+		value := new(MpesaDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Mpesa = value
+	case "UPI":
+		value := new(UpiDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Upi = value
+	case "WALLET":
+		value := new(WalletDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Wallet = value
+	case "CHECK":
+		value := new(CheckDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Check = value
+	case "CASH":
+		value := new(CashDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Npp = value
+	}
+	return nil
+}
+
+func (b BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) MarshalJSON() ([]byte, error) {
+	if err := b.validate(); err != nil {
+		return nil, err
+	}
+	switch b.Method {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", b.Method, b)
+	case "CARD":
+		return internal.MarshalJSONWithExtraProperty(b.Card, "method", "CARD")
+	case "GENERIC_BANK_ACCOUNT":
+		return internal.MarshalJSONWithExtraProperty(b.GenericBankAccount, "method", "GENERIC_BANK_ACCOUNT")
+	case "IBAN":
+		return internal.MarshalJSONWithExtraProperty(b.Iban, "method", "IBAN")
+	case "ACH":
+		return internal.MarshalJSONWithExtraProperty(b.Ach, "method", "ACH")
+	case "SWIFT":
+		return internal.MarshalJSONWithExtraProperty(b.Swift, "method", "SWIFT")
+	case "MPESA":
+		return internal.MarshalJSONWithExtraProperty(b.Mpesa, "method", "MPESA")
+	case "UPI":
+		return internal.MarshalJSONWithExtraProperty(b.Upi, "method", "UPI")
+	case "WALLET":
+		return internal.MarshalJSONWithExtraProperty(b.Wallet, "method", "WALLET")
+	case "CHECK":
+		return internal.MarshalJSONWithExtraProperty(b.Check, "method", "CHECK")
+	case "CASH":
+		return internal.MarshalJSONWithExtraProperty(b.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(b.Npp, "method", "NPP")
+	}
+}
+
+type BatchBusinessUserWithRulesResultSavedPaymentDetailsItemVisitor interface {
+	VisitCard(*CardDetails) error
+	VisitGenericBankAccount(*GenericBankAccountDetails) error
+	VisitIban(*IbanDetails) error
+	VisitAch(*AchDetails) error
+	VisitSwift(*SwiftDetails) error
+	VisitMpesa(*MpesaDetails) error
+	VisitUpi(*UpiDetails) error
+	VisitWallet(*WalletDetails) error
+	VisitCheck(*CheckDetails) error
+	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) Accept(visitor BatchBusinessUserWithRulesResultSavedPaymentDetailsItemVisitor) error {
+	switch b.Method {
+	default:
+		return fmt.Errorf("invalid type %s in %T", b.Method, b)
+	case "CARD":
+		return visitor.VisitCard(b.Card)
+	case "GENERIC_BANK_ACCOUNT":
+		return visitor.VisitGenericBankAccount(b.GenericBankAccount)
+	case "IBAN":
+		return visitor.VisitIban(b.Iban)
+	case "ACH":
+		return visitor.VisitAch(b.Ach)
+	case "SWIFT":
+		return visitor.VisitSwift(b.Swift)
+	case "MPESA":
+		return visitor.VisitMpesa(b.Mpesa)
+	case "UPI":
+		return visitor.VisitUpi(b.Upi)
+	case "WALLET":
+		return visitor.VisitWallet(b.Wallet)
+	case "CHECK":
+		return visitor.VisitCheck(b.Check)
+	case "CASH":
+		return visitor.VisitCash(b.Cash)
+	case "NPP":
+		return visitor.VisitNpp(b.Npp)
+	}
+}
+
+func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) validate() error {
+	if b == nil {
+		return fmt.Errorf("type %T is nil", b)
+	}
+	var fields []string
+	if b.Card != nil {
+		fields = append(fields, "CARD")
+	}
+	if b.GenericBankAccount != nil {
+		fields = append(fields, "GENERIC_BANK_ACCOUNT")
+	}
+	if b.Iban != nil {
+		fields = append(fields, "IBAN")
+	}
+	if b.Ach != nil {
+		fields = append(fields, "ACH")
+	}
+	if b.Swift != nil {
+		fields = append(fields, "SWIFT")
+	}
+	if b.Mpesa != nil {
+		fields = append(fields, "MPESA")
+	}
+	if b.Upi != nil {
+		fields = append(fields, "UPI")
+	}
+	if b.Wallet != nil {
+		fields = append(fields, "WALLET")
+	}
+	if b.Check != nil {
+		fields = append(fields, "CHECK")
+	}
+	if b.Cash != nil {
+		fields = append(fields, "CASH")
+	}
+	if b.Npp != nil {
+		fields = append(fields, "NPP")
+	}
+	if len(fields) == 0 {
+		if b.Method != "" {
+			return fmt.Errorf("type %T defines a discriminant set to %q but the field is not set", b, b.Method)
+		}
+		return fmt.Errorf("type %T is empty", b)
+	}
+	if len(fields) > 1 {
+		return fmt.Errorf("type %T defines values for %s, but only one value is allowed", b, fields)
+	}
+	if b.Method != "" {
+		field := fields[0]
+		if b.Method != field {
+			return fmt.Errorf(
+				"type %T defines a discriminant set to %q, but it does not match the %T field; either remove or update the discriminant to match",
+				b,
+				b.Method,
+				b,
+			)
+		}
+	}
+	return nil
+}
+
+type BatchBusinessUsersWithRulesResults struct {
+	BusinessUsers []*BatchBusinessUserWithRulesResult `json:"businessUsers,omitempty" url:"businessUsers,omitempty"`
+	TotalCount    float64                             `json:"totalCount" url:"totalCount"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchBusinessUsersWithRulesResults) GetBusinessUsers() []*BatchBusinessUserWithRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.BusinessUsers
+}
+
+func (b *BatchBusinessUsersWithRulesResults) GetTotalCount() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.TotalCount
+}
+
+func (b *BatchBusinessUsersWithRulesResults) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchBusinessUsersWithRulesResults) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchBusinessUsersWithRulesResults
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchBusinessUsersWithRulesResults(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchBusinessUsersWithRulesResults) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchConsumerUserEventWithRulesResult struct {
+	// Timestamp of the event
+	Timestamp float64 `json:"timestamp" url:"timestamp"`
+	// Transaction ID the event pertains to
+	UserId string `json:"userId" url:"userId"`
+	// Unique event ID
+	EventId *string `json:"eventId,omitempty" url:"eventId,omitempty"`
+	// Reason for the event or a state change
+	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
+	// Event description
+	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
+	UpdatedConsumerUserAttributes *UserOptional          `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
+	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetTimestamp() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.Timestamp
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetUserId() string {
+	if b == nil {
+		return ""
+	}
+	return b.UserId
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetEventId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.EventId
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetReason() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Reason
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetEventDescription() *string {
+	if b == nil {
+		return nil
+	}
+	return b.EventDescription
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetUpdatedConsumerUserAttributes() *UserOptional {
+	if b == nil {
+		return nil
+	}
+	return b.UpdatedConsumerUserAttributes
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.ExecutedRules
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetRiskScoreDetails() *UserRiskScoreDetails {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScoreDetails
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchConsumerUserEventWithRulesResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchConsumerUserEventWithRulesResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchConsumerUserEventsRulesResult struct {
+	ConsumerUserEvents []*BatchConsumerUserEventWithRulesResult `json:"consumerUserEvents,omitempty" url:"consumerUserEvents,omitempty"`
+	TotalCount         float64                                  `json:"totalCount" url:"totalCount"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchConsumerUserEventsRulesResult) GetConsumerUserEvents() []*BatchConsumerUserEventWithRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.ConsumerUserEvents
+}
+
+func (b *BatchConsumerUserEventsRulesResult) GetTotalCount() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.TotalCount
+}
+
+func (b *BatchConsumerUserEventsRulesResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchConsumerUserEventsRulesResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchConsumerUserEventsRulesResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchConsumerUserEventsRulesResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchConsumerUserEventsRulesResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchConsumerUserWithRulesResult struct {
+	// Unique user ID
+	UserId string `json:"userId" url:"userId"`
+	// Timestamp when userId is created
+	CreatedTimestamp float64 `json:"createdTimestamp" url:"createdTimestamp"`
+	// Timestamp when user was activated
+	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
+	UserDetails        *UserDetails      `json:"userDetails,omitempty" url:"userDetails,omitempty"`
+	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
+	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	EoddDate           *float64          `json:"eoddDate,omitempty" url:"eoddDate,omitempty"`
+	EmploymentStatus   *EmploymentStatus `json:"employmentStatus,omitempty" url:"employmentStatus,omitempty"`
+	Occupation         *string           `json:"occupation,omitempty" url:"occupation,omitempty"`
+	// User's legal identity documents - See Document Model for details
+	LegalDocuments          []*LegalDocument     `json:"legalDocuments,omitempty" url:"legalDocuments,omitempty"`
+	ContactDetails          *ContactDetails      `json:"contactDetails,omitempty" url:"contactDetails,omitempty"`
+	EmploymentDetails       *EmploymentDetails   `json:"employmentDetails,omitempty" url:"employmentDetails,omitempty"`
+	TransactionLimits       *TransactionLimits   `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	ExpectedIncome          *ExpectedIncome      `json:"expectedIncome,omitempty" url:"expectedIncome,omitempty"`
+	RiskLevel               *RiskLevel           `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel            *RiskLevel           `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AcquisitionChannel      *AcquisitionChannel  `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	ReasonForAccountOpening []string             `json:"reasonForAccountOpening,omitempty" url:"reasonForAccountOpening,omitempty"`
+	SourceOfFunds           []SourceOfFunds      `json:"sourceOfFunds,omitempty" url:"sourceOfFunds,omitempty"`
+	UserSegment             *ConsumerUserSegment `json:"userSegment,omitempty" url:"userSegment,omitempty"`
+	PepStatus               []*PepStatus         `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	SanctionsStatus         *SanctionsStatus     `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	AdverseMediaStatus      *AdverseMediaStatus  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	// Timestamp of the last successful transaction of the user
+	LastTransactionTimestamp *float64                                                   `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
+	LinkedEntities           *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	SavedPaymentDetails      []*BatchConsumerUserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
+	// Uploaded user's attachment
+	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetUserId() string {
+	if b == nil {
+		return ""
+	}
+	return b.UserId
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetCreatedTimestamp() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.CreatedTimestamp
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetActivatedTimestamp() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.ActivatedTimestamp
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetUserDetails() *UserDetails {
+	if b == nil {
+		return nil
+	}
+	return b.UserDetails
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetUserStateDetails() *UserStateDetails {
+	if b == nil {
+		return nil
+	}
+	return b.UserStateDetails
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetKycStatusDetails() *KycStatusDetails {
+	if b == nil {
+		return nil
+	}
+	return b.KycStatusDetails
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetEoddDate() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.EoddDate
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetEmploymentStatus() *EmploymentStatus {
+	if b == nil {
+		return nil
+	}
+	return b.EmploymentStatus
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetOccupation() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Occupation
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetLegalDocuments() []*LegalDocument {
+	if b == nil {
+		return nil
+	}
+	return b.LegalDocuments
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetContactDetails() *ContactDetails {
+	if b == nil {
+		return nil
+	}
+	return b.ContactDetails
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetEmploymentDetails() *EmploymentDetails {
+	if b == nil {
+		return nil
+	}
+	return b.EmploymentDetails
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetTransactionLimits() *TransactionLimits {
+	if b == nil {
+		return nil
+	}
+	return b.TransactionLimits
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetExpectedIncome() *ExpectedIncome {
+	if b == nil {
+		return nil
+	}
+	return b.ExpectedIncome
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetRiskLevel() *RiskLevel {
+	if b == nil {
+		return nil
+	}
+	return b.RiskLevel
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetKycRiskLevel() *RiskLevel {
+	if b == nil {
+		return nil
+	}
+	return b.KycRiskLevel
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetAcquisitionChannel() *AcquisitionChannel {
+	if b == nil {
+		return nil
+	}
+	return b.AcquisitionChannel
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetReasonForAccountOpening() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ReasonForAccountOpening
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetSourceOfFunds() []SourceOfFunds {
+	if b == nil {
+		return nil
+	}
+	return b.SourceOfFunds
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetUserSegment() *ConsumerUserSegment {
+	if b == nil {
+		return nil
+	}
+	return b.UserSegment
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetPepStatus() []*PepStatus {
+	if b == nil {
+		return nil
+	}
+	return b.PepStatus
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetSanctionsStatus() *SanctionsStatus {
+	if b == nil {
+		return nil
+	}
+	return b.SanctionsStatus
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetAdverseMediaStatus() *AdverseMediaStatus {
+	if b == nil {
+		return nil
+	}
+	return b.AdverseMediaStatus
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetLastTransactionTimestamp() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.LastTransactionTimestamp
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetLinkedEntities() *UserEntityLink {
+	if b == nil {
+		return nil
+	}
+	return b.LinkedEntities
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetSavedPaymentDetails() []*BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	if b == nil {
+		return nil
+	}
+	return b.SavedPaymentDetails
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetTags() []*UserTag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetAttachments() []*PersonAttachment {
+	if b == nil {
+		return nil
+	}
+	return b.Attachments
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.ExecutedRules
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetRiskScoreDetails() *UserRiskScoreDetails {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScoreDetails
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchConsumerUserWithRulesResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchConsumerUserWithRulesResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchConsumerUserWithRulesResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchConsumerUserWithRulesResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchConsumerUserWithRulesResultSavedPaymentDetailsItem struct {
+	Method             string
+	Card               *CardDetails
+	GenericBankAccount *GenericBankAccountDetails
+	Iban               *IbanDetails
+	Ach                *AchDetails
+	Swift              *SwiftDetails
+	Mpesa              *MpesaDetails
+	Upi                *UpiDetails
+	Wallet             *WalletDetails
+	Check              *CheckDetails
+	Cash               *CashDetails
+	Npp                *NppDetails
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromCard(value *CardDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "CARD", Card: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromGenericBankAccount(value *GenericBankAccountDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "GENERIC_BANK_ACCOUNT", GenericBankAccount: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromIban(value *IbanDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "IBAN", Iban: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromAch(value *AchDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "ACH", Ach: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromSwift(value *SwiftDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "SWIFT", Swift: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromMpesa(value *MpesaDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "MPESA", Mpesa: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromUpi(value *UpiDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "UPI", Upi: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromWallet(value *WalletDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "WALLET", Wallet: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromCheck(value *CheckDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "CHECK", Check: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromCash(value *CashDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "CASH", Cash: value}
+}
+
+func NewBatchConsumerUserWithRulesResultSavedPaymentDetailsItemFromNpp(value *NppDetails) *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem {
+	return &BatchConsumerUserWithRulesResultSavedPaymentDetailsItem{Method: "NPP", Npp: value}
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetMethod() string {
+	if b == nil {
+		return ""
+	}
+	return b.Method
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetCard() *CardDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Card
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetGenericBankAccount() *GenericBankAccountDetails {
+	if b == nil {
+		return nil
+	}
+	return b.GenericBankAccount
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetIban() *IbanDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Iban
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetAch() *AchDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Ach
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetSwift() *SwiftDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Swift
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetMpesa() *MpesaDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Mpesa
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetUpi() *UpiDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Upi
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetWallet() *WalletDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Wallet
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetCheck() *CheckDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Check
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetCash() *CashDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Cash
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) GetNpp() *NppDetails {
+	if b == nil {
+		return nil
+	}
+	return b.Npp
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) UnmarshalJSON(data []byte) error {
+	var unmarshaler struct {
+		Method string `json:"method"`
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	b.Method = unmarshaler.Method
+	if unmarshaler.Method == "" {
+		return fmt.Errorf("%T did not include discriminant method", b)
+	}
+	switch unmarshaler.Method {
+	case "CARD":
+		value := new(CardDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Card = value
+	case "GENERIC_BANK_ACCOUNT":
+		value := new(GenericBankAccountDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.GenericBankAccount = value
+	case "IBAN":
+		value := new(IbanDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Iban = value
+	case "ACH":
+		value := new(AchDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Ach = value
+	case "SWIFT":
+		value := new(SwiftDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Swift = value
+	case "MPESA":
+		value := new(MpesaDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Mpesa = value
+	case "UPI":
+		value := new(UpiDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Upi = value
+	case "WALLET":
+		value := new(WalletDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Wallet = value
+	case "CHECK":
+		value := new(CheckDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Check = value
+	case "CASH":
+		value := new(CashDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Cash = value
+	case "NPP":
+		value := new(NppDetails)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		b.Npp = value
+	}
+	return nil
+}
+
+func (b BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) MarshalJSON() ([]byte, error) {
+	if err := b.validate(); err != nil {
+		return nil, err
+	}
+	switch b.Method {
+	default:
+		return nil, fmt.Errorf("invalid type %s in %T", b.Method, b)
+	case "CARD":
+		return internal.MarshalJSONWithExtraProperty(b.Card, "method", "CARD")
+	case "GENERIC_BANK_ACCOUNT":
+		return internal.MarshalJSONWithExtraProperty(b.GenericBankAccount, "method", "GENERIC_BANK_ACCOUNT")
+	case "IBAN":
+		return internal.MarshalJSONWithExtraProperty(b.Iban, "method", "IBAN")
+	case "ACH":
+		return internal.MarshalJSONWithExtraProperty(b.Ach, "method", "ACH")
+	case "SWIFT":
+		return internal.MarshalJSONWithExtraProperty(b.Swift, "method", "SWIFT")
+	case "MPESA":
+		return internal.MarshalJSONWithExtraProperty(b.Mpesa, "method", "MPESA")
+	case "UPI":
+		return internal.MarshalJSONWithExtraProperty(b.Upi, "method", "UPI")
+	case "WALLET":
+		return internal.MarshalJSONWithExtraProperty(b.Wallet, "method", "WALLET")
+	case "CHECK":
+		return internal.MarshalJSONWithExtraProperty(b.Check, "method", "CHECK")
+	case "CASH":
+		return internal.MarshalJSONWithExtraProperty(b.Cash, "method", "CASH")
+	case "NPP":
+		return internal.MarshalJSONWithExtraProperty(b.Npp, "method", "NPP")
+	}
+}
+
+type BatchConsumerUserWithRulesResultSavedPaymentDetailsItemVisitor interface {
+	VisitCard(*CardDetails) error
+	VisitGenericBankAccount(*GenericBankAccountDetails) error
+	VisitIban(*IbanDetails) error
+	VisitAch(*AchDetails) error
+	VisitSwift(*SwiftDetails) error
+	VisitMpesa(*MpesaDetails) error
+	VisitUpi(*UpiDetails) error
+	VisitWallet(*WalletDetails) error
+	VisitCheck(*CheckDetails) error
+	VisitCash(*CashDetails) error
+	VisitNpp(*NppDetails) error
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) Accept(visitor BatchConsumerUserWithRulesResultSavedPaymentDetailsItemVisitor) error {
+	switch b.Method {
+	default:
+		return fmt.Errorf("invalid type %s in %T", b.Method, b)
+	case "CARD":
+		return visitor.VisitCard(b.Card)
+	case "GENERIC_BANK_ACCOUNT":
+		return visitor.VisitGenericBankAccount(b.GenericBankAccount)
+	case "IBAN":
+		return visitor.VisitIban(b.Iban)
+	case "ACH":
+		return visitor.VisitAch(b.Ach)
+	case "SWIFT":
+		return visitor.VisitSwift(b.Swift)
+	case "MPESA":
+		return visitor.VisitMpesa(b.Mpesa)
+	case "UPI":
+		return visitor.VisitUpi(b.Upi)
+	case "WALLET":
+		return visitor.VisitWallet(b.Wallet)
+	case "CHECK":
+		return visitor.VisitCheck(b.Check)
+	case "CASH":
+		return visitor.VisitCash(b.Cash)
+	case "NPP":
+		return visitor.VisitNpp(b.Npp)
+	}
+}
+
+func (b *BatchConsumerUserWithRulesResultSavedPaymentDetailsItem) validate() error {
+	if b == nil {
+		return fmt.Errorf("type %T is nil", b)
+	}
+	var fields []string
+	if b.Card != nil {
+		fields = append(fields, "CARD")
+	}
+	if b.GenericBankAccount != nil {
+		fields = append(fields, "GENERIC_BANK_ACCOUNT")
+	}
+	if b.Iban != nil {
+		fields = append(fields, "IBAN")
+	}
+	if b.Ach != nil {
+		fields = append(fields, "ACH")
+	}
+	if b.Swift != nil {
+		fields = append(fields, "SWIFT")
+	}
+	if b.Mpesa != nil {
+		fields = append(fields, "MPESA")
+	}
+	if b.Upi != nil {
+		fields = append(fields, "UPI")
+	}
+	if b.Wallet != nil {
+		fields = append(fields, "WALLET")
+	}
+	if b.Check != nil {
+		fields = append(fields, "CHECK")
+	}
+	if b.Cash != nil {
+		fields = append(fields, "CASH")
+	}
+	if b.Npp != nil {
+		fields = append(fields, "NPP")
+	}
+	if len(fields) == 0 {
+		if b.Method != "" {
+			return fmt.Errorf("type %T defines a discriminant set to %q but the field is not set", b, b.Method)
+		}
+		return fmt.Errorf("type %T is empty", b)
+	}
+	if len(fields) > 1 {
+		return fmt.Errorf("type %T defines values for %s, but only one value is allowed", b, fields)
+	}
+	if b.Method != "" {
+		field := fields[0]
+		if b.Method != field {
+			return fmt.Errorf(
+				"type %T defines a discriminant set to %q, but it does not match the %T field; either remove or update the discriminant to match",
+				b,
+				b.Method,
+				b,
+			)
+		}
+	}
+	return nil
+}
+
+type BatchConsumerUsersWithRulesResult struct {
+	ConsumerUsers []*BatchConsumerUserWithRulesResult `json:"consumerUsers,omitempty" url:"consumerUsers,omitempty"`
+	TotalCount    float64                             `json:"totalCount" url:"totalCount"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchConsumerUsersWithRulesResult) GetConsumerUsers() []*BatchConsumerUserWithRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.ConsumerUsers
+}
+
+func (b *BatchConsumerUsersWithRulesResult) GetTotalCount() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.TotalCount
+}
+
+func (b *BatchConsumerUsersWithRulesResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchConsumerUsersWithRulesResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchConsumerUsersWithRulesResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchConsumerUsersWithRulesResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchConsumerUsersWithRulesResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchTransactionEventMonitoringResult struct {
+	TransactionState TransactionState `json:"transactionState" url:"transactionState"`
+	// Timestamp of the event
+	Timestamp float64 `json:"timestamp" url:"timestamp"`
+	// Transaction ID the event pertains to
+	TransactionId string `json:"transactionId" url:"transactionId"`
+	// Unique event ID
+	EventId *string `json:"eventId,omitempty" url:"eventId,omitempty"`
+	// Reason for the event or a state change
+	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
+	// Event description
+	EventDescription             *string                       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
+	UpdatedTransactionAttributes *TransactionUpdatable         `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
+	MetaData                     *DeviceData                   `json:"metaData,omitempty" url:"metaData,omitempty"`
+	HitRules                     []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	Status                       *RuleAction                   `json:"status,omitempty" url:"status,omitempty"`
+	RiskScoreDetails             *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetTransactionState() TransactionState {
+	if b == nil {
+		return ""
+	}
+	return b.TransactionState
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetTimestamp() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.Timestamp
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetTransactionId() string {
+	if b == nil {
+		return ""
+	}
+	return b.TransactionId
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetEventId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.EventId
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetReason() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Reason
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetEventDescription() *string {
+	if b == nil {
+		return nil
+	}
+	return b.EventDescription
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetUpdatedTransactionAttributes() *TransactionUpdatable {
+	if b == nil {
+		return nil
+	}
+	return b.UpdatedTransactionAttributes
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetMetaData() *DeviceData {
+	if b == nil {
+		return nil
+	}
+	return b.MetaData
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetHitRules() []*HitRulesDetails {
+	if b == nil {
+		return nil
+	}
+	return b.HitRules
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetStatus() *RuleAction {
+	if b == nil {
+		return nil
+	}
+	return b.Status
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetRiskScoreDetails() *TransactionRiskScoringResult {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScoreDetails
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchTransactionEventMonitoringResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchTransactionEventMonitoringResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchTransactionEventMonitoringResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchTransactionEventMonitoringResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchTransactionEventMonitoringResults struct {
+	TransactionEvents []*BatchTransactionEventMonitoringResult `json:"transactionEvents,omitempty" url:"transactionEvents,omitempty"`
+	TotalCount        float64                                  `json:"totalCount" url:"totalCount"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchTransactionEventMonitoringResults) GetTransactionEvents() []*BatchTransactionEventMonitoringResult {
+	if b == nil {
+		return nil
+	}
+	return b.TransactionEvents
+}
+
+func (b *BatchTransactionEventMonitoringResults) GetTotalCount() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.TotalCount
+}
+
+func (b *BatchTransactionEventMonitoringResults) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchTransactionEventMonitoringResults) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchTransactionEventMonitoringResults
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchTransactionEventMonitoringResults(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchTransactionEventMonitoringResults) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchTransactionMonitoringResult struct {
+	// Transaction ID that the results pertain to
+	TransactionId    string                        `json:"transactionId" url:"transactionId"`
+	Status           RuleAction                    `json:"status" url:"status"`
+	RiskScoreDetails *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	// Uniquue transaction identifier
+	HitRules []*HitRulesDetails `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchTransactionMonitoringResult) GetTransactionId() string {
+	if b == nil {
+		return ""
+	}
+	return b.TransactionId
+}
+
+func (b *BatchTransactionMonitoringResult) GetStatus() RuleAction {
+	if b == nil {
+		return ""
+	}
+	return b.Status
+}
+
+func (b *BatchTransactionMonitoringResult) GetRiskScoreDetails() *TransactionRiskScoringResult {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScoreDetails
+}
+
+func (b *BatchTransactionMonitoringResult) GetHitRules() []*HitRulesDetails {
+	if b == nil {
+		return nil
+	}
+	return b.HitRules
+}
+
+func (b *BatchTransactionMonitoringResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchTransactionMonitoringResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchTransactionMonitoringResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchTransactionMonitoringResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchTransactionMonitoringResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchTransactionMonitoringResults struct {
+	Transactions []*BatchTransactionMonitoringResult `json:"transactions,omitempty" url:"transactions,omitempty"`
+	TotalCount   float64                             `json:"totalCount" url:"totalCount"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchTransactionMonitoringResults) GetTransactions() []*BatchTransactionMonitoringResult {
+	if b == nil {
+		return nil
+	}
+	return b.Transactions
+}
+
+func (b *BatchTransactionMonitoringResults) GetTotalCount() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.TotalCount
+}
+
+func (b *BatchTransactionMonitoringResults) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchTransactionMonitoringResults) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchTransactionMonitoringResults
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchTransactionMonitoringResults(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchTransactionMonitoringResults) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BatchUserRulesResult struct {
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchUserRulesResult) GetExecutedRules() []*ExecutedRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.ExecutedRules
+}
+
+func (b *BatchUserRulesResult) GetRiskScoreDetails() *UserRiskScoreDetails {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScoreDetails
+}
+
+func (b *BatchUserRulesResult) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchUserRulesResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler BatchUserRulesResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BatchUserRulesResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchUserRulesResult) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 type BooleanString string
 
 const (
@@ -7509,6 +9364,53 @@ func (h *HitRulesDetails) UnmarshalJSON(data []byte) error {
 }
 
 func (h *HitRulesDetails) String() string {
+	if len(h.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(h); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", h)
+}
+
+type HitRulesResults struct {
+	// Uniquue transaction identifier
+	HitRules []*HitRulesDetails `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (h *HitRulesResults) GetHitRules() []*HitRulesDetails {
+	if h == nil {
+		return nil
+	}
+	return h.HitRules
+}
+
+func (h *HitRulesResults) GetExtraProperties() map[string]interface{} {
+	return h.extraProperties
+}
+
+func (h *HitRulesResults) UnmarshalJSON(data []byte) error {
+	type unmarshaler HitRulesResults
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*h = HitRulesResults(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *h)
+	if err != nil {
+		return err
+	}
+	h.extraProperties = extraProperties
+	h.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (h *HitRulesResults) String() string {
 	if len(h.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
 			return value

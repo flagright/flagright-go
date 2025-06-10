@@ -15,7 +15,6 @@ type BusinessUsersCreateRequest struct {
 	LockKycRiskLevel *BooleanString `json:"-" url:"lockKycRiskLevel,omitempty"`
 	// Boolean string whether Flagright should validate the userId
 	ValidateUserId *BooleanString `json:"-" url:"validateUserId,omitempty"`
-	KrsOnly        *BooleanString `json:"-" url:"_krsOnly,omitempty"`
 	Body           *Business      `json:"-" url:"-"`
 }
 
