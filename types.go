@@ -5416,6 +5416,31 @@ func (c *CheckDetails) String() string {
 // Classify the method of payment as "CHECK" for CheckDetails
 type CheckPaymentMethod = string
 
+type ColumnType string
+
+const (
+	ColumnTypeString ColumnType = "STRING"
+	ColumnTypeNumber ColumnType = "NUMBER"
+	ColumnTypeDate   ColumnType = "DATE"
+)
+
+func NewColumnTypeFromString(s string) (ColumnType, error) {
+	switch s {
+	case "STRING":
+		return ColumnTypeString, nil
+	case "NUMBER":
+		return ColumnTypeNumber, nil
+	case "DATE":
+		return ColumnTypeDate, nil
+	}
+	var t ColumnType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c ColumnType) Ptr() *ColumnType {
+	return &c
+}
+
 // Model for business user company financial details
 type CompanyFinancialDetails struct {
 	ExpectedTransactionAmountPerMonth *Amount `json:"expectedTransactionAmountPerMonth,omitempty" url:"expectedTransactionAmountPerMonth,omitempty"`
@@ -8243,6 +8268,60 @@ func (c CurrencyCode) Ptr() *CurrencyCode {
 	return &c
 }
 
+type CustomColumn struct {
+	Key  string     `json:"key" url:"key"`
+	Type ColumnType `json:"type" url:"type"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CustomColumn) GetKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.Key
+}
+
+func (c *CustomColumn) GetType() ColumnType {
+	if c == nil {
+		return ""
+	}
+	return c.Type
+}
+
+func (c *CustomColumn) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CustomColumn) UnmarshalJSON(data []byte) error {
+	type unmarshaler CustomColumn
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CustomColumn(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CustomColumn) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 // Model for date
 type Date struct {
 	// Day of date
@@ -10135,6 +10214,7 @@ type ListMetadata struct {
 	Description *string          `json:"description,omitempty" url:"description,omitempty"`
 	Status      *bool            `json:"status,omitempty" url:"status,omitempty"`
 	Checksum    *string          `json:"checksum,omitempty" url:"checksum,omitempty"`
+	Columns     []*CustomColumn  `json:"columns,omitempty" url:"columns,omitempty"`
 	Ttl         *ListMetadataTtl `json:"ttl,omitempty" url:"ttl,omitempty"`
 
 	ExtraProperties map[string]interface{} `json:"-" url:"-"`
@@ -10168,6 +10248,13 @@ func (l *ListMetadata) GetChecksum() *string {
 		return nil
 	}
 	return l.Checksum
+}
+
+func (l *ListMetadata) GetColumns() []*CustomColumn {
+	if l == nil {
+		return nil
+	}
+	return l.Columns
 }
 
 func (l *ListMetadata) GetTtl() *ListMetadataTtl {
@@ -10315,6 +10402,7 @@ const (
 	ListSubtypeDeviceIdentifier      ListSubtype = "DEVICE_IDENTIFIER"
 	ListSubtypeString                ListSubtype = "STRING"
 	ListSubtypeCountry               ListSubtype = "COUNTRY"
+	ListSubtypeCustom                ListSubtype = "CUSTOM"
 )
 
 func NewListSubtypeFromString(s string) (ListSubtype, error) {
@@ -10345,6 +10433,8 @@ func NewListSubtypeFromString(s string) (ListSubtype, error) {
 		return ListSubtypeString, nil
 	case "COUNTRY":
 		return ListSubtypeCountry, nil
+	case "CUSTOM":
+		return ListSubtypeCustom, nil
 	}
 	var t ListSubtype
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
