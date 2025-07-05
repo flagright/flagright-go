@@ -5907,6 +5907,8 @@ type ContactDetails struct {
 	// Address(es) of the company
 	Addresses []*Address    `json:"addresses,omitempty" url:"addresses,omitempty"`
 	Name      *ConsumerName `json:"name,omitempty" url:"name,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5952,6 +5954,13 @@ func (c *ContactDetails) GetName() *ConsumerName {
 		return nil
 	}
 	return c.Name
+}
+
+func (c *ContactDetails) GetTags() []*Tag {
+	if c == nil {
+		return nil
+	}
+	return c.Tags
 }
 
 func (c *ContactDetails) GetExtraProperties() map[string]interface{} {
