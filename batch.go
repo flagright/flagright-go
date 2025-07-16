@@ -52,6 +52,7 @@ type BatchBusinessUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedBusinessUserAttributes *BusinessOptional      `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	UpdateCount                   *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -99,6 +100,13 @@ func (b *BatchBusinessUserEventWithRulesResult) GetUpdatedBusinessUserAttributes
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
 }
 
 func (b *BatchBusinessUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

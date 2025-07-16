@@ -43,6 +43,7 @@ type BusinessUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedBusinessUserAttributes *BusinessOptional      `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	UpdateCount                   *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules                      []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -91,6 +92,13 @@ func (b *BusinessUserEventWithRulesResult) GetUpdatedBusinessUserAttributes() *B
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BusinessUserEventWithRulesResult) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
 }
 
 func (b *BusinessUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

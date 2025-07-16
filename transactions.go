@@ -119,6 +119,7 @@ type TransactionWithRulesResult struct {
 	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
 	// Additional information that can be added via tags
 	Tags             []*Tag                        `json:"tags,omitempty" url:"tags,omitempty"`
+	UpdateCount      *float64                      `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult        `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	Status           RuleAction                    `json:"status" url:"status"`
@@ -252,6 +253,13 @@ func (t *TransactionWithRulesResult) GetTags() []*Tag {
 		return nil
 	}
 	return t.Tags
+}
+
+func (t *TransactionWithRulesResult) GetUpdateCount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.UpdateCount
 }
 
 func (t *TransactionWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

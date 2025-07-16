@@ -641,6 +641,7 @@ type BatchBusinessUserWithRulesResult struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
 	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -779,6 +780,13 @@ func (b *BatchBusinessUserWithRulesResult) GetAttachments() []*PersonAttachment 
 		return nil
 	}
 	return b.Attachments
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -1254,6 +1262,7 @@ type BatchConsumerUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedConsumerUserAttributes *UserOptional          `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
+	UpdateCount                   *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -1301,6 +1310,13 @@ func (b *BatchConsumerUserEventWithRulesResult) GetUpdatedConsumerUserAttributes
 		return nil
 	}
 	return b.UpdatedConsumerUserAttributes
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
 }
 
 func (b *BatchConsumerUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -1439,6 +1455,7 @@ type BatchConsumerUserWithRulesResult struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
 	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -1640,6 +1657,13 @@ func (b *BatchConsumerUserWithRulesResult) GetAttachments() []*PersonAttachment 
 		return nil
 	}
 	return b.Attachments
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -2117,6 +2141,7 @@ type BatchTransactionEventMonitoringResult struct {
 	EventDescription             *string                       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedTransactionAttributes *TransactionUpdatable         `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
 	MetaData                     *DeviceData                   `json:"metaData,omitempty" url:"metaData,omitempty"`
+	UpdateCount                  *float64                      `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	HitRules                     []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	Status                       *RuleAction                   `json:"status,omitempty" url:"status,omitempty"`
 	RiskScoreDetails             *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -2179,6 +2204,13 @@ func (b *BatchTransactionEventMonitoringResult) GetMetaData() *DeviceData {
 		return nil
 	}
 	return b.MetaData
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
 }
 
 func (b *BatchTransactionEventMonitoringResult) GetHitRules() []*HitRulesDetails {
@@ -2518,6 +2550,7 @@ type Business struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2656,6 +2689,13 @@ func (b *Business) GetAttachments() []*PersonAttachment {
 	return b.Attachments
 }
 
+func (b *Business) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
+}
+
 func (b *Business) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
@@ -2778,6 +2818,7 @@ type BusinessOptional struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2900,6 +2941,13 @@ func (b *BusinessOptional) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return b.Attachments
+}
+
+func (b *BusinessOptional) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
 }
 
 func (b *BusinessOptional) GetExtraProperties() map[string]interface{} {
@@ -3669,6 +3717,7 @@ type BusinessUserEvent struct {
 	// Event description
 	EventDescription              *string           `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedBusinessUserAttributes *BusinessOptional `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	UpdateCount                   *float64          `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3714,6 +3763,13 @@ func (b *BusinessUserEvent) GetUpdatedBusinessUserAttributes() *BusinessOptional
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BusinessUserEvent) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
 }
 
 func (b *BusinessUserEvent) GetExtraProperties() map[string]interface{} {
@@ -3813,6 +3869,7 @@ type BusinessWithRulesResult struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
 	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -3952,6 +4009,13 @@ func (b *BusinessWithRulesResult) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return b.Attachments
+}
+
+func (b *BusinessWithRulesResult) GetUpdateCount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.UpdateCount
 }
 
 func (b *BusinessWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -5793,6 +5857,7 @@ type ConsumerUserEvent struct {
 	// Event description
 	EventDescription              *string       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedConsumerUserAttributes *UserOptional `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
+	UpdateCount                   *float64      `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5838,6 +5903,13 @@ func (c *ConsumerUserEvent) GetUpdatedConsumerUserAttributes() *UserOptional {
 		return nil
 	}
 	return c.UpdatedConsumerUserAttributes
+}
+
+func (c *ConsumerUserEvent) GetUpdateCount() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.UpdateCount
 }
 
 func (c *ConsumerUserEvent) GetExtraProperties() map[string]interface{} {
@@ -6976,6 +7048,7 @@ const (
 	CurrencyCodeEth2    CurrencyCode = "ETH2"
 	CurrencyCodeEur     CurrencyCode = "EUR"
 	CurrencyCodeEuroc   CurrencyCode = "EUROC"
+	CurrencyCodeEthfi   CurrencyCode = "ETHFI"
 	CurrencyCodeFarm    CurrencyCode = "FARM"
 	CurrencyCodeFet     CurrencyCode = "FET"
 	CurrencyCodeFida    CurrencyCode = "FIDA"
@@ -6989,6 +7062,7 @@ const (
 	CurrencyCodeForth   CurrencyCode = "FORTH"
 	CurrencyCodeFox     CurrencyCode = "FOX"
 	CurrencyCodeFx      CurrencyCode = "FX"
+	CurrencyCodeFtm     CurrencyCode = "FTM"
 	CurrencyCodeGal     CurrencyCode = "GAL"
 	CurrencyCodeGala    CurrencyCode = "GALA"
 	CurrencyCodeGbp     CurrencyCode = "GBP"
@@ -7141,6 +7215,7 @@ const (
 	CurrencyCodePab     CurrencyCode = "PAB"
 	CurrencyCodePax     CurrencyCode = "PAX"
 	CurrencyCodePen     CurrencyCode = "PEN"
+	CurrencyCodePengu   CurrencyCode = "PENGU"
 	CurrencyCodePerp    CurrencyCode = "PERP"
 	CurrencyCodePgk     CurrencyCode = "PGK"
 	CurrencyCodePhp     CurrencyCode = "PHP"
@@ -7149,6 +7224,7 @@ const (
 	CurrencyCodePln     CurrencyCode = "PLN"
 	CurrencyCodePlu     CurrencyCode = "PLU"
 	CurrencyCodePng     CurrencyCode = "PNG"
+	CurrencyCodePol     CurrencyCode = "POL"
 	CurrencyCodePols    CurrencyCode = "POLS"
 	CurrencyCodePoly    CurrencyCode = "POLY"
 	CurrencyCodePond    CurrencyCode = "POND"
@@ -7184,6 +7260,7 @@ const (
 	CurrencyCodeRpl     CurrencyCode = "RPL"
 	CurrencyCodeRsd     CurrencyCode = "RSD"
 	CurrencyCodeRub     CurrencyCode = "RUB"
+	CurrencyCodeRune    CurrencyCode = "RUNE"
 	CurrencyCodeRwf     CurrencyCode = "RWF"
 	CurrencyCodeSand    CurrencyCode = "SAND"
 	CurrencyCodeSar     CurrencyCode = "SAR"
@@ -7225,6 +7302,7 @@ const (
 	CurrencyCodeSzl     CurrencyCode = "SZL"
 	CurrencyCodeT       CurrencyCode = "T"
 	CurrencyCodeThb     CurrencyCode = "THB"
+	CurrencyCodeTheta   CurrencyCode = "THETA"
 	CurrencyCodeTia     CurrencyCode = "TIA"
 	CurrencyCodeTime    CurrencyCode = "TIME"
 	CurrencyCodeTjs     CurrencyCode = "TJS"
@@ -7592,6 +7670,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeEur, nil
 	case "EUROC":
 		return CurrencyCodeEuroc, nil
+	case "ETHFI":
+		return CurrencyCodeEthfi, nil
 	case "FARM":
 		return CurrencyCodeFarm, nil
 	case "FET":
@@ -7618,6 +7698,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeFox, nil
 	case "FX":
 		return CurrencyCodeFx, nil
+	case "FTM":
+		return CurrencyCodeFtm, nil
 	case "GAL":
 		return CurrencyCodeGal, nil
 	case "GALA":
@@ -7922,6 +8004,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodePax, nil
 	case "PEN":
 		return CurrencyCodePen, nil
+	case "PENGU":
+		return CurrencyCodePengu, nil
 	case "PERP":
 		return CurrencyCodePerp, nil
 	case "PGK":
@@ -7938,6 +8022,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodePlu, nil
 	case "PNG":
 		return CurrencyCodePng, nil
+	case "POL":
+		return CurrencyCodePol, nil
 	case "POLS":
 		return CurrencyCodePols, nil
 	case "POLY":
@@ -8008,6 +8094,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeRsd, nil
 	case "RUB":
 		return CurrencyCodeRub, nil
+	case "RUNE":
+		return CurrencyCodeRune, nil
 	case "RWF":
 		return CurrencyCodeRwf, nil
 	case "SAND":
@@ -8090,6 +8178,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeT, nil
 	case "THB":
 		return CurrencyCodeThb, nil
+	case "THETA":
+		return CurrencyCodeTheta, nil
 	case "TIA":
 		return CurrencyCodeTia, nil
 	case "TIME":
@@ -12480,7 +12570,8 @@ type Transaction struct {
 	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
 	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag   `json:"tags,omitempty" url:"tags,omitempty"`
+	UpdateCount *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -12610,6 +12701,13 @@ func (t *Transaction) GetTags() []*Tag {
 		return nil
 	}
 	return t.Tags
+}
+
+func (t *Transaction) GetUpdateCount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.UpdateCount
 }
 
 func (t *Transaction) GetExtraProperties() map[string]interface{} {
@@ -13308,6 +13406,7 @@ type TransactionEvent struct {
 	EventDescription             *string               `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedTransactionAttributes *TransactionUpdatable `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
 	MetaData                     *DeviceData           `json:"metaData,omitempty" url:"metaData,omitempty"`
+	UpdateCount                  *float64              `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -13367,6 +13466,13 @@ func (t *TransactionEvent) GetMetaData() *DeviceData {
 		return nil
 	}
 	return t.MetaData
+}
+
+func (t *TransactionEvent) GetUpdateCount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.UpdateCount
 }
 
 func (t *TransactionEvent) GetExtraProperties() map[string]interface{} {
@@ -14253,7 +14359,8 @@ type TransactionUpdatable struct {
 	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
 	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag   `json:"tags,omitempty" url:"tags,omitempty"`
+	UpdateCount *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -14348,6 +14455,13 @@ func (t *TransactionUpdatable) GetTags() []*Tag {
 		return nil
 	}
 	return t.Tags
+}
+
+func (t *TransactionUpdatable) GetUpdateCount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.UpdateCount
 }
 
 func (t *TransactionUpdatable) GetExtraProperties() map[string]interface{} {
@@ -15236,6 +15350,7 @@ type User struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -15435,6 +15550,13 @@ func (u *User) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return u.Attachments
+}
+
+func (u *User) GetUpdateCount() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.UpdateCount
 }
 
 func (u *User) GetExtraProperties() map[string]interface{} {
@@ -15727,6 +15849,7 @@ type UserOptional struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -15912,6 +16035,13 @@ func (u *UserOptional) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return u.Attachments
+}
+
+func (u *UserOptional) GetUpdateCount() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.UpdateCount
 }
 
 func (u *UserOptional) GetExtraProperties() map[string]interface{} {
@@ -17068,6 +17198,7 @@ type UserWithRulesResult struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
 	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -17270,6 +17401,13 @@ func (u *UserWithRulesResult) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return u.Attachments
+}
+
+func (u *UserWithRulesResult) GetUpdateCount() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.UpdateCount
 }
 
 func (u *UserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
