@@ -11,6 +11,7 @@ import (
 type TransactionEventMonitoringResult struct {
 	EventId          string                        `json:"eventId" url:"eventId"`
 	Transaction      *Transaction                  `json:"transaction,omitempty" url:"transaction,omitempty"`
+	Status           *RuleAction                   `json:"status,omitempty" url:"status,omitempty"`
 	RiskScoreDetails *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 	// Unique transaction identifier
 	ExecutedRules []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
@@ -33,6 +34,13 @@ func (t *TransactionEventMonitoringResult) GetTransaction() *Transaction {
 		return nil
 	}
 	return t.Transaction
+}
+
+func (t *TransactionEventMonitoringResult) GetStatus() *RuleAction {
+	if t == nil {
+		return nil
+	}
+	return t.Status
 }
 
 func (t *TransactionEventMonitoringResult) GetRiskScoreDetails() *TransactionRiskScoringResult {
