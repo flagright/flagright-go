@@ -18533,3 +18533,127 @@ func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
 func (w WebhookEventType) Ptr() *WebhookEventType {
 	return &w
 }
+
+type WebhookKycStatusDetails struct {
+	Reason *string    `json:"reason,omitempty" url:"reason,omitempty"`
+	Status *KycStatus `json:"status,omitempty" url:"status,omitempty"`
+	UserId string     `json:"userId" url:"userId"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookKycStatusDetails) GetReason() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Reason
+}
+
+func (w *WebhookKycStatusDetails) GetStatus() *KycStatus {
+	if w == nil {
+		return nil
+	}
+	return w.Status
+}
+
+func (w *WebhookKycStatusDetails) GetUserId() string {
+	if w == nil {
+		return ""
+	}
+	return w.UserId
+}
+
+func (w *WebhookKycStatusDetails) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WebhookKycStatusDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookKycStatusDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WebhookKycStatusDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WebhookKycStatusDetails) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+type WebhookUserStateDetails struct {
+	Reason *string   `json:"reason,omitempty" url:"reason,omitempty"`
+	State  UserState `json:"state" url:"state"`
+	UserId string    `json:"userId" url:"userId"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookUserStateDetails) GetReason() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Reason
+}
+
+func (w *WebhookUserStateDetails) GetState() UserState {
+	if w == nil {
+		return ""
+	}
+	return w.State
+}
+
+func (w *WebhookUserStateDetails) GetUserId() string {
+	if w == nil {
+		return ""
+	}
+	return w.UserId
+}
+
+func (w *WebhookUserStateDetails) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WebhookUserStateDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookUserStateDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WebhookUserStateDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WebhookUserStateDetails) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
