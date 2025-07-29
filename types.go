@@ -9303,7 +9303,8 @@ type GenericBankAccountDetails struct {
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Transit number of the bank account
-	TransitNumber *string `json:"transitNumber,omitempty" url:"transitNumber,omitempty"`
+	TransitNumber *string  `json:"transitNumber,omitempty" url:"transitNumber,omitempty"`
+	Address       *Address `json:"address,omitempty" url:"address,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -9412,6 +9413,13 @@ func (g *GenericBankAccountDetails) GetTransitNumber() *string {
 		return nil
 	}
 	return g.TransitNumber
+}
+
+func (g *GenericBankAccountDetails) GetAddress() *Address {
+	if g == nil {
+		return nil
+	}
+	return g.Address
 }
 
 func (g *GenericBankAccountDetails) GetExtraProperties() map[string]interface{} {
