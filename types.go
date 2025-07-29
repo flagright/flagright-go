@@ -8368,8 +8368,9 @@ func (c CurrencyCode) Ptr() *CurrencyCode {
 }
 
 type CustomColumn struct {
-	Key  string     `json:"key" url:"key"`
-	Type ColumnType `json:"type" url:"type"`
+	Key        string     `json:"key" url:"key"`
+	Type       ColumnType `json:"type" url:"type"`
+	PrimaryKey *bool      `json:"primaryKey,omitempty" url:"primaryKey,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -8387,6 +8388,13 @@ func (c *CustomColumn) GetType() ColumnType {
 		return ""
 	}
 	return c.Type
+}
+
+func (c *CustomColumn) GetPrimaryKey() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.PrimaryKey
 }
 
 func (c *CustomColumn) GetExtraProperties() map[string]interface{} {
