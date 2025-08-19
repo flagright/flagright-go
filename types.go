@@ -641,6 +641,7 @@ type BatchBusinessUserWithRulesResult struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
 	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData         *DeviceData            `json:"metaData,omitempty" url:"metaData,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -780,6 +781,13 @@ func (b *BatchBusinessUserWithRulesResult) GetAttachments() []*PersonAttachment 
 		return nil
 	}
 	return b.Attachments
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetMetaData() *DeviceData {
+	if b == nil {
+		return nil
+	}
+	return b.MetaData
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetUpdateCount() *float64 {
@@ -1455,6 +1463,7 @@ type BatchConsumerUserWithRulesResult struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
 	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData         *DeviceData            `json:"metaData,omitempty" url:"metaData,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -1657,6 +1666,13 @@ func (b *BatchConsumerUserWithRulesResult) GetAttachments() []*PersonAttachment 
 		return nil
 	}
 	return b.Attachments
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetMetaData() *DeviceData {
+	if b == nil {
+		return nil
+	}
+	return b.MetaData
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetUpdateCount() *float64 {
@@ -2550,6 +2566,7 @@ type Business struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -2689,6 +2706,13 @@ func (b *Business) GetAttachments() []*PersonAttachment {
 	return b.Attachments
 }
 
+func (b *Business) GetMetaData() *DeviceData {
+	if b == nil {
+		return nil
+	}
+	return b.MetaData
+}
+
 func (b *Business) GetUpdateCount() *float64 {
 	if b == nil {
 		return nil
@@ -2818,6 +2842,7 @@ type BusinessOptional struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -2941,6 +2966,13 @@ func (b *BusinessOptional) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return b.Attachments
+}
+
+func (b *BusinessOptional) GetMetaData() *DeviceData {
+	if b == nil {
+		return nil
+	}
+	return b.MetaData
 }
 
 func (b *BusinessOptional) GetUpdateCount() *float64 {
@@ -3869,6 +3901,7 @@ type BusinessWithRulesResult struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
 	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData         *DeviceData            `json:"metaData,omitempty" url:"metaData,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
@@ -4009,6 +4042,13 @@ func (b *BusinessWithRulesResult) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return b.Attachments
+}
+
+func (b *BusinessWithRulesResult) GetMetaData() *DeviceData {
+	if b == nil {
+		return nil
+	}
+	return b.MetaData
 }
 
 func (b *BusinessWithRulesResult) GetUpdateCount() *float64 {
@@ -15366,6 +15406,7 @@ type User struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -15566,6 +15607,13 @@ func (u *User) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return u.Attachments
+}
+
+func (u *User) GetMetaData() *DeviceData {
+	if u == nil {
+		return nil
+	}
+	return u.MetaData
 }
 
 func (u *User) GetUpdateCount() *float64 {
@@ -15865,6 +15913,7 @@ type UserOptional struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -16051,6 +16100,13 @@ func (u *UserOptional) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return u.Attachments
+}
+
+func (u *UserOptional) GetMetaData() *DeviceData {
+	if u == nil {
+		return nil
+	}
+	return u.MetaData
 }
 
 func (u *UserOptional) GetUpdateCount() *float64 {
@@ -17214,6 +17270,7 @@ type UserWithRulesResult struct {
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
 	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData         *DeviceData            `json:"metaData,omitempty" url:"metaData,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
@@ -17417,6 +17474,13 @@ func (u *UserWithRulesResult) GetAttachments() []*PersonAttachment {
 		return nil
 	}
 	return u.Attachments
+}
+
+func (u *UserWithRulesResult) GetMetaData() *DeviceData {
+	if u == nil {
+		return nil
+	}
+	return u.MetaData
 }
 
 func (u *UserWithRulesResult) GetUpdateCount() *float64 {
