@@ -11559,6 +11559,7 @@ type PersonAttachment struct {
 	UserId    string      `json:"userId" url:"userId"`
 	CreatedAt *float64    `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	DeletedAt *float64    `json:"deletedAt,omitempty" url:"deletedAt,omitempty"`
+	Tags      []string    `json:"tags,omitempty" url:"tags,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -11604,6 +11605,13 @@ func (p *PersonAttachment) GetDeletedAt() *float64 {
 		return nil
 	}
 	return p.DeletedAt
+}
+
+func (p *PersonAttachment) GetTags() []string {
+	if p == nil {
+		return nil
+	}
+	return p.Tags
 }
 
 func (p *PersonAttachment) GetExtraProperties() map[string]interface{} {
@@ -12185,6 +12193,7 @@ type SanctionsDetails struct {
 	EntityType     *SanctionsDetailsEntityType `json:"entityType,omitempty" url:"entityType,omitempty"`
 	SanctionHitIds []string                    `json:"sanctionHitIds,omitempty" url:"sanctionHitIds,omitempty"`
 	HitContext     *SanctionsHitContext        `json:"hitContext,omitempty" url:"hitContext,omitempty"`
+	HitDirection   *RuleHitDirection           `json:"hitDirection,omitempty" url:"hitDirection,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -12230,6 +12239,13 @@ func (s *SanctionsDetails) GetHitContext() *SanctionsHitContext {
 		return nil
 	}
 	return s.HitContext
+}
+
+func (s *SanctionsDetails) GetHitDirection() *RuleHitDirection {
+	if s == nil {
+		return nil
+	}
+	return s.HitDirection
 }
 
 func (s *SanctionsDetails) GetExtraProperties() map[string]interface{} {
@@ -13730,6 +13746,8 @@ type TransactionLimitsPaymentMethodLimits struct {
 	Swift              *TransactionLimit `json:"SWIFT,omitempty" url:"SWIFT,omitempty"`
 	Wallet             *TransactionLimit `json:"WALLET,omitempty" url:"WALLET,omitempty"`
 	Check              *TransactionLimit `json:"CHECK,omitempty" url:"CHECK,omitempty"`
+	Cash               *TransactionLimit `json:"CASH,omitempty" url:"CASH,omitempty"`
+	Npp                *TransactionLimit `json:"NPP,omitempty" url:"NPP,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -13796,6 +13814,20 @@ func (t *TransactionLimitsPaymentMethodLimits) GetCheck() *TransactionLimit {
 		return nil
 	}
 	return t.Check
+}
+
+func (t *TransactionLimitsPaymentMethodLimits) GetCash() *TransactionLimit {
+	if t == nil {
+		return nil
+	}
+	return t.Cash
+}
+
+func (t *TransactionLimitsPaymentMethodLimits) GetNpp() *TransactionLimit {
+	if t == nil {
+		return nil
+	}
+	return t.Npp
 }
 
 func (t *TransactionLimitsPaymentMethodLimits) GetExtraProperties() map[string]interface{} {
