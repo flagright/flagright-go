@@ -7087,6 +7087,7 @@ const (
 	CurrencyCodeEth     CurrencyCode = "ETH"
 	CurrencyCodeEth2    CurrencyCode = "ETH2"
 	CurrencyCodeEur     CurrencyCode = "EUR"
+	CurrencyCodeEurc    CurrencyCode = "EURC"
 	CurrencyCodeEuroc   CurrencyCode = "EUROC"
 	CurrencyCodeEthfi   CurrencyCode = "ETHFI"
 	CurrencyCodeFarm    CurrencyCode = "FARM"
@@ -7256,6 +7257,7 @@ const (
 	CurrencyCodePax     CurrencyCode = "PAX"
 	CurrencyCodePen     CurrencyCode = "PEN"
 	CurrencyCodePengu   CurrencyCode = "PENGU"
+	CurrencyCodePepe    CurrencyCode = "PEPE"
 	CurrencyCodePerp    CurrencyCode = "PERP"
 	CurrencyCodePgk     CurrencyCode = "PGK"
 	CurrencyCodePhp     CurrencyCode = "PHP"
@@ -7350,11 +7352,13 @@ const (
 	CurrencyCodeTmt     CurrencyCode = "TMT"
 	CurrencyCodeTnd     CurrencyCode = "TND"
 	CurrencyCodeTone    CurrencyCode = "TONE"
+	CurrencyCodeTon     CurrencyCode = "TON"
 	CurrencyCodeTop     CurrencyCode = "TOP"
 	CurrencyCodeTrac    CurrencyCode = "TRAC"
 	CurrencyCodeTrb     CurrencyCode = "TRB"
 	CurrencyCodeTribe   CurrencyCode = "TRIBE"
 	CurrencyCodeTru     CurrencyCode = "TRU"
+	CurrencyCodeTrump   CurrencyCode = "TRUMP"
 	CurrencyCodeTry     CurrencyCode = "TRY"
 	CurrencyCodeTtd     CurrencyCode = "TTD"
 	CurrencyCodeTvk     CurrencyCode = "TVK"
@@ -7708,6 +7712,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeEth2, nil
 	case "EUR":
 		return CurrencyCodeEur, nil
+	case "EURC":
+		return CurrencyCodeEurc, nil
 	case "EUROC":
 		return CurrencyCodeEuroc, nil
 	case "ETHFI":
@@ -8046,6 +8052,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodePen, nil
 	case "PENGU":
 		return CurrencyCodePengu, nil
+	case "PEPE":
+		return CurrencyCodePepe, nil
 	case "PERP":
 		return CurrencyCodePerp, nil
 	case "PGK":
@@ -8234,6 +8242,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeTnd, nil
 	case "TONE":
 		return CurrencyCodeTone, nil
+	case "TON":
+		return CurrencyCodeTon, nil
 	case "TOP":
 		return CurrencyCodeTop, nil
 	case "TRAC":
@@ -8244,6 +8254,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeTribe, nil
 	case "TRU":
 		return CurrencyCodeTru, nil
+	case "TRUMP":
+		return CurrencyCodeTrump, nil
 	case "TRY":
 		return CurrencyCodeTry, nil
 	case "TTD":
