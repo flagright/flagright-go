@@ -5429,6 +5429,7 @@ type CheckDetails struct {
 	DeliveryStatus  *CheckDeliveryStatus `json:"deliveryStatus,omitempty" url:"deliveryStatus,omitempty"`
 	EtaTimestamp    *float64             `json:"etaTimestamp,omitempty" url:"etaTimestamp,omitempty"`
 	ShippingAddress *Address             `json:"shippingAddress,omitempty" url:"shippingAddress,omitempty"`
+	AccountNumber   *string              `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -5476,6 +5477,13 @@ func (c *CheckDetails) GetShippingAddress() *Address {
 		return nil
 	}
 	return c.ShippingAddress
+}
+
+func (c *CheckDetails) GetAccountNumber() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AccountNumber
 }
 
 func (c *CheckDetails) GetTags() []*Tag {
@@ -7087,7 +7095,9 @@ const (
 	CurrencyCodeEth     CurrencyCode = "ETH"
 	CurrencyCodeEth2    CurrencyCode = "ETH2"
 	CurrencyCodeEur     CurrencyCode = "EUR"
+	CurrencyCodeEura    CurrencyCode = "EURA"
 	CurrencyCodeEurc    CurrencyCode = "EURC"
+	CurrencyCodeEurt    CurrencyCode = "EURT"
 	CurrencyCodeEuroc   CurrencyCode = "EUROC"
 	CurrencyCodeEthfi   CurrencyCode = "ETHFI"
 	CurrencyCodeFarm    CurrencyCode = "FARM"
@@ -7150,6 +7160,7 @@ const (
 	CurrencyCodeInr     CurrencyCode = "INR"
 	CurrencyCodeInv     CurrencyCode = "INV"
 	CurrencyCodeIotx    CurrencyCode = "IOTX"
+	CurrencyCodeIslm    CurrencyCode = "ISLM"
 	CurrencyCodeIqd     CurrencyCode = "IQD"
 	CurrencyCodeIrr     CurrencyCode = "IRR"
 	CurrencyCodeIsk     CurrencyCode = "ISK"
@@ -7239,6 +7250,7 @@ const (
 	CurrencyCodeNkn     CurrencyCode = "NKN"
 	CurrencyCodeNmr     CurrencyCode = "NMR"
 	CurrencyCodeNok     CurrencyCode = "NOK"
+	CurrencyCodeNpc     CurrencyCode = "NPC"
 	CurrencyCodeNpr     CurrencyCode = "NPR"
 	CurrencyCodeNu      CurrencyCode = "NU"
 	CurrencyCodeNzd     CurrencyCode = "NZD"
@@ -7712,8 +7724,12 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeEth2, nil
 	case "EUR":
 		return CurrencyCodeEur, nil
+	case "EURA":
+		return CurrencyCodeEura, nil
 	case "EURC":
 		return CurrencyCodeEurc, nil
+	case "EURT":
+		return CurrencyCodeEurt, nil
 	case "EUROC":
 		return CurrencyCodeEuroc, nil
 	case "ETHFI":
@@ -7838,6 +7854,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeInv, nil
 	case "IOTX":
 		return CurrencyCodeIotx, nil
+	case "ISLM":
+		return CurrencyCodeIslm, nil
 	case "IQD":
 		return CurrencyCodeIqd, nil
 	case "IRR":
@@ -8016,6 +8034,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeNmr, nil
 	case "NOK":
 		return CurrencyCodeNok, nil
+	case "NPC":
+		return CurrencyCodeNpc, nil
 	case "NPR":
 		return CurrencyCodeNpr, nil
 	case "NU":
@@ -9357,6 +9377,8 @@ type GenericBankAccountDetails struct {
 	// Transit number of the bank account
 	TransitNumber *string  `json:"transitNumber,omitempty" url:"transitNumber,omitempty"`
 	Address       *Address `json:"address,omitempty" url:"address,omitempty"`
+	// Routing number of the bank
+	RoutingNumber *string `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -9472,6 +9494,13 @@ func (g *GenericBankAccountDetails) GetAddress() *Address {
 		return nil
 	}
 	return g.Address
+}
+
+func (g *GenericBankAccountDetails) GetRoutingNumber() *string {
+	if g == nil {
+		return nil
+	}
+	return g.RoutingNumber
 }
 
 func (g *GenericBankAccountDetails) GetExtraProperties() map[string]interface{} {
@@ -12085,7 +12114,8 @@ type SwiftDetails struct {
 	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	EmailId     *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Special instructions if any
-	SpecialInstructions *string `json:"specialInstructions,omitempty" url:"specialInstructions,omitempty"`
+	SpecialInstructions *string  `json:"specialInstructions,omitempty" url:"specialInstructions,omitempty"`
+	Address             *Address `json:"address,omitempty" url:"address,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -12154,6 +12184,13 @@ func (s *SwiftDetails) GetSpecialInstructions() *string {
 		return nil
 	}
 	return s.SpecialInstructions
+}
+
+func (s *SwiftDetails) GetAddress() *Address {
+	if s == nil {
+		return nil
+	}
+	return s.Address
 }
 
 func (s *SwiftDetails) GetTags() []*Tag {
