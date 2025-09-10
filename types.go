@@ -5423,8 +5423,10 @@ func (c CheckDeliveryStatus) Ptr() *CheckDeliveryStatus {
 }
 
 type CheckDetails struct {
-	CheckNumber     *string              `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
-	CheckIdentifier *string              `json:"checkIdentifier,omitempty" url:"checkIdentifier,omitempty"`
+	CheckNumber     *string `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
+	CheckIdentifier *string `json:"checkIdentifier,omitempty" url:"checkIdentifier,omitempty"`
+	// Routing number of the bank
+	RoutingNumber   *string              `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
 	Name            *string              `json:"name,omitempty" url:"name,omitempty"`
 	DeliveryStatus  *CheckDeliveryStatus `json:"deliveryStatus,omitempty" url:"deliveryStatus,omitempty"`
 	EtaTimestamp    *float64             `json:"etaTimestamp,omitempty" url:"etaTimestamp,omitempty"`
@@ -5449,6 +5451,13 @@ func (c *CheckDetails) GetCheckIdentifier() *string {
 		return nil
 	}
 	return c.CheckIdentifier
+}
+
+func (c *CheckDetails) GetRoutingNumber() *string {
+	if c == nil {
+		return nil
+	}
+	return c.RoutingNumber
 }
 
 func (c *CheckDetails) GetName() *string {
@@ -10968,9 +10977,9 @@ type NppDetails struct {
 	// BSB number
 	Bsb *string `json:"bsb,omitempty" url:"bsb,omitempty"`
 	// PayID
-	PayId string `json:"payId" url:"payId"`
+	PayId *string `json:"payId,omitempty" url:"payId,omitempty"`
 	// End to End ID
-	EndToEndId string `json:"endToEndId" url:"endToEndId"`
+	EndToEndId *string `json:"endToEndId,omitempty" url:"endToEndId,omitempty"`
 	// OSKO reference
 	OskoReference *string `json:"oskoReference,omitempty" url:"oskoReference,omitempty"`
 	// PayID reference
@@ -11036,16 +11045,16 @@ func (n *NppDetails) GetBsb() *string {
 	return n.Bsb
 }
 
-func (n *NppDetails) GetPayId() string {
+func (n *NppDetails) GetPayId() *string {
 	if n == nil {
-		return ""
+		return nil
 	}
 	return n.PayId
 }
 
-func (n *NppDetails) GetEndToEndId() string {
+func (n *NppDetails) GetEndToEndId() *string {
 	if n == nil {
-		return ""
+		return nil
 	}
 	return n.EndToEndId
 }
@@ -12103,7 +12112,9 @@ type SwiftDetails struct {
 	// SWIFT code of the financial institution
 	SwiftCode *string `json:"swiftCode,omitempty" url:"swiftCode,omitempty"`
 	// Account number
-	AccountNumber  *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	AccountNumber *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	// Routing number of the bank
+	RoutingNumber  *string `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
 	AccountBalance *Amount `json:"accountBalance,omitempty" url:"accountBalance,omitempty"`
 	// Account type. E.g. Checking, Savings etc.
 	AccountType *string `json:"accountType,omitempty" url:"accountType,omitempty"`
@@ -12135,6 +12146,13 @@ func (s *SwiftDetails) GetAccountNumber() *string {
 		return nil
 	}
 	return s.AccountNumber
+}
+
+func (s *SwiftDetails) GetRoutingNumber() *string {
+	if s == nil {
+		return nil
+	}
+	return s.RoutingNumber
 }
 
 func (s *SwiftDetails) GetAccountBalance() *Amount {
@@ -18002,6 +18020,10 @@ type WalletDetails struct {
 	WalletPhoneNumber *string        `json:"walletPhoneNumber,omitempty" url:"walletPhoneNumber,omitempty"`
 	WalletBalance     *Amount        `json:"walletBalance,omitempty" url:"walletBalance,omitempty"`
 	Network           *WalletNetwork `json:"network,omitempty" url:"network,omitempty"`
+	Address           *Address       `json:"address,omitempty" url:"address,omitempty"`
+	Nationality       *CountryCode   `json:"nationality,omitempty" url:"nationality,omitempty"`
+	// Date of birth of the account holder (YYYY-MM-DD)
+	DateOfBirth *string `json:"dateOfBirth,omitempty" url:"dateOfBirth,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -18068,6 +18090,27 @@ func (w *WalletDetails) GetNetwork() *WalletNetwork {
 		return nil
 	}
 	return w.Network
+}
+
+func (w *WalletDetails) GetAddress() *Address {
+	if w == nil {
+		return nil
+	}
+	return w.Address
+}
+
+func (w *WalletDetails) GetNationality() *CountryCode {
+	if w == nil {
+		return nil
+	}
+	return w.Nationality
+}
+
+func (w *WalletDetails) GetDateOfBirth() *string {
+	if w == nil {
+		return nil
+	}
+	return w.DateOfBirth
 }
 
 func (w *WalletDetails) GetExtraProperties() map[string]interface{} {

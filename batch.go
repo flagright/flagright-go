@@ -9,23 +9,39 @@ import (
 )
 
 type BusinessUserEventBatchRequest struct {
-	BatchId *string              `json:"batchId,omitempty" url:"-"`
-	Data    []*BusinessUserEvent `json:"data,omitempty" url:"-"`
+	// Boolean string whether Flagright should lock the CRA risk level for the user.
+	LockCraRiskLevel *BooleanString `json:"-" url:"lockCraRiskLevel,omitempty"`
+	// Boolean string whether Flagright should lock the KYC risk level for the user.
+	LockKycRiskLevel *BooleanString       `json:"-" url:"lockKycRiskLevel,omitempty"`
+	BatchId          *string              `json:"batchId,omitempty" url:"-"`
+	Data             []*BusinessUserEvent `json:"data,omitempty" url:"-"`
 }
 
 type BusinessBatchRequest struct {
-	BatchId *string     `json:"batchId,omitempty" url:"-"`
-	Data    []*Business `json:"data,omitempty" url:"-"`
+	// Boolean string whether Flagright should lock the CRA risk level for the user.
+	LockCraRiskLevel *BooleanString `json:"-" url:"lockCraRiskLevel,omitempty"`
+	// Boolean string whether Flagright should lock the KYC risk level for the user.
+	LockKycRiskLevel *BooleanString `json:"-" url:"lockKycRiskLevel,omitempty"`
+	BatchId          *string        `json:"batchId,omitempty" url:"-"`
+	Data             []*Business    `json:"data,omitempty" url:"-"`
 }
 
 type ConsumerUserEventBatchRequest struct {
-	BatchId *string              `json:"batchId,omitempty" url:"-"`
-	Data    []*ConsumerUserEvent `json:"data,omitempty" url:"-"`
+	// Boolean string whether Flagright should lock the CRA risk level for the user.
+	LockCraRiskLevel *BooleanString `json:"-" url:"lockCraRiskLevel,omitempty"`
+	// Boolean string whether Flagright should lock the KYC risk level for the user.
+	LockKycRiskLevel *BooleanString       `json:"-" url:"lockKycRiskLevel,omitempty"`
+	BatchId          *string              `json:"batchId,omitempty" url:"-"`
+	Data             []*ConsumerUserEvent `json:"data,omitempty" url:"-"`
 }
 
 type UserBatchRequest struct {
-	BatchId *string `json:"batchId,omitempty" url:"-"`
-	Data    []*User `json:"data,omitempty" url:"-"`
+	// Boolean string whether Flagright should lock the CRA risk level for the user.
+	LockCraRiskLevel *BooleanString `json:"-" url:"lockCraRiskLevel,omitempty"`
+	// Boolean string whether Flagright should lock the KYC risk level for the user.
+	LockKycRiskLevel *BooleanString `json:"-" url:"lockKycRiskLevel,omitempty"`
+	BatchId          *string        `json:"batchId,omitempty" url:"-"`
+	Data             []*User        `json:"data,omitempty" url:"-"`
 }
 
 type TransactionEventBatchRequest struct {

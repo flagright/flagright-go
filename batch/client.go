@@ -233,6 +233,13 @@ func (c *Client) CreateConsumerUsers(
 		"https://sandbox.api.flagright.com",
 	)
 	endpointURL := baseURL + "/batch/consumer/users"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 	headers := internal.MergeHeaders(
 		c.header.Clone(),
 		options.ToHeader(),
@@ -289,6 +296,13 @@ func (c *Client) CreateBusinessUsers(
 		"https://sandbox.api.flagright.com",
 	)
 	endpointURL := baseURL + "/batch/business/users"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 	headers := internal.MergeHeaders(
 		c.header.Clone(),
 		options.ToHeader(),
@@ -345,6 +359,13 @@ func (c *Client) CreateConsumerUserEvents(
 		"https://sandbox.api.flagright.com",
 	)
 	endpointURL := baseURL + "/batch/events/consumer/user"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 	headers := internal.MergeHeaders(
 		c.header.Clone(),
 		options.ToHeader(),
@@ -401,6 +422,13 @@ func (c *Client) CreateBusinessUserEvents(
 		"https://sandbox.api.flagright.com",
 	)
 	endpointURL := baseURL + "/batch/events/business/user"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 	headers := internal.MergeHeaders(
 		c.header.Clone(),
 		options.ToHeader(),
