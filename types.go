@@ -267,132 +267,6 @@ func (a *Address) String() string {
 
 type AdverseMediaStatus = bool
 
-type AlertClosedDetails struct {
-	AlertId                   *string  `json:"alertId,omitempty" url:"alertId,omitempty"`
-	Status                    *string  `json:"status,omitempty" url:"status,omitempty"`
-	Reasons                   []string `json:"reasons,omitempty" url:"reasons,omitempty"`
-	ReasonDescriptionForOther *string  `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
-	Comment                   *string  `json:"comment,omitempty" url:"comment,omitempty"`
-	UserId                    *string  `json:"userId,omitempty" url:"userId,omitempty"`
-	TransactionIds            []string `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
-	RuleName                  *string  `json:"ruleName,omitempty" url:"ruleName,omitempty"`
-	RuleDescription           *string  `json:"ruleDescription,omitempty" url:"ruleDescription,omitempty"`
-	RuleId                    *string  `json:"ruleId,omitempty" url:"ruleId,omitempty"`
-	RuleInstanceId            *string  `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AlertClosedDetails) GetAlertId() *string {
-	if a == nil {
-		return nil
-	}
-	return a.AlertId
-}
-
-func (a *AlertClosedDetails) GetStatus() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Status
-}
-
-func (a *AlertClosedDetails) GetReasons() []string {
-	if a == nil {
-		return nil
-	}
-	return a.Reasons
-}
-
-func (a *AlertClosedDetails) GetReasonDescriptionForOther() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ReasonDescriptionForOther
-}
-
-func (a *AlertClosedDetails) GetComment() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Comment
-}
-
-func (a *AlertClosedDetails) GetUserId() *string {
-	if a == nil {
-		return nil
-	}
-	return a.UserId
-}
-
-func (a *AlertClosedDetails) GetTransactionIds() []string {
-	if a == nil {
-		return nil
-	}
-	return a.TransactionIds
-}
-
-func (a *AlertClosedDetails) GetRuleName() *string {
-	if a == nil {
-		return nil
-	}
-	return a.RuleName
-}
-
-func (a *AlertClosedDetails) GetRuleDescription() *string {
-	if a == nil {
-		return nil
-	}
-	return a.RuleDescription
-}
-
-func (a *AlertClosedDetails) GetRuleId() *string {
-	if a == nil {
-		return nil
-	}
-	return a.RuleId
-}
-
-func (a *AlertClosedDetails) GetRuleInstanceId() *string {
-	if a == nil {
-		return nil
-	}
-	return a.RuleInstanceId
-}
-
-func (a *AlertClosedDetails) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *AlertClosedDetails) UnmarshalJSON(data []byte) error {
-	type unmarshaler AlertClosedDetails
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AlertClosedDetails(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AlertClosedDetails) String() string {
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
 type AlertOpenedDetails struct {
 	AlertId         *string  `json:"alertId,omitempty" url:"alertId,omitempty"`
 	Status          *string  `json:"status,omitempty" url:"status,omitempty"`
@@ -492,6 +366,132 @@ func (a *AlertOpenedDetails) UnmarshalJSON(data []byte) error {
 }
 
 func (a *AlertOpenedDetails) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AlertStatusDetails struct {
+	AlertId                   *string  `json:"alertId,omitempty" url:"alertId,omitempty"`
+	Status                    *string  `json:"status,omitempty" url:"status,omitempty"`
+	Reasons                   []string `json:"reasons,omitempty" url:"reasons,omitempty"`
+	ReasonDescriptionForOther *string  `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
+	Comment                   *string  `json:"comment,omitempty" url:"comment,omitempty"`
+	UserId                    *string  `json:"userId,omitempty" url:"userId,omitempty"`
+	TransactionIds            []string `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+	RuleName                  *string  `json:"ruleName,omitempty" url:"ruleName,omitempty"`
+	RuleDescription           *string  `json:"ruleDescription,omitempty" url:"ruleDescription,omitempty"`
+	RuleId                    *string  `json:"ruleId,omitempty" url:"ruleId,omitempty"`
+	RuleInstanceId            *string  `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AlertStatusDetails) GetAlertId() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AlertId
+}
+
+func (a *AlertStatusDetails) GetStatus() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Status
+}
+
+func (a *AlertStatusDetails) GetReasons() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Reasons
+}
+
+func (a *AlertStatusDetails) GetReasonDescriptionForOther() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ReasonDescriptionForOther
+}
+
+func (a *AlertStatusDetails) GetComment() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Comment
+}
+
+func (a *AlertStatusDetails) GetUserId() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UserId
+}
+
+func (a *AlertStatusDetails) GetTransactionIds() []string {
+	if a == nil {
+		return nil
+	}
+	return a.TransactionIds
+}
+
+func (a *AlertStatusDetails) GetRuleName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RuleName
+}
+
+func (a *AlertStatusDetails) GetRuleDescription() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RuleDescription
+}
+
+func (a *AlertStatusDetails) GetRuleId() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RuleId
+}
+
+func (a *AlertStatusDetails) GetRuleInstanceId() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RuleInstanceId
+}
+
+func (a *AlertStatusDetails) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AlertStatusDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler AlertStatusDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AlertStatusDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AlertStatusDetails) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -5028,100 +5028,6 @@ func (c CardType) Ptr() *CardType {
 	return &c
 }
 
-type CaseClosedDetails struct {
-	CaseId                    *string  `json:"caseId,omitempty" url:"caseId,omitempty"`
-	Status                    *string  `json:"status,omitempty" url:"status,omitempty"`
-	Reasons                   []string `json:"reasons,omitempty" url:"reasons,omitempty"`
-	ReasonDescriptionForOther *string  `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
-	Comment                   *string  `json:"comment,omitempty" url:"comment,omitempty"`
-	UserId                    *string  `json:"userId,omitempty" url:"userId,omitempty"`
-	TransactionIds            []string `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CaseClosedDetails) GetCaseId() *string {
-	if c == nil {
-		return nil
-	}
-	return c.CaseId
-}
-
-func (c *CaseClosedDetails) GetStatus() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Status
-}
-
-func (c *CaseClosedDetails) GetReasons() []string {
-	if c == nil {
-		return nil
-	}
-	return c.Reasons
-}
-
-func (c *CaseClosedDetails) GetReasonDescriptionForOther() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ReasonDescriptionForOther
-}
-
-func (c *CaseClosedDetails) GetComment() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Comment
-}
-
-func (c *CaseClosedDetails) GetUserId() *string {
-	if c == nil {
-		return nil
-	}
-	return c.UserId
-}
-
-func (c *CaseClosedDetails) GetTransactionIds() []string {
-	if c == nil {
-		return nil
-	}
-	return c.TransactionIds
-}
-
-func (c *CaseClosedDetails) GetExtraProperties() map[string]interface{} {
-	return c.extraProperties
-}
-
-func (c *CaseClosedDetails) UnmarshalJSON(data []byte) error {
-	type unmarshaler CaseClosedDetails
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CaseClosedDetails(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CaseClosedDetails) String() string {
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
 // Model for case management events
 type CaseManagementEvent struct {
 	// Status of a case. E.g. Open, Closed etc.
@@ -5335,6 +5241,100 @@ func (c *CaseOpenedDetails) UnmarshalJSON(data []byte) error {
 }
 
 func (c *CaseOpenedDetails) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CaseStatusDetails struct {
+	CaseId                    *string  `json:"caseId,omitempty" url:"caseId,omitempty"`
+	Status                    *string  `json:"status,omitempty" url:"status,omitempty"`
+	Reasons                   []string `json:"reasons,omitempty" url:"reasons,omitempty"`
+	ReasonDescriptionForOther *string  `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
+	Comment                   *string  `json:"comment,omitempty" url:"comment,omitempty"`
+	UserId                    *string  `json:"userId,omitempty" url:"userId,omitempty"`
+	TransactionIds            []string `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CaseStatusDetails) GetCaseId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CaseId
+}
+
+func (c *CaseStatusDetails) GetStatus() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Status
+}
+
+func (c *CaseStatusDetails) GetReasons() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Reasons
+}
+
+func (c *CaseStatusDetails) GetReasonDescriptionForOther() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ReasonDescriptionForOther
+}
+
+func (c *CaseStatusDetails) GetComment() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Comment
+}
+
+func (c *CaseStatusDetails) GetUserId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.UserId
+}
+
+func (c *CaseStatusDetails) GetTransactionIds() []string {
+	if c == nil {
+		return nil
+	}
+	return c.TransactionIds
+}
+
+func (c *CaseStatusDetails) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CaseStatusDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler CaseStatusDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CaseStatusDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CaseStatusDetails) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -18455,9 +18455,9 @@ func (w WebhookEventBaseTriggeredBy) Ptr() *WebhookEventBaseTriggeredBy {
 
 type WebhookEventData struct {
 	UserStateDetails           *UserStateDetails
-	CaseClosedDetails          *CaseClosedDetails
+	CaseStatusDetails          *CaseStatusDetails
 	CaseOpenedDetails          *CaseOpenedDetails
-	AlertClosedDetails         *AlertClosedDetails
+	AlertStatusDetails         *AlertStatusDetails
 	AlertOpenedDetails         *AlertOpenedDetails
 	TransactionStatusDetails   *TransactionStatusDetails
 	KycStatusDetails           *KycStatusDetails
@@ -18471,16 +18471,16 @@ func NewWebhookEventDataFromUserStateDetails(value *UserStateDetails) *WebhookEv
 	return &WebhookEventData{typ: "UserStateDetails", UserStateDetails: value}
 }
 
-func NewWebhookEventDataFromCaseClosedDetails(value *CaseClosedDetails) *WebhookEventData {
-	return &WebhookEventData{typ: "CaseClosedDetails", CaseClosedDetails: value}
+func NewWebhookEventDataFromCaseStatusDetails(value *CaseStatusDetails) *WebhookEventData {
+	return &WebhookEventData{typ: "CaseStatusDetails", CaseStatusDetails: value}
 }
 
 func NewWebhookEventDataFromCaseOpenedDetails(value *CaseOpenedDetails) *WebhookEventData {
 	return &WebhookEventData{typ: "CaseOpenedDetails", CaseOpenedDetails: value}
 }
 
-func NewWebhookEventDataFromAlertClosedDetails(value *AlertClosedDetails) *WebhookEventData {
-	return &WebhookEventData{typ: "AlertClosedDetails", AlertClosedDetails: value}
+func NewWebhookEventDataFromAlertStatusDetails(value *AlertStatusDetails) *WebhookEventData {
+	return &WebhookEventData{typ: "AlertStatusDetails", AlertStatusDetails: value}
 }
 
 func NewWebhookEventDataFromAlertOpenedDetails(value *AlertOpenedDetails) *WebhookEventData {
@@ -18510,11 +18510,11 @@ func (w *WebhookEventData) GetUserStateDetails() *UserStateDetails {
 	return w.UserStateDetails
 }
 
-func (w *WebhookEventData) GetCaseClosedDetails() *CaseClosedDetails {
+func (w *WebhookEventData) GetCaseStatusDetails() *CaseStatusDetails {
 	if w == nil {
 		return nil
 	}
-	return w.CaseClosedDetails
+	return w.CaseStatusDetails
 }
 
 func (w *WebhookEventData) GetCaseOpenedDetails() *CaseOpenedDetails {
@@ -18524,11 +18524,11 @@ func (w *WebhookEventData) GetCaseOpenedDetails() *CaseOpenedDetails {
 	return w.CaseOpenedDetails
 }
 
-func (w *WebhookEventData) GetAlertClosedDetails() *AlertClosedDetails {
+func (w *WebhookEventData) GetAlertStatusDetails() *AlertStatusDetails {
 	if w == nil {
 		return nil
 	}
-	return w.AlertClosedDetails
+	return w.AlertStatusDetails
 }
 
 func (w *WebhookEventData) GetAlertOpenedDetails() *AlertOpenedDetails {
@@ -18573,10 +18573,10 @@ func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 		w.UserStateDetails = valueUserStateDetails
 		return nil
 	}
-	valueCaseClosedDetails := new(CaseClosedDetails)
-	if err := json.Unmarshal(data, &valueCaseClosedDetails); err == nil {
-		w.typ = "CaseClosedDetails"
-		w.CaseClosedDetails = valueCaseClosedDetails
+	valueCaseStatusDetails := new(CaseStatusDetails)
+	if err := json.Unmarshal(data, &valueCaseStatusDetails); err == nil {
+		w.typ = "CaseStatusDetails"
+		w.CaseStatusDetails = valueCaseStatusDetails
 		return nil
 	}
 	valueCaseOpenedDetails := new(CaseOpenedDetails)
@@ -18585,10 +18585,10 @@ func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 		w.CaseOpenedDetails = valueCaseOpenedDetails
 		return nil
 	}
-	valueAlertClosedDetails := new(AlertClosedDetails)
-	if err := json.Unmarshal(data, &valueAlertClosedDetails); err == nil {
-		w.typ = "AlertClosedDetails"
-		w.AlertClosedDetails = valueAlertClosedDetails
+	valueAlertStatusDetails := new(AlertStatusDetails)
+	if err := json.Unmarshal(data, &valueAlertStatusDetails); err == nil {
+		w.typ = "AlertStatusDetails"
+		w.AlertStatusDetails = valueAlertStatusDetails
 		return nil
 	}
 	valueAlertOpenedDetails := new(AlertOpenedDetails)
@@ -18628,14 +18628,14 @@ func (w WebhookEventData) MarshalJSON() ([]byte, error) {
 	if w.typ == "UserStateDetails" || w.UserStateDetails != nil {
 		return json.Marshal(w.UserStateDetails)
 	}
-	if w.typ == "CaseClosedDetails" || w.CaseClosedDetails != nil {
-		return json.Marshal(w.CaseClosedDetails)
+	if w.typ == "CaseStatusDetails" || w.CaseStatusDetails != nil {
+		return json.Marshal(w.CaseStatusDetails)
 	}
 	if w.typ == "CaseOpenedDetails" || w.CaseOpenedDetails != nil {
 		return json.Marshal(w.CaseOpenedDetails)
 	}
-	if w.typ == "AlertClosedDetails" || w.AlertClosedDetails != nil {
-		return json.Marshal(w.AlertClosedDetails)
+	if w.typ == "AlertStatusDetails" || w.AlertStatusDetails != nil {
+		return json.Marshal(w.AlertStatusDetails)
 	}
 	if w.typ == "AlertOpenedDetails" || w.AlertOpenedDetails != nil {
 		return json.Marshal(w.AlertOpenedDetails)
@@ -18657,9 +18657,9 @@ func (w WebhookEventData) MarshalJSON() ([]byte, error) {
 
 type WebhookEventDataVisitor interface {
 	VisitUserStateDetails(*UserStateDetails) error
-	VisitCaseClosedDetails(*CaseClosedDetails) error
+	VisitCaseStatusDetails(*CaseStatusDetails) error
 	VisitCaseOpenedDetails(*CaseOpenedDetails) error
-	VisitAlertClosedDetails(*AlertClosedDetails) error
+	VisitAlertStatusDetails(*AlertStatusDetails) error
 	VisitAlertOpenedDetails(*AlertOpenedDetails) error
 	VisitTransactionStatusDetails(*TransactionStatusDetails) error
 	VisitKycStatusDetails(*KycStatusDetails) error
@@ -18671,14 +18671,14 @@ func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
 	if w.typ == "UserStateDetails" || w.UserStateDetails != nil {
 		return visitor.VisitUserStateDetails(w.UserStateDetails)
 	}
-	if w.typ == "CaseClosedDetails" || w.CaseClosedDetails != nil {
-		return visitor.VisitCaseClosedDetails(w.CaseClosedDetails)
+	if w.typ == "CaseStatusDetails" || w.CaseStatusDetails != nil {
+		return visitor.VisitCaseStatusDetails(w.CaseStatusDetails)
 	}
 	if w.typ == "CaseOpenedDetails" || w.CaseOpenedDetails != nil {
 		return visitor.VisitCaseOpenedDetails(w.CaseOpenedDetails)
 	}
-	if w.typ == "AlertClosedDetails" || w.AlertClosedDetails != nil {
-		return visitor.VisitAlertClosedDetails(w.AlertClosedDetails)
+	if w.typ == "AlertStatusDetails" || w.AlertStatusDetails != nil {
+		return visitor.VisitAlertStatusDetails(w.AlertStatusDetails)
 	}
 	if w.typ == "AlertOpenedDetails" || w.AlertOpenedDetails != nil {
 		return visitor.VisitAlertOpenedDetails(w.AlertOpenedDetails)
@@ -18738,6 +18738,8 @@ const (
 	WebhookEventTypeListUpdated               WebhookEventType = "LIST_UPDATED"
 	WebhookEventTypeSanctionsStatusUpdated    WebhookEventType = "SANCTIONS_STATUS_UPDATED"
 	WebhookEventTypeAdverseMediaStatusUpdated WebhookEventType = "ADVERSE_MEDIA_STATUS_UPDATED"
+	WebhookEventTypeCaseEscalated             WebhookEventType = "CASE_ESCALATED"
+	WebhookEventTypeAlertEscalated            WebhookEventType = "ALERT_ESCALATED"
 )
 
 func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
@@ -18770,6 +18772,10 @@ func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
 		return WebhookEventTypeSanctionsStatusUpdated, nil
 	case "ADVERSE_MEDIA_STATUS_UPDATED":
 		return WebhookEventTypeAdverseMediaStatusUpdated, nil
+	case "CASE_ESCALATED":
+		return WebhookEventTypeCaseEscalated, nil
+	case "ALERT_ESCALATED":
+		return WebhookEventTypeAlertEscalated, nil
 	}
 	var t WebhookEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
