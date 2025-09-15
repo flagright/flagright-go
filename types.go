@@ -4592,6 +4592,7 @@ type CardDetails struct {
 	MerchantDetails *CardMerchantDetails `json:"merchantDetails,omitempty" url:"merchantDetails,omitempty"`
 	// Risk score of the card from your network provider
 	NetworkProviderRiskScore *float64 `json:"networkProviderRiskScore,omitempty" url:"networkProviderRiskScore,omitempty"`
+	Address                  *Address `json:"address,omitempty" url:"address,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -4730,6 +4731,13 @@ func (c *CardDetails) GetNetworkProviderRiskScore() *float64 {
 		return nil
 	}
 	return c.NetworkProviderRiskScore
+}
+
+func (c *CardDetails) GetAddress() *Address {
+	if c == nil {
+		return nil
+	}
+	return c.Address
 }
 
 func (c *CardDetails) GetTags() []*Tag {
@@ -5340,7 +5348,9 @@ func (c *CaseOpenedDetails) String() string {
 
 type CashDetails struct {
 	// Identifier for the cash transaction
-	Identifier *string `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Identifier *string  `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Address    *Address `json:"address,omitempty" url:"address,omitempty"`
+	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5351,6 +5361,20 @@ func (c *CashDetails) GetIdentifier() *string {
 		return nil
 	}
 	return c.Identifier
+}
+
+func (c *CashDetails) GetAddress() *Address {
+	if c == nil {
+		return nil
+	}
+	return c.Address
+}
+
+func (c *CashDetails) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
 }
 
 func (c *CashDetails) GetExtraProperties() map[string]interface{} {
@@ -10857,6 +10881,9 @@ type MpesaDetails struct {
 	// Contact Number of the account holder
 	PhoneNumber string   `json:"phoneNumber" url:"phoneNumber"`
 	EmailId     *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
+	// Name of the account holder
+	Name    *string  `json:"name,omitempty" url:"name,omitempty"`
+	Address *Address `json:"address,omitempty" url:"address,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -10890,6 +10917,20 @@ func (m *MpesaDetails) GetEmailId() *EmailId {
 		return nil
 	}
 	return m.EmailId
+}
+
+func (m *MpesaDetails) GetName() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Name
+}
+
+func (m *MpesaDetails) GetAddress() *Address {
+	if m == nil {
+		return nil
+	}
+	return m.Address
 }
 
 func (m *MpesaDetails) GetTags() []*Tag {
