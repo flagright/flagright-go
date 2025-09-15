@@ -13067,7 +13067,8 @@ type TransactionBase struct {
 	// UserId for where the transaction originates from
 	OriginUserId *string `json:"originUserId,omitempty" url:"originUserId,omitempty"`
 	// UserId for transaction's destination. In other words, where the value is being transferred to.
-	DestinationUserId *string `json:"destinationUserId,omitempty" url:"destinationUserId,omitempty"`
+	DestinationUserId *string           `json:"destinationUserId,omitempty" url:"destinationUserId,omitempty"`
+	TransactionState  *TransactionState `json:"transactionState,omitempty" url:"transactionState,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -13106,6 +13107,13 @@ func (t *TransactionBase) GetDestinationUserId() *string {
 		return nil
 	}
 	return t.DestinationUserId
+}
+
+func (t *TransactionBase) GetTransactionState() *TransactionState {
+	if t == nil {
+		return nil
+	}
+	return t.TransactionState
 }
 
 func (t *TransactionBase) GetExtraProperties() map[string]interface{} {
@@ -14537,7 +14545,6 @@ func (t *TransactionStatusDetails) String() string {
 
 // Model for transaction additional payload
 type TransactionUpdatable struct {
-	TransactionState         *TransactionState         `json:"transactionState,omitempty" url:"transactionState,omitempty"`
 	OriginAmountDetails      *TransactionAmountDetails `json:"originAmountDetails,omitempty" url:"originAmountDetails,omitempty"`
 	DestinationAmountDetails *TransactionAmountDetails `json:"destinationAmountDetails,omitempty" url:"destinationAmountDetails,omitempty"`
 	// Payment details of the origin. It can be a bank account number, wallet ID, card fingerprint etc.
@@ -14560,13 +14567,6 @@ type TransactionUpdatable struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (t *TransactionUpdatable) GetTransactionState() *TransactionState {
-	if t == nil {
-		return nil
-	}
-	return t.TransactionState
 }
 
 func (t *TransactionUpdatable) GetOriginAmountDetails() *TransactionAmountDetails {
