@@ -18058,11 +18058,11 @@ type WalletDetails struct {
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Phone number associated with the wallet, if any
-	WalletPhoneNumber *string        `json:"walletPhoneNumber,omitempty" url:"walletPhoneNumber,omitempty"`
-	WalletBalance     *Amount        `json:"walletBalance,omitempty" url:"walletBalance,omitempty"`
-	Network           *WalletNetwork `json:"network,omitempty" url:"network,omitempty"`
-	Address           *Address       `json:"address,omitempty" url:"address,omitempty"`
-	Nationality       *CountryCode   `json:"nationality,omitempty" url:"nationality,omitempty"`
+	WalletPhoneNumber    *string        `json:"walletPhoneNumber,omitempty" url:"walletPhoneNumber,omitempty"`
+	WalletBalance        *Amount        `json:"walletBalance,omitempty" url:"walletBalance,omitempty"`
+	Network              *WalletNetwork `json:"network,omitempty" url:"network,omitempty"`
+	Address              *Address       `json:"address,omitempty" url:"address,omitempty"`
+	CountryOfNationality *CountryCode   `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
 	// Date of birth of the account holder (YYYY-MM-DD)
 	DateOfBirth *string `json:"dateOfBirth,omitempty" url:"dateOfBirth,omitempty"`
 
@@ -18140,11 +18140,11 @@ func (w *WalletDetails) GetAddress() *Address {
 	return w.Address
 }
 
-func (w *WalletDetails) GetNationality() *CountryCode {
+func (w *WalletDetails) GetCountryOfNationality() *CountryCode {
 	if w == nil {
 		return nil
 	}
-	return w.Nationality
+	return w.CountryOfNationality
 }
 
 func (w *WalletDetails) GetDateOfBirth() *string {
