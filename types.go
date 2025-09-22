@@ -12670,6 +12670,8 @@ type Tag struct {
 	Key string `json:"key" url:"key"`
 	// Value for a given key when you are creating a custom variable
 	Value string `json:"value" url:"value"`
+	// Flag to indicate if the tag value is a timestamp
+	IsTimestamp *bool `json:"isTimestamp,omitempty" url:"isTimestamp,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -12687,6 +12689,13 @@ func (t *Tag) GetValue() string {
 		return ""
 	}
 	return t.Value
+}
+
+func (t *Tag) GetIsTimestamp() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.IsTimestamp
 }
 
 func (t *Tag) GetExtraProperties() map[string]interface{} {
@@ -17260,6 +17269,8 @@ type UserTag struct {
 	Key string `json:"key" url:"key"`
 	// Value for a given key when you are creating a custom variable
 	Value string `json:"value" url:"value"`
+	// Flag to indicate if the tag value is a timestamp
+	IsTimestamp *bool `json:"isTimestamp,omitempty" url:"isTimestamp,omitempty"`
 	// Flag to indicate if the tag is editable over the console
 	IsEditable *bool `json:"isEditable,omitempty" url:"isEditable,omitempty"`
 
@@ -17279,6 +17290,13 @@ func (u *UserTag) GetValue() string {
 		return ""
 	}
 	return u.Value
+}
+
+func (u *UserTag) GetIsTimestamp() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.IsTimestamp
 }
 
 func (u *UserTag) GetIsEditable() *bool {
