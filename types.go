@@ -18193,6 +18193,8 @@ type WalletDetails struct {
 	CountryOfNationality *CountryCode   `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
 	// Date of birth of the account holder (YYYY-MM-DD)
 	DateOfBirth *string `json:"dateOfBirth,omitempty" url:"dateOfBirth,omitempty"`
+	// A hash is a cryptographic fingerprint that uniquely identifies a blockchain transaction on the network, whereas a transactionId is just an internal reference used by a wallet or platform to track the transaction in its own system.
+	TransactionHash *string `json:"transactionHash,omitempty" url:"transactionHash,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -18280,6 +18282,13 @@ func (w *WalletDetails) GetDateOfBirth() *string {
 		return nil
 	}
 	return w.DateOfBirth
+}
+
+func (w *WalletDetails) GetTransactionHash() *string {
+	if w == nil {
+		return nil
+	}
+	return w.TransactionHash
 }
 
 func (w *WalletDetails) GetExtraProperties() map[string]interface{} {
