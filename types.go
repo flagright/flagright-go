@@ -8933,12 +8933,13 @@ type ExecutedRulesResult struct {
 	RuleAction      RuleAction `json:"ruleAction" url:"ruleAction"`
 	RuleHit         bool       `json:"ruleHit" url:"ruleHit"`
 	// Timestamp when the rule was executed
-	ExecutedAt  *float64             `json:"executedAt,omitempty" url:"executedAt,omitempty"`
-	RuleHitMeta *RuleHitMeta         `json:"ruleHitMeta,omitempty" url:"ruleHitMeta,omitempty"`
-	Vars        []*ExecutedLogicVars `json:"vars,omitempty" url:"vars,omitempty"`
-	Labels      []RuleLabels         `json:"labels,omitempty" url:"labels,omitempty"`
-	Nature      *RuleNature          `json:"nature,omitempty" url:"nature,omitempty"`
-	IsShadow    *bool                `json:"isShadow,omitempty" url:"isShadow,omitempty"`
+	ExecutedAt       *float64                         `json:"executedAt,omitempty" url:"executedAt,omitempty"`
+	RuleHitMeta      *RuleHitMeta                     `json:"ruleHitMeta,omitempty" url:"ruleHitMeta,omitempty"`
+	Vars             []*ExecutedLogicVars             `json:"vars,omitempty" url:"vars,omitempty"`
+	Labels           []RuleLabels                     `json:"labels,omitempty" url:"labels,omitempty"`
+	Nature           *RuleNature                      `json:"nature,omitempty" url:"nature,omitempty"`
+	IsShadow         *bool                            `json:"isShadow,omitempty" url:"isShadow,omitempty"`
+	SanctionsDetails []*RuleExecutionSanctionsDetails `json:"sanctionsDetails,omitempty" url:"sanctionsDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -9026,6 +9027,13 @@ func (e *ExecutedRulesResult) GetIsShadow() *bool {
 		return nil
 	}
 	return e.IsShadow
+}
+
+func (e *ExecutedRulesResult) GetSanctionsDetails() []*RuleExecutionSanctionsDetails {
+	if e == nil {
+		return nil
+	}
+	return e.SanctionsDetails
 }
 
 func (e *ExecutedRulesResult) GetExtraProperties() map[string]interface{} {
@@ -11858,6 +11866,108 @@ func NewRuleActionFromString(s string) (RuleAction, error) {
 
 func (r RuleAction) Ptr() *RuleAction {
 	return &r
+}
+
+type RuleExecutionSanctionsDetails struct {
+	Name           string                      `json:"name" url:"name"`
+	SearchId       string                      `json:"searchId" url:"searchId"`
+	Iban           *string                     `json:"iban,omitempty" url:"iban,omitempty"`
+	EntityType     *SanctionsDetailsEntityType `json:"entityType,omitempty" url:"entityType,omitempty"`
+	SanctionHitIds []string                    `json:"sanctionHitIds,omitempty" url:"sanctionHitIds,omitempty"`
+	HitContext     *SanctionsHitContext        `json:"hitContext,omitempty" url:"hitContext,omitempty"`
+	HitDirection   *RuleHitDirection           `json:"hitDirection,omitempty" url:"hitDirection,omitempty"`
+	IsRuleHit      *bool                       `json:"isRuleHit,omitempty" url:"isRuleHit,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RuleExecutionSanctionsDetails) GetName() string {
+	if r == nil {
+		return ""
+	}
+	return r.Name
+}
+
+func (r *RuleExecutionSanctionsDetails) GetSearchId() string {
+	if r == nil {
+		return ""
+	}
+	return r.SearchId
+}
+
+func (r *RuleExecutionSanctionsDetails) GetIban() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Iban
+}
+
+func (r *RuleExecutionSanctionsDetails) GetEntityType() *SanctionsDetailsEntityType {
+	if r == nil {
+		return nil
+	}
+	return r.EntityType
+}
+
+func (r *RuleExecutionSanctionsDetails) GetSanctionHitIds() []string {
+	if r == nil {
+		return nil
+	}
+	return r.SanctionHitIds
+}
+
+func (r *RuleExecutionSanctionsDetails) GetHitContext() *SanctionsHitContext {
+	if r == nil {
+		return nil
+	}
+	return r.HitContext
+}
+
+func (r *RuleExecutionSanctionsDetails) GetHitDirection() *RuleHitDirection {
+	if r == nil {
+		return nil
+	}
+	return r.HitDirection
+}
+
+func (r *RuleExecutionSanctionsDetails) GetIsRuleHit() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.IsRuleHit
+}
+
+func (r *RuleExecutionSanctionsDetails) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RuleExecutionSanctionsDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler RuleExecutionSanctionsDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RuleExecutionSanctionsDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RuleExecutionSanctionsDetails) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }
 
 type RuleFailureException struct {
