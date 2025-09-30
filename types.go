@@ -15544,6 +15544,7 @@ type UpiDetails struct {
 	InterfaceProvider *string `json:"interfaceProvider,omitempty" url:"interfaceProvider,omitempty"`
 	// Name of the account holder
 	Name    *string  `json:"name,omitempty" url:"name,omitempty"`
+	Address *Address `json:"address,omitempty" url:"address,omitempty"`
 	EmailId *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
@@ -15578,6 +15579,13 @@ func (u *UpiDetails) GetName() *string {
 		return nil
 	}
 	return u.Name
+}
+
+func (u *UpiDetails) GetAddress() *Address {
+	if u == nil {
+		return nil
+	}
+	return u.Address
 }
 
 func (u *UpiDetails) GetEmailId() *EmailId {
