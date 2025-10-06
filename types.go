@@ -6148,6 +6148,63 @@ func (c *ContactDetails) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// Model for Correspondence bank details
+type CorrespondenceBankDetails struct {
+	// Name of the bank
+	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CorrespondenceBankDetails) GetBankName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.BankName
+}
+
+func (c *CorrespondenceBankDetails) GetTags() []*Tag {
+	if c == nil {
+		return nil
+	}
+	return c.Tags
+}
+
+func (c *CorrespondenceBankDetails) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CorrespondenceBankDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler CorrespondenceBankDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CorrespondenceBankDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CorrespondenceBankDetails) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type CountryCode string
 
 const (
@@ -7113,6 +7170,7 @@ const (
 	CurrencyCodeDop     CurrencyCode = "DOP"
 	CurrencyCodeDot     CurrencyCode = "DOT"
 	CurrencyCodeDrep    CurrencyCode = "DREP"
+	CurrencyCodeDydx    CurrencyCode = "DYDX"
 	CurrencyCodeDyp     CurrencyCode = "DYP"
 	CurrencyCodeDzd     CurrencyCode = "DZD"
 	CurrencyCodeEek     CurrencyCode = "EEK"
@@ -7192,6 +7250,7 @@ const (
 	CurrencyCodeInj     CurrencyCode = "INJ"
 	CurrencyCodeInr     CurrencyCode = "INR"
 	CurrencyCodeInv     CurrencyCode = "INV"
+	CurrencyCodeIota    CurrencyCode = "IOTA"
 	CurrencyCodeIotx    CurrencyCode = "IOTX"
 	CurrencyCodeIslm    CurrencyCode = "ISLM"
 	CurrencyCodeIqd     CurrencyCode = "IQD"
@@ -7209,6 +7268,7 @@ const (
 	CurrencyCodeKes     CurrencyCode = "KES"
 	CurrencyCodeKgs     CurrencyCode = "KGS"
 	CurrencyCodeKhr     CurrencyCode = "KHR"
+	CurrencyCodeKlay    CurrencyCode = "KLAY"
 	CurrencyCodeKmf     CurrencyCode = "KMF"
 	CurrencyCodeKnc     CurrencyCode = "KNC"
 	CurrencyCodeKpw     CurrencyCode = "KPW"
@@ -7235,6 +7295,7 @@ const (
 	CurrencyCodeLsl     CurrencyCode = "LSL"
 	CurrencyCodeLtc     CurrencyCode = "LTC"
 	CurrencyCodeLtl     CurrencyCode = "LTL"
+	CurrencyCodeLuna2   CurrencyCode = "LUNA2"
 	CurrencyCodeLvl     CurrencyCode = "LVL"
 	CurrencyCodeLyd     CurrencyCode = "LYD"
 	CurrencyCodeMad     CurrencyCode = "MAD"
@@ -7277,6 +7338,7 @@ const (
 	CurrencyCodeNad     CurrencyCode = "NAD"
 	CurrencyCodeNct     CurrencyCode = "NCT"
 	CurrencyCodeNear    CurrencyCode = "NEAR"
+	CurrencyCodeNeo     CurrencyCode = "NEO"
 	CurrencyCodeNest    CurrencyCode = "NEST"
 	CurrencyCodeNgn     CurrencyCode = "NGN"
 	CurrencyCodeNio     CurrencyCode = "NIO"
@@ -7432,6 +7494,7 @@ const (
 	CurrencyCodeVtho    CurrencyCode = "VTHO"
 	CurrencyCodeVuv     CurrencyCode = "VUV"
 	CurrencyCodeWampl   CurrencyCode = "WAMPL"
+	CurrencyCodeWaves   CurrencyCode = "WAVES"
 	CurrencyCodeWaxl    CurrencyCode = "WAXL"
 	CurrencyCodeWbtc    CurrencyCode = "WBTC"
 	CurrencyCodeWcfg    CurrencyCode = "WCFG"
@@ -7459,6 +7522,7 @@ const (
 	CurrencyCodeZec     CurrencyCode = "ZEC"
 	CurrencyCodeZen     CurrencyCode = "ZEN"
 	CurrencyCodeZeta    CurrencyCode = "ZETA"
+	CurrencyCodeZil     CurrencyCode = "ZIL"
 	CurrencyCodeZmk     CurrencyCode = "ZMK"
 	CurrencyCodeZmw     CurrencyCode = "ZMW"
 	CurrencyCodeZrx     CurrencyCode = "ZRX"
@@ -7727,6 +7791,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeDot, nil
 	case "DREP":
 		return CurrencyCodeDrep, nil
+	case "DYDX":
+		return CurrencyCodeDydx, nil
 	case "DYP":
 		return CurrencyCodeDyp, nil
 	case "DZD":
@@ -7885,6 +7951,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeInr, nil
 	case "INV":
 		return CurrencyCodeInv, nil
+	case "IOTA":
+		return CurrencyCodeIota, nil
 	case "IOTX":
 		return CurrencyCodeIotx, nil
 	case "ISLM":
@@ -7919,6 +7987,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeKgs, nil
 	case "KHR":
 		return CurrencyCodeKhr, nil
+	case "KLAY":
+		return CurrencyCodeKlay, nil
 	case "KMF":
 		return CurrencyCodeKmf, nil
 	case "KNC":
@@ -7971,6 +8041,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeLtc, nil
 	case "LTL":
 		return CurrencyCodeLtl, nil
+	case "LUNA2":
+		return CurrencyCodeLuna2, nil
 	case "LVL":
 		return CurrencyCodeLvl, nil
 	case "LYD":
@@ -8055,6 +8127,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeNct, nil
 	case "NEAR":
 		return CurrencyCodeNear, nil
+	case "NEO":
+		return CurrencyCodeNeo, nil
 	case "NEST":
 		return CurrencyCodeNest, nil
 	case "NGN":
@@ -8365,6 +8439,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeVuv, nil
 	case "WAMPL":
 		return CurrencyCodeWampl, nil
+	case "WAVES":
+		return CurrencyCodeWaves, nil
 	case "WAXL":
 		return CurrencyCodeWaxl, nil
 	case "WBTC":
@@ -8419,6 +8495,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeZen, nil
 	case "ZETA":
 		return CurrencyCodeZeta, nil
+	case "ZIL":
+		return CurrencyCodeZil, nil
 	case "ZMK":
 		return CurrencyCodeZmk, nil
 	case "ZMW":
@@ -12276,8 +12354,9 @@ type SwiftDetails struct {
 	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	EmailId     *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Special instructions if any
-	SpecialInstructions *string  `json:"specialInstructions,omitempty" url:"specialInstructions,omitempty"`
-	Address             *Address `json:"address,omitempty" url:"address,omitempty"`
+	SpecialInstructions       *string                      `json:"specialInstructions,omitempty" url:"specialInstructions,omitempty"`
+	Address                   *Address                     `json:"address,omitempty" url:"address,omitempty"`
+	CorrespondenceBankDetails []*CorrespondenceBankDetails `json:"correspondenceBankDetails,omitempty" url:"correspondenceBankDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -12360,6 +12439,13 @@ func (s *SwiftDetails) GetAddress() *Address {
 		return nil
 	}
 	return s.Address
+}
+
+func (s *SwiftDetails) GetCorrespondenceBankDetails() []*CorrespondenceBankDetails {
+	if s == nil {
+		return nil
+	}
+	return s.CorrespondenceBankDetails
 }
 
 func (s *SwiftDetails) GetTags() []*Tag {
@@ -18194,11 +18280,12 @@ type WalletDetails struct {
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Phone number associated with the wallet, if any
-	WalletPhoneNumber    *string        `json:"walletPhoneNumber,omitempty" url:"walletPhoneNumber,omitempty"`
-	WalletBalance        *Amount        `json:"walletBalance,omitempty" url:"walletBalance,omitempty"`
-	Network              *WalletNetwork `json:"network,omitempty" url:"network,omitempty"`
-	Address              *Address       `json:"address,omitempty" url:"address,omitempty"`
-	CountryOfNationality *CountryCode   `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	WalletPhoneNumber        *string        `json:"walletPhoneNumber,omitempty" url:"walletPhoneNumber,omitempty"`
+	WalletBalance            *Amount        `json:"walletBalance,omitempty" url:"walletBalance,omitempty"`
+	Network                  *WalletNetwork `json:"network,omitempty" url:"network,omitempty"`
+	Address                  *Address       `json:"address,omitempty" url:"address,omitempty"`
+	CountryOfNationality     *CountryCode   `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	AuthorizedRepresentative []*UserDetails `json:"authorizedRepresentative,omitempty" url:"authorizedRepresentative,omitempty"`
 	// Date of birth of the account holder (YYYY-MM-DD)
 	DateOfBirth *string `json:"dateOfBirth,omitempty" url:"dateOfBirth,omitempty"`
 	// A hash is a cryptographic fingerprint that uniquely identifies a blockchain transaction on the network, whereas a transactionId is just an internal reference used by a wallet or platform to track the transaction in its own system.
@@ -18283,6 +18370,13 @@ func (w *WalletDetails) GetCountryOfNationality() *CountryCode {
 		return nil
 	}
 	return w.CountryOfNationality
+}
+
+func (w *WalletDetails) GetAuthorizedRepresentative() []*UserDetails {
+	if w == nil {
+		return nil
+	}
+	return w.AuthorizedRepresentative
 }
 
 func (w *WalletDetails) GetDateOfBirth() *string {
