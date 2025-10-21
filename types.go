@@ -7545,6 +7545,7 @@ const (
 	CurrencyCodeVic     CurrencyCode = "VIC"
 	CurrencyCodeXai     CurrencyCode = "XAI"
 	CurrencyCodeSle     CurrencyCode = "SLE"
+	CurrencyCodeUdi     CurrencyCode = "UDI"
 )
 
 func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
@@ -8541,6 +8542,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeXai, nil
 	case "SLE":
 		return CurrencyCodeSle, nil
+	case "UDI":
+		return CurrencyCodeUdi, nil
 	}
 	var t CurrencyCode
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
