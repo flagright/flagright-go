@@ -6148,8 +6148,8 @@ func (c *ContactDetails) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// Model for Correspondence bank details
-type CorrespondenceBankDetails struct {
+// Model for Correspondent bank details
+type CorrespondentBankDetails struct {
 	// Name of the bank
 	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
 	// Additional information that can be added via tags
@@ -6159,31 +6159,31 @@ type CorrespondenceBankDetails struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CorrespondenceBankDetails) GetBankName() *string {
+func (c *CorrespondentBankDetails) GetBankName() *string {
 	if c == nil {
 		return nil
 	}
 	return c.BankName
 }
 
-func (c *CorrespondenceBankDetails) GetTags() []*Tag {
+func (c *CorrespondentBankDetails) GetTags() []*Tag {
 	if c == nil {
 		return nil
 	}
 	return c.Tags
 }
 
-func (c *CorrespondenceBankDetails) GetExtraProperties() map[string]interface{} {
+func (c *CorrespondentBankDetails) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
-func (c *CorrespondenceBankDetails) UnmarshalJSON(data []byte) error {
-	type unmarshaler CorrespondenceBankDetails
+func (c *CorrespondentBankDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler CorrespondentBankDetails
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*c = CorrespondenceBankDetails(value)
+	*c = CorrespondentBankDetails(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -6193,7 +6193,7 @@ func (c *CorrespondenceBankDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CorrespondenceBankDetails) String() string {
+func (c *CorrespondentBankDetails) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -12357,9 +12357,9 @@ type SwiftDetails struct {
 	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	EmailId     *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Special instructions if any
-	SpecialInstructions       *string                      `json:"specialInstructions,omitempty" url:"specialInstructions,omitempty"`
-	Address                   *Address                     `json:"address,omitempty" url:"address,omitempty"`
-	CorrespondenceBankDetails []*CorrespondenceBankDetails `json:"correspondenceBankDetails,omitempty" url:"correspondenceBankDetails,omitempty"`
+	SpecialInstructions      *string                     `json:"specialInstructions,omitempty" url:"specialInstructions,omitempty"`
+	Address                  *Address                    `json:"address,omitempty" url:"address,omitempty"`
+	CorrespondentBankDetails []*CorrespondentBankDetails `json:"correspondentBankDetails,omitempty" url:"correspondentBankDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -12444,11 +12444,11 @@ func (s *SwiftDetails) GetAddress() *Address {
 	return s.Address
 }
 
-func (s *SwiftDetails) GetCorrespondenceBankDetails() []*CorrespondenceBankDetails {
+func (s *SwiftDetails) GetCorrespondentBankDetails() []*CorrespondentBankDetails {
 	if s == nil {
 		return nil
 	}
-	return s.CorrespondenceBankDetails
+	return s.CorrespondentBankDetails
 }
 
 func (s *SwiftDetails) GetTags() []*Tag {
@@ -12958,8 +12958,9 @@ type Transaction struct {
 	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
 	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
 	// Additional information that can be added via tags
-	Tags        []*Tag   `json:"tags,omitempty" url:"tags,omitempty"`
-	UpdateCount *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	Tags                     []*Tag   `json:"tags,omitempty" url:"tags,omitempty"`
+	UpdateCount              *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	PaymentApprovalTimestamp *float64 `json:"paymentApprovalTimestamp,omitempty" url:"paymentApprovalTimestamp,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -13096,6 +13097,13 @@ func (t *Transaction) GetUpdateCount() *float64 {
 		return nil
 	}
 	return t.UpdateCount
+}
+
+func (t *Transaction) GetPaymentApprovalTimestamp() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentApprovalTimestamp
 }
 
 func (t *Transaction) GetExtraProperties() map[string]interface{} {
@@ -14770,8 +14778,9 @@ type TransactionUpdatable struct {
 	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
 	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
 	// Additional information that can be added via tags
-	Tags        []*Tag   `json:"tags,omitempty" url:"tags,omitempty"`
-	UpdateCount *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	Tags                     []*Tag   `json:"tags,omitempty" url:"tags,omitempty"`
+	UpdateCount              *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	PaymentApprovalTimestamp *float64 `json:"paymentApprovalTimestamp,omitempty" url:"paymentApprovalTimestamp,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -14866,6 +14875,13 @@ func (t *TransactionUpdatable) GetUpdateCount() *float64 {
 		return nil
 	}
 	return t.UpdateCount
+}
+
+func (t *TransactionUpdatable) GetPaymentApprovalTimestamp() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentApprovalTimestamp
 }
 
 func (t *TransactionUpdatable) GetExtraProperties() map[string]interface{} {
