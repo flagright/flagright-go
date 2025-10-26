@@ -14690,10 +14690,12 @@ func (t TransactionState) Ptr() *TransactionState {
 }
 
 type TransactionStatusDetails struct {
-	TransactionId string     `json:"transactionId" url:"transactionId"`
-	Reasons       []string   `json:"reasons,omitempty" url:"reasons,omitempty"`
-	Status        RuleAction `json:"status" url:"status"`
-	Comment       *string    `json:"comment,omitempty" url:"comment,omitempty"`
+	TransactionId string `json:"transactionId" url:"transactionId"`
+	// Type of transaction (ex: DEPOSIT, WITHDRAWAL, TRANSFER, EXTERNAL_PAYMENT, REFUND, OTHER)
+	Type    *string    `json:"type,omitempty" url:"type,omitempty"`
+	Reasons []string   `json:"reasons,omitempty" url:"reasons,omitempty"`
+	Status  RuleAction `json:"status" url:"status"`
+	Comment *string    `json:"comment,omitempty" url:"comment,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -14704,6 +14706,13 @@ func (t *TransactionStatusDetails) GetTransactionId() string {
 		return ""
 	}
 	return t.TransactionId
+}
+
+func (t *TransactionStatusDetails) GetType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Type
 }
 
 func (t *TransactionStatusDetails) GetReasons() []string {
