@@ -118,7 +118,9 @@ type TransactionWithRulesResult struct {
 	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
 	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
 	// Additional information that can be added via tags
-	Tags                     []*Tag                        `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction             *string                       `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount              *float64                      `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	PaymentApprovalTimestamp *float64                      `json:"paymentApprovalTimestamp,omitempty" url:"paymentApprovalTimestamp,omitempty"`
 	ExecutedRules            []*ExecutedRulesResult        `json:"executedRules,omitempty" url:"executedRules,omitempty"`
@@ -254,6 +256,13 @@ func (t *TransactionWithRulesResult) GetTags() []*Tag {
 		return nil
 	}
 	return t.Tags
+}
+
+func (t *TransactionWithRulesResult) GetJurisdiction() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Jurisdiction
 }
 
 func (t *TransactionWithRulesResult) GetUpdateCount() *float64 {

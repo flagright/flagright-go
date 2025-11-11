@@ -640,8 +640,10 @@ type BatchBusinessUserWithRulesResult struct {
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
-	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
-	MetaData         *DeviceData            `json:"metaData,omitempty" url:"metaData,omitempty"`
+	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -788,6 +790,13 @@ func (b *BatchBusinessUserWithRulesResult) GetMetaData() *DeviceData {
 		return nil
 	}
 	return b.MetaData
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetJurisdiction() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Jurisdiction
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetUpdateCount() *float64 {
@@ -1462,8 +1471,10 @@ type BatchConsumerUserWithRulesResult struct {
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
-	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
-	MetaData         *DeviceData            `json:"metaData,omitempty" url:"metaData,omitempty"`
+	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -1673,6 +1684,13 @@ func (b *BatchConsumerUserWithRulesResult) GetMetaData() *DeviceData {
 		return nil
 	}
 	return b.MetaData
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetJurisdiction() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Jurisdiction
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetUpdateCount() *float64 {
@@ -2567,7 +2585,9 @@ type Business struct {
 	// User's attachments uploaded by business user
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
-	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount  *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2713,6 +2733,13 @@ func (b *Business) GetMetaData() *DeviceData {
 	return b.MetaData
 }
 
+func (b *Business) GetJurisdiction() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Jurisdiction
+}
+
 func (b *Business) GetUpdateCount() *float64 {
 	if b == nil {
 		return nil
@@ -2843,7 +2870,9 @@ type BusinessOptional struct {
 	// User's attachments uploaded by business user
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
-	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount  *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2973,6 +3002,13 @@ func (b *BusinessOptional) GetMetaData() *DeviceData {
 		return nil
 	}
 	return b.MetaData
+}
+
+func (b *BusinessOptional) GetJurisdiction() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Jurisdiction
 }
 
 func (b *BusinessOptional) GetUpdateCount() *float64 {
@@ -3900,8 +3936,10 @@ type BusinessWithRulesResult struct {
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
-	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
-	MetaData         *DeviceData            `json:"metaData,omitempty" url:"metaData,omitempty"`
+	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
@@ -4049,6 +4087,13 @@ func (b *BusinessWithRulesResult) GetMetaData() *DeviceData {
 		return nil
 	}
 	return b.MetaData
+}
+
+func (b *BusinessWithRulesResult) GetJurisdiction() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Jurisdiction
 }
 
 func (b *BusinessWithRulesResult) GetUpdateCount() *float64 {
@@ -12958,7 +13003,9 @@ type Transaction struct {
 	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
 	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
 	// Additional information that can be added via tags
-	Tags                     []*Tag   `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction             *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount              *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	PaymentApprovalTimestamp *float64 `json:"paymentApprovalTimestamp,omitempty" url:"paymentApprovalTimestamp,omitempty"`
 
@@ -13090,6 +13137,13 @@ func (t *Transaction) GetTags() []*Tag {
 		return nil
 	}
 	return t.Tags
+}
+
+func (t *Transaction) GetJurisdiction() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Jurisdiction
 }
 
 func (t *Transaction) GetUpdateCount() *float64 {
@@ -14690,12 +14744,12 @@ func (t TransactionState) Ptr() *TransactionState {
 }
 
 type TransactionStatusDetails struct {
-	TransactionId string `json:"transactionId" url:"transactionId"`
+	TransactionId string     `json:"transactionId" url:"transactionId"`
+	Reasons       []string   `json:"reasons,omitempty" url:"reasons,omitempty"`
+	Status        RuleAction `json:"status" url:"status"`
+	Comment       *string    `json:"comment,omitempty" url:"comment,omitempty"`
 	// Type of transaction (ex: DEPOSIT, WITHDRAWAL, TRANSFER, EXTERNAL_PAYMENT, REFUND, OTHER)
-	Type    *string    `json:"type,omitempty" url:"type,omitempty"`
-	Reasons []string   `json:"reasons,omitempty" url:"reasons,omitempty"`
-	Status  RuleAction `json:"status" url:"status"`
-	Comment *string    `json:"comment,omitempty" url:"comment,omitempty"`
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -14706,13 +14760,6 @@ func (t *TransactionStatusDetails) GetTransactionId() string {
 		return ""
 	}
 	return t.TransactionId
-}
-
-func (t *TransactionStatusDetails) GetType() *string {
-	if t == nil {
-		return nil
-	}
-	return t.Type
 }
 
 func (t *TransactionStatusDetails) GetReasons() []string {
@@ -14734,6 +14781,13 @@ func (t *TransactionStatusDetails) GetComment() *string {
 		return nil
 	}
 	return t.Comment
+}
+
+func (t *TransactionStatusDetails) GetType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Type
 }
 
 func (t *TransactionStatusDetails) GetExtraProperties() map[string]interface{} {
@@ -14787,7 +14841,9 @@ type TransactionUpdatable struct {
 	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
 	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
 	// Additional information that can be added via tags
-	Tags                     []*Tag   `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction             *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount              *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	PaymentApprovalTimestamp *float64 `json:"paymentApprovalTimestamp,omitempty" url:"paymentApprovalTimestamp,omitempty"`
 
@@ -14877,6 +14933,13 @@ func (t *TransactionUpdatable) GetTags() []*Tag {
 		return nil
 	}
 	return t.Tags
+}
+
+func (t *TransactionUpdatable) GetJurisdiction() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Jurisdiction
 }
 
 func (t *TransactionUpdatable) GetUpdateCount() *float64 {
@@ -15788,7 +15851,9 @@ type User struct {
 	// Uploaded user's attachment
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
-	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount  *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -15995,6 +16060,13 @@ func (u *User) GetMetaData() *DeviceData {
 		return nil
 	}
 	return u.MetaData
+}
+
+func (u *User) GetJurisdiction() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Jurisdiction
 }
 
 func (u *User) GetUpdateCount() *float64 {
@@ -16295,7 +16367,9 @@ type UserOptional struct {
 	// Uploaded user's attachment
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
-	UpdateCount *float64            `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount  *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -16488,6 +16562,13 @@ func (u *UserOptional) GetMetaData() *DeviceData {
 		return nil
 	}
 	return u.MetaData
+}
+
+func (u *UserOptional) GetJurisdiction() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Jurisdiction
 }
 
 func (u *UserOptional) GetUpdateCount() *float64 {
@@ -17659,8 +17740,10 @@ type UserWithRulesResult struct {
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
-	Attachments      []*PersonAttachment    `json:"attachments,omitempty" url:"attachments,omitempty"`
-	MetaData         *DeviceData            `json:"metaData,omitempty" url:"metaData,omitempty"`
+	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
@@ -17871,6 +17954,13 @@ func (u *UserWithRulesResult) GetMetaData() *DeviceData {
 		return nil
 	}
 	return u.MetaData
+}
+
+func (u *UserWithRulesResult) GetJurisdiction() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Jurisdiction
 }
 
 func (u *UserWithRulesResult) GetUpdateCount() *float64 {
@@ -18557,9 +18647,11 @@ type WebhookEvent struct {
 	// Event triggered by a user or system
 	TriggeredBy WebhookEventTriggeredBy `json:"triggeredBy" url:"triggeredBy"`
 	// Time at which the event was created. Measured in ms since the Unix epoch.
-	CreatedTimestamp float64           `json:"createdTimestamp" url:"createdTimestamp"`
-	Type             WebhookEventType  `json:"type" url:"type"`
-	Data             *WebhookEventData `json:"data,omitempty" url:"data,omitempty"`
+	CreatedTimestamp float64 `json:"createdTimestamp" url:"createdTimestamp"`
+	// Email ID associated with the event
+	Account *string           `json:"account,omitempty" url:"account,omitempty"`
+	Type    WebhookEventType  `json:"type" url:"type"`
+	Data    *WebhookEventData `json:"data,omitempty" url:"data,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -18584,6 +18676,13 @@ func (w *WebhookEvent) GetCreatedTimestamp() float64 {
 		return 0
 	}
 	return w.CreatedTimestamp
+}
+
+func (w *WebhookEvent) GetAccount() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Account
 }
 
 func (w *WebhookEvent) GetType() WebhookEventType {
@@ -18639,6 +18738,8 @@ type WebhookEventBase struct {
 	TriggeredBy WebhookEventBaseTriggeredBy `json:"triggeredBy" url:"triggeredBy"`
 	// Time at which the event was created. Measured in ms since the Unix epoch.
 	CreatedTimestamp float64 `json:"createdTimestamp" url:"createdTimestamp"`
+	// Email ID associated with the event
+	Account *string `json:"account,omitempty" url:"account,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -18663,6 +18764,13 @@ func (w *WebhookEventBase) GetCreatedTimestamp() float64 {
 		return 0
 	}
 	return w.CreatedTimestamp
+}
+
+func (w *WebhookEventBase) GetAccount() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Account
 }
 
 func (w *WebhookEventBase) GetExtraProperties() map[string]interface{} {
