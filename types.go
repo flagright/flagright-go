@@ -645,6 +645,7 @@ type BatchBusinessUserWithRulesResult struct {
 	// Legal authority or region governing the transaction
 	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -804,6 +805,13 @@ func (b *BatchBusinessUserWithRulesResult) GetUpdateCount() *float64 {
 		return nil
 	}
 	return b.UpdateCount
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
+	if b == nil {
+		return nil
+	}
+	return b.ProductsEnabled
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -1476,6 +1484,7 @@ type BatchConsumerUserWithRulesResult struct {
 	// Legal authority or region governing the transaction
 	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -1698,6 +1707,13 @@ func (b *BatchConsumerUserWithRulesResult) GetUpdateCount() *float64 {
 		return nil
 	}
 	return b.UpdateCount
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
+	if b == nil {
+		return nil
+	}
+	return b.ProductsEnabled
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -2586,8 +2602,9 @@ type Business struct {
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount  *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2747,6 +2764,13 @@ func (b *Business) GetUpdateCount() *float64 {
 	return b.UpdateCount
 }
 
+func (b *Business) GetProductsEnabled() []*ProductsEnabled {
+	if b == nil {
+		return nil
+	}
+	return b.ProductsEnabled
+}
+
 func (b *Business) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
@@ -2871,8 +2895,9 @@ type BusinessOptional struct {
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount  *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3016,6 +3041,13 @@ func (b *BusinessOptional) GetUpdateCount() *float64 {
 		return nil
 	}
 	return b.UpdateCount
+}
+
+func (b *BusinessOptional) GetProductsEnabled() []*ProductsEnabled {
+	if b == nil {
+		return nil
+	}
+	return b.ProductsEnabled
 }
 
 func (b *BusinessOptional) GetExtraProperties() map[string]interface{} {
@@ -3941,6 +3973,7 @@ type BusinessWithRulesResult struct {
 	// Legal authority or region governing the transaction
 	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -4101,6 +4134,13 @@ func (b *BusinessWithRulesResult) GetUpdateCount() *float64 {
 		return nil
 	}
 	return b.UpdateCount
+}
+
+func (b *BusinessWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
+	if b == nil {
+		return nil
+	}
+	return b.ProductsEnabled
 }
 
 func (b *BusinessWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -11934,6 +11974,52 @@ func (p *PlaceOfBirth) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type ProductsEnabled struct {
+	ProductName *string `json:"productName,omitempty" url:"productName,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *ProductsEnabled) GetProductName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ProductName
+}
+
+func (p *ProductsEnabled) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *ProductsEnabled) UnmarshalJSON(data []byte) error {
+	type unmarshaler ProductsEnabled
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = ProductsEnabled(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ProductsEnabled) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 type RiskLevel string
 
 const (
@@ -15852,8 +15938,9 @@ type User struct {
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount  *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -16074,6 +16161,13 @@ func (u *User) GetUpdateCount() *float64 {
 		return nil
 	}
 	return u.UpdateCount
+}
+
+func (u *User) GetProductsEnabled() []*ProductsEnabled {
+	if u == nil {
+		return nil
+	}
+	return u.ProductsEnabled
 }
 
 func (u *User) GetExtraProperties() map[string]interface{} {
@@ -16368,8 +16462,9 @@ type UserOptional struct {
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount  *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -16576,6 +16671,13 @@ func (u *UserOptional) GetUpdateCount() *float64 {
 		return nil
 	}
 	return u.UpdateCount
+}
+
+func (u *UserOptional) GetProductsEnabled() []*ProductsEnabled {
+	if u == nil {
+		return nil
+	}
+	return u.ProductsEnabled
 }
 
 func (u *UserOptional) GetExtraProperties() map[string]interface{} {
@@ -17745,6 +17847,7 @@ type UserWithRulesResult struct {
 	// Legal authority or region governing the transaction
 	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -17968,6 +18071,13 @@ func (u *UserWithRulesResult) GetUpdateCount() *float64 {
 		return nil
 	}
 	return u.UpdateCount
+}
+
+func (u *UserWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
+	if u == nil {
+		return nil
+	}
+	return u.ProductsEnabled
 }
 
 func (u *UserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
