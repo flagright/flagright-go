@@ -624,7 +624,7 @@ type BatchBusinessUserWithRulesResult struct {
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
-	ShareHolders []*Person `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
+	ShareHolders []*BatchBusinessUserWithRulesResultShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
 	Directors             []*Person          `json:"directors,omitempty" url:"directors,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
@@ -695,7 +695,7 @@ func (b *BatchBusinessUserWithRulesResult) GetKycStatusDetails() *KycStatusDetai
 	return b.KycStatusDetails
 }
 
-func (b *BatchBusinessUserWithRulesResult) GetShareHolders() []*Person {
+func (b *BatchBusinessUserWithRulesResult) GetShareHolders() []*BatchBusinessUserWithRulesResultShareHoldersItem {
 	if b == nil {
 		return nil
 	}
@@ -1219,6 +1219,76 @@ func (b *BatchBusinessUserWithRulesResultSavedPaymentDetailsItem) validate() err
 		}
 	}
 	return nil
+}
+
+type BatchBusinessUserWithRulesResultShareHoldersItem struct {
+	Person      *Person
+	LegalEntity *LegalEntity
+
+	typ string
+}
+
+func NewBatchBusinessUserWithRulesResultShareHoldersItemFromPerson(value *Person) *BatchBusinessUserWithRulesResultShareHoldersItem {
+	return &BatchBusinessUserWithRulesResultShareHoldersItem{typ: "Person", Person: value}
+}
+
+func NewBatchBusinessUserWithRulesResultShareHoldersItemFromLegalEntity(value *LegalEntity) *BatchBusinessUserWithRulesResultShareHoldersItem {
+	return &BatchBusinessUserWithRulesResultShareHoldersItem{typ: "LegalEntity", LegalEntity: value}
+}
+
+func (b *BatchBusinessUserWithRulesResultShareHoldersItem) GetPerson() *Person {
+	if b == nil {
+		return nil
+	}
+	return b.Person
+}
+
+func (b *BatchBusinessUserWithRulesResultShareHoldersItem) GetLegalEntity() *LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntity
+}
+
+func (b *BatchBusinessUserWithRulesResultShareHoldersItem) UnmarshalJSON(data []byte) error {
+	valuePerson := new(Person)
+	if err := json.Unmarshal(data, &valuePerson); err == nil {
+		b.typ = "Person"
+		b.Person = valuePerson
+		return nil
+	}
+	valueLegalEntity := new(LegalEntity)
+	if err := json.Unmarshal(data, &valueLegalEntity); err == nil {
+		b.typ = "LegalEntity"
+		b.LegalEntity = valueLegalEntity
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, b)
+}
+
+func (b BatchBusinessUserWithRulesResultShareHoldersItem) MarshalJSON() ([]byte, error) {
+	if b.typ == "Person" || b.Person != nil {
+		return json.Marshal(b.Person)
+	}
+	if b.typ == "LegalEntity" || b.LegalEntity != nil {
+		return json.Marshal(b.LegalEntity)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
+type BatchBusinessUserWithRulesResultShareHoldersItemVisitor interface {
+	VisitPerson(*Person) error
+	VisitLegalEntity(*LegalEntity) error
+}
+
+func (b *BatchBusinessUserWithRulesResultShareHoldersItem) Accept(visitor BatchBusinessUserWithRulesResultShareHoldersItemVisitor) error {
+	if b.typ == "Person" || b.Person != nil {
+		return visitor.VisitPerson(b.Person)
+	}
+	if b.typ == "LegalEntity" || b.LegalEntity != nil {
+		return visitor.VisitLegalEntity(b.LegalEntity)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", b)
 }
 
 type BatchBusinessUsersWithRulesResults struct {
@@ -2583,7 +2653,7 @@ type Business struct {
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
-	ShareHolders []*Person `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
+	ShareHolders []*BusinessShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
 	Directors             []*Person          `json:"directors,omitempty" url:"directors,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
@@ -2652,7 +2722,7 @@ func (b *Business) GetKycStatusDetails() *KycStatusDetails {
 	return b.KycStatusDetails
 }
 
-func (b *Business) GetShareHolders() []*Person {
+func (b *Business) GetShareHolders() []*BusinessShareHoldersItem {
 	if b == nil {
 		return nil
 	}
@@ -2876,7 +2946,7 @@ type BusinessOptional struct {
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
 	LegalEntity        *LegalEntity      `json:"legalEntity,omitempty" url:"legalEntity,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
-	ShareHolders []*Person `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
+	ShareHolders []*BusinessOptionalShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
 	Directors             []*Person          `json:"directors,omitempty" url:"directors,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
@@ -2931,7 +3001,7 @@ func (b *BusinessOptional) GetLegalEntity() *LegalEntity {
 	return b.LegalEntity
 }
 
-func (b *BusinessOptional) GetShareHolders() []*Person {
+func (b *BusinessOptional) GetShareHolders() []*BusinessOptionalShareHoldersItem {
 	if b == nil {
 		return nil
 	}
@@ -3443,6 +3513,76 @@ func (b *BusinessOptionalSavedPaymentDetailsItem) validate() error {
 	return nil
 }
 
+type BusinessOptionalShareHoldersItem struct {
+	Person      *Person
+	LegalEntity *LegalEntity
+
+	typ string
+}
+
+func NewBusinessOptionalShareHoldersItemFromPerson(value *Person) *BusinessOptionalShareHoldersItem {
+	return &BusinessOptionalShareHoldersItem{typ: "Person", Person: value}
+}
+
+func NewBusinessOptionalShareHoldersItemFromLegalEntity(value *LegalEntity) *BusinessOptionalShareHoldersItem {
+	return &BusinessOptionalShareHoldersItem{typ: "LegalEntity", LegalEntity: value}
+}
+
+func (b *BusinessOptionalShareHoldersItem) GetPerson() *Person {
+	if b == nil {
+		return nil
+	}
+	return b.Person
+}
+
+func (b *BusinessOptionalShareHoldersItem) GetLegalEntity() *LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntity
+}
+
+func (b *BusinessOptionalShareHoldersItem) UnmarshalJSON(data []byte) error {
+	valuePerson := new(Person)
+	if err := json.Unmarshal(data, &valuePerson); err == nil {
+		b.typ = "Person"
+		b.Person = valuePerson
+		return nil
+	}
+	valueLegalEntity := new(LegalEntity)
+	if err := json.Unmarshal(data, &valueLegalEntity); err == nil {
+		b.typ = "LegalEntity"
+		b.LegalEntity = valueLegalEntity
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, b)
+}
+
+func (b BusinessOptionalShareHoldersItem) MarshalJSON() ([]byte, error) {
+	if b.typ == "Person" || b.Person != nil {
+		return json.Marshal(b.Person)
+	}
+	if b.typ == "LegalEntity" || b.LegalEntity != nil {
+		return json.Marshal(b.LegalEntity)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
+type BusinessOptionalShareHoldersItemVisitor interface {
+	VisitPerson(*Person) error
+	VisitLegalEntity(*LegalEntity) error
+}
+
+func (b *BusinessOptionalShareHoldersItem) Accept(visitor BusinessOptionalShareHoldersItemVisitor) error {
+	if b.typ == "Person" || b.Person != nil {
+		return visitor.VisitPerson(b.Person)
+	}
+	if b.typ == "LegalEntity" || b.LegalEntity != nil {
+		return visitor.VisitLegalEntity(b.LegalEntity)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
 type BusinessSavedPaymentDetailsItem struct {
 	Method             string
 	Card               *CardDetails
@@ -3804,6 +3944,76 @@ func (b *BusinessSavedPaymentDetailsItem) validate() error {
 	return nil
 }
 
+type BusinessShareHoldersItem struct {
+	Person      *Person
+	LegalEntity *LegalEntity
+
+	typ string
+}
+
+func NewBusinessShareHoldersItemFromPerson(value *Person) *BusinessShareHoldersItem {
+	return &BusinessShareHoldersItem{typ: "Person", Person: value}
+}
+
+func NewBusinessShareHoldersItemFromLegalEntity(value *LegalEntity) *BusinessShareHoldersItem {
+	return &BusinessShareHoldersItem{typ: "LegalEntity", LegalEntity: value}
+}
+
+func (b *BusinessShareHoldersItem) GetPerson() *Person {
+	if b == nil {
+		return nil
+	}
+	return b.Person
+}
+
+func (b *BusinessShareHoldersItem) GetLegalEntity() *LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntity
+}
+
+func (b *BusinessShareHoldersItem) UnmarshalJSON(data []byte) error {
+	valuePerson := new(Person)
+	if err := json.Unmarshal(data, &valuePerson); err == nil {
+		b.typ = "Person"
+		b.Person = valuePerson
+		return nil
+	}
+	valueLegalEntity := new(LegalEntity)
+	if err := json.Unmarshal(data, &valueLegalEntity); err == nil {
+		b.typ = "LegalEntity"
+		b.LegalEntity = valueLegalEntity
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, b)
+}
+
+func (b BusinessShareHoldersItem) MarshalJSON() ([]byte, error) {
+	if b.typ == "Person" || b.Person != nil {
+		return json.Marshal(b.Person)
+	}
+	if b.typ == "LegalEntity" || b.LegalEntity != nil {
+		return json.Marshal(b.LegalEntity)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
+type BusinessShareHoldersItemVisitor interface {
+	VisitPerson(*Person) error
+	VisitLegalEntity(*LegalEntity) error
+}
+
+func (b *BusinessShareHoldersItem) Accept(visitor BusinessShareHoldersItemVisitor) error {
+	if b.typ == "Person" || b.Person != nil {
+		return visitor.VisitPerson(b.Person)
+	}
+	if b.typ == "LegalEntity" || b.LegalEntity != nil {
+		return visitor.VisitLegalEntity(b.LegalEntity)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
 // Model for business user-related events
 type BusinessUserEvent struct {
 	// Timestamp of the event
@@ -3952,7 +4162,7 @@ type BusinessWithRulesResult struct {
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
-	ShareHolders []*Person `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
+	ShareHolders []*BusinessWithRulesResultShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
 	Directors             []*Person          `json:"directors,omitempty" url:"directors,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
@@ -4024,7 +4234,7 @@ func (b *BusinessWithRulesResult) GetKycStatusDetails() *KycStatusDetails {
 	return b.KycStatusDetails
 }
 
-func (b *BusinessWithRulesResult) GetShareHolders() []*Person {
+func (b *BusinessWithRulesResult) GetShareHolders() []*BusinessWithRulesResultShareHoldersItem {
 	if b == nil {
 		return nil
 	}
@@ -4555,6 +4765,76 @@ func (b *BusinessWithRulesResultSavedPaymentDetailsItem) validate() error {
 		}
 	}
 	return nil
+}
+
+type BusinessWithRulesResultShareHoldersItem struct {
+	Person      *Person
+	LegalEntity *LegalEntity
+
+	typ string
+}
+
+func NewBusinessWithRulesResultShareHoldersItemFromPerson(value *Person) *BusinessWithRulesResultShareHoldersItem {
+	return &BusinessWithRulesResultShareHoldersItem{typ: "Person", Person: value}
+}
+
+func NewBusinessWithRulesResultShareHoldersItemFromLegalEntity(value *LegalEntity) *BusinessWithRulesResultShareHoldersItem {
+	return &BusinessWithRulesResultShareHoldersItem{typ: "LegalEntity", LegalEntity: value}
+}
+
+func (b *BusinessWithRulesResultShareHoldersItem) GetPerson() *Person {
+	if b == nil {
+		return nil
+	}
+	return b.Person
+}
+
+func (b *BusinessWithRulesResultShareHoldersItem) GetLegalEntity() *LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntity
+}
+
+func (b *BusinessWithRulesResultShareHoldersItem) UnmarshalJSON(data []byte) error {
+	valuePerson := new(Person)
+	if err := json.Unmarshal(data, &valuePerson); err == nil {
+		b.typ = "Person"
+		b.Person = valuePerson
+		return nil
+	}
+	valueLegalEntity := new(LegalEntity)
+	if err := json.Unmarshal(data, &valueLegalEntity); err == nil {
+		b.typ = "LegalEntity"
+		b.LegalEntity = valueLegalEntity
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, b)
+}
+
+func (b BusinessWithRulesResultShareHoldersItem) MarshalJSON() ([]byte, error) {
+	if b.typ == "Person" || b.Person != nil {
+		return json.Marshal(b.Person)
+	}
+	if b.typ == "LegalEntity" || b.LegalEntity != nil {
+		return json.Marshal(b.LegalEntity)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
+type BusinessWithRulesResultShareHoldersItemVisitor interface {
+	VisitPerson(*Person) error
+	VisitLegalEntity(*LegalEntity) error
+}
+
+func (b *BusinessWithRulesResultShareHoldersItem) Accept(visitor BusinessWithRulesResultShareHoldersItemVisitor) error {
+	if b.typ == "Person" || b.Person != nil {
+		return visitor.VisitPerson(b.Person)
+	}
+	if b.typ == "LegalEntity" || b.LegalEntity != nil {
+		return visitor.VisitLegalEntity(b.LegalEntity)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", b)
 }
 
 type CraRiskLevelUpdatedDetails struct {

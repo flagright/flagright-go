@@ -4,6 +4,17 @@
 
 The Flagright Go library provides convenient access to the Flagright APIs from Go.
 
+## Table of Contents
+
+- [Usage](#usage)
+- [Environments](#environments)
+- [Errors](#errors)
+- [Request Options](#request-options)
+- [Advanced](#advanced)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+- [Contributing](#contributing)
+
 ## Usage
 
 Instantiate and use the client with the following:
