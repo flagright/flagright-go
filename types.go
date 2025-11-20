@@ -643,11 +643,16 @@ type BatchBusinessUserWithRulesResult struct {
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
-	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
-	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	PepStatus       []*PepStatus       `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	// Whether the user is sanctioned
+	SanctionsStatus *bool `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	// Whether the user is in the adverse media list
+	AdverseMediaStatus *bool                  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	ExecutedRules      []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	RiskScoreDetails   *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -812,6 +817,27 @@ func (b *BatchBusinessUserWithRulesResult) GetProductsEnabled() []*ProductsEnabl
 		return nil
 	}
 	return b.ProductsEnabled
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetPepStatus() []*PepStatus {
+	if b == nil {
+		return nil
+	}
+	return b.PepStatus
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetSanctionsStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.SanctionsStatus
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetAdverseMediaStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.AdverseMediaStatus
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -2675,6 +2701,11 @@ type Business struct {
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	PepStatus       []*PepStatus       `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	// Whether the user is sanctioned
+	SanctionsStatus *bool `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	// Whether the user is in the adverse media list
+	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2841,6 +2872,27 @@ func (b *Business) GetProductsEnabled() []*ProductsEnabled {
 	return b.ProductsEnabled
 }
 
+func (b *Business) GetPepStatus() []*PepStatus {
+	if b == nil {
+		return nil
+	}
+	return b.PepStatus
+}
+
+func (b *Business) GetSanctionsStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.SanctionsStatus
+}
+
+func (b *Business) GetAdverseMediaStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.AdverseMediaStatus
+}
+
 func (b *Business) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
@@ -2968,6 +3020,11 @@ type BusinessOptional struct {
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	PepStatus       []*PepStatus       `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	// Whether the user is sanctioned
+	SanctionsStatus *bool `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	// Whether the user is in the adverse media list
+	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3118,6 +3175,27 @@ func (b *BusinessOptional) GetProductsEnabled() []*ProductsEnabled {
 		return nil
 	}
 	return b.ProductsEnabled
+}
+
+func (b *BusinessOptional) GetPepStatus() []*PepStatus {
+	if b == nil {
+		return nil
+	}
+	return b.PepStatus
+}
+
+func (b *BusinessOptional) GetSanctionsStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.SanctionsStatus
+}
+
+func (b *BusinessOptional) GetAdverseMediaStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.AdverseMediaStatus
 }
 
 func (b *BusinessOptional) GetExtraProperties() map[string]interface{} {
@@ -4181,12 +4259,17 @@ type BusinessWithRulesResult struct {
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
-	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
-	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
-	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	PepStatus       []*PepStatus       `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	// Whether the user is sanctioned
+	SanctionsStatus *bool `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	// Whether the user is in the adverse media list
+	AdverseMediaStatus *bool                  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	ExecutedRules      []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	HitRules           []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	RiskScoreDetails   *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4351,6 +4434,27 @@ func (b *BusinessWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
 		return nil
 	}
 	return b.ProductsEnabled
+}
+
+func (b *BusinessWithRulesResult) GetPepStatus() []*PepStatus {
+	if b == nil {
+		return nil
+	}
+	return b.PepStatus
+}
+
+func (b *BusinessWithRulesResult) GetSanctionsStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.SanctionsStatus
+}
+
+func (b *BusinessWithRulesResult) GetAdverseMediaStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.AdverseMediaStatus
 }
 
 func (b *BusinessWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
