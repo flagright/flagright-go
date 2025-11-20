@@ -18,8 +18,10 @@ type AchDetails struct {
 	// Name of the bank
 	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
 	// Name of the account holder
-	Name        *string  `json:"name,omitempty" url:"name,omitempty"`
-	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
+	Name                 *string      `json:"name,omitempty" url:"name,omitempty"`
+	BankAddress          *Address     `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
+	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	CountryOfResidence   *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
 	// Beneficiary name of the account
 	BeneficiaryName *string  `json:"beneficiaryName,omitempty" url:"beneficiaryName,omitempty"`
 	EmailId         *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
@@ -70,6 +72,20 @@ func (a *AchDetails) GetBankAddress() *Address {
 		return nil
 	}
 	return a.BankAddress
+}
+
+func (a *AchDetails) GetCountryOfNationality() *CountryCode {
+	if a == nil {
+		return nil
+	}
+	return a.CountryOfNationality
+}
+
+func (a *AchDetails) GetCountryOfResidence() *CountryCode {
+	if a == nil {
+		return nil
+	}
+	return a.CountryOfResidence
 }
 
 func (a *AchDetails) GetBeneficiaryName() *string {
@@ -5060,8 +5076,11 @@ type CardDetails struct {
 	CardBalance     *Amount              `json:"cardBalance,omitempty" url:"cardBalance,omitempty"`
 	MerchantDetails *CardMerchantDetails `json:"merchantDetails,omitempty" url:"merchantDetails,omitempty"`
 	// Risk score of the card from your network provider
-	NetworkProviderRiskScore *float64 `json:"networkProviderRiskScore,omitempty" url:"networkProviderRiskScore,omitempty"`
-	Address                  *Address `json:"address,omitempty" url:"address,omitempty"`
+	NetworkProviderRiskScore *float64     `json:"networkProviderRiskScore,omitempty" url:"networkProviderRiskScore,omitempty"`
+	Address                  *Address     `json:"address,omitempty" url:"address,omitempty"`
+	CountryOfNationality     *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	CountryOfResidence       *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
+	BankAddress              *Address     `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -5207,6 +5226,27 @@ func (c *CardDetails) GetAddress() *Address {
 		return nil
 	}
 	return c.Address
+}
+
+func (c *CardDetails) GetCountryOfNationality() *CountryCode {
+	if c == nil {
+		return nil
+	}
+	return c.CountryOfNationality
+}
+
+func (c *CardDetails) GetCountryOfResidence() *CountryCode {
+	if c == nil {
+		return nil
+	}
+	return c.CountryOfResidence
+}
+
+func (c *CardDetails) GetBankAddress() *Address {
+	if c == nil {
+		return nil
+	}
+	return c.BankAddress
 }
 
 func (c *CardDetails) GetTags() []*Tag {
@@ -5919,12 +5959,15 @@ type CheckDetails struct {
 	CheckNumber     *string `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
 	CheckIdentifier *string `json:"checkIdentifier,omitempty" url:"checkIdentifier,omitempty"`
 	// Routing number of the bank
-	RoutingNumber   *string              `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
-	Name            *string              `json:"name,omitempty" url:"name,omitempty"`
-	DeliveryStatus  *CheckDeliveryStatus `json:"deliveryStatus,omitempty" url:"deliveryStatus,omitempty"`
-	EtaTimestamp    *float64             `json:"etaTimestamp,omitempty" url:"etaTimestamp,omitempty"`
-	ShippingAddress *Address             `json:"shippingAddress,omitempty" url:"shippingAddress,omitempty"`
-	AccountNumber   *string              `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	RoutingNumber        *string              `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
+	Name                 *string              `json:"name,omitempty" url:"name,omitempty"`
+	DeliveryStatus       *CheckDeliveryStatus `json:"deliveryStatus,omitempty" url:"deliveryStatus,omitempty"`
+	EtaTimestamp         *float64             `json:"etaTimestamp,omitempty" url:"etaTimestamp,omitempty"`
+	ShippingAddress      *Address             `json:"shippingAddress,omitempty" url:"shippingAddress,omitempty"`
+	AccountNumber        *string              `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	CountryOfNationality *CountryCode         `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	CountryOfResidence   *CountryCode         `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
+	BankAddress          *Address             `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -5986,6 +6029,27 @@ func (c *CheckDetails) GetAccountNumber() *string {
 		return nil
 	}
 	return c.AccountNumber
+}
+
+func (c *CheckDetails) GetCountryOfNationality() *CountryCode {
+	if c == nil {
+		return nil
+	}
+	return c.CountryOfNationality
+}
+
+func (c *CheckDetails) GetCountryOfResidence() *CountryCode {
+	if c == nil {
+		return nil
+	}
+	return c.CountryOfResidence
+}
+
+func (c *CheckDetails) GetBankAddress() *Address {
+	if c == nil {
+		return nil
+	}
+	return c.BankAddress
 }
 
 func (c *CheckDetails) GetTags() []*Tag {
@@ -10311,8 +10375,10 @@ type IbanDetails struct {
 	Name    *string  `json:"name,omitempty" url:"name,omitempty"`
 	EmailId *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Branch code of the bank. In some countries, this can be the same as the bank's SWIFT code
-	BankBranchCode *string `json:"bankBranchCode,omitempty" url:"bankBranchCode,omitempty"`
-	PaymentChannel *string `json:"paymentChannel,omitempty" url:"paymentChannel,omitempty"`
+	BankBranchCode       *string      `json:"bankBranchCode,omitempty" url:"bankBranchCode,omitempty"`
+	PaymentChannel       *string      `json:"paymentChannel,omitempty" url:"paymentChannel,omitempty"`
+	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	CountryOfResidence   *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -10388,6 +10454,20 @@ func (i *IbanDetails) GetPaymentChannel() *string {
 		return nil
 	}
 	return i.PaymentChannel
+}
+
+func (i *IbanDetails) GetCountryOfNationality() *CountryCode {
+	if i == nil {
+		return nil
+	}
+	return i.CountryOfNationality
+}
+
+func (i *IbanDetails) GetCountryOfResidence() *CountryCode {
+	if i == nil {
+		return nil
+	}
+	return i.CountryOfResidence
 }
 
 func (i *IbanDetails) GetTags() []*Tag {
@@ -12868,9 +12948,11 @@ type SwiftDetails struct {
 	// Name of the bank
 	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
 	// Name of the account holder
-	Name        *string  `json:"name,omitempty" url:"name,omitempty"`
-	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
-	EmailId     *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
+	Name                 *string      `json:"name,omitempty" url:"name,omitempty"`
+	BankAddress          *Address     `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
+	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	CountryOfResidence   *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
+	EmailId              *EmailId     `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Special instructions if any
 	SpecialInstructions      *string                     `json:"specialInstructions,omitempty" url:"specialInstructions,omitempty"`
 	Address                  *Address                    `json:"address,omitempty" url:"address,omitempty"`
@@ -12936,6 +13018,20 @@ func (s *SwiftDetails) GetBankAddress() *Address {
 		return nil
 	}
 	return s.BankAddress
+}
+
+func (s *SwiftDetails) GetCountryOfNationality() *CountryCode {
+	if s == nil {
+		return nil
+	}
+	return s.CountryOfNationality
+}
+
+func (s *SwiftDetails) GetCountryOfResidence() *CountryCode {
+	if s == nil {
+		return nil
+	}
+	return s.CountryOfResidence
 }
 
 func (s *SwiftDetails) GetEmailId() *EmailId {
@@ -18897,6 +18993,8 @@ type WalletDetails struct {
 	Network                  *WalletNetwork `json:"network,omitempty" url:"network,omitempty"`
 	Address                  *Address       `json:"address,omitempty" url:"address,omitempty"`
 	CountryOfNationality     *CountryCode   `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	CountryOfResidence       *CountryCode   `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
+	BankAddress              *Address       `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	AuthorizedRepresentative []*UserDetails `json:"authorizedRepresentative,omitempty" url:"authorizedRepresentative,omitempty"`
 	// Date of birth of the account holder (YYYY-MM-DD)
 	DateOfBirth *string `json:"dateOfBirth,omitempty" url:"dateOfBirth,omitempty"`
@@ -18982,6 +19080,20 @@ func (w *WalletDetails) GetCountryOfNationality() *CountryCode {
 		return nil
 	}
 	return w.CountryOfNationality
+}
+
+func (w *WalletDetails) GetCountryOfResidence() *CountryCode {
+	if w == nil {
+		return nil
+	}
+	return w.CountryOfResidence
+}
+
+func (w *WalletDetails) GetBankAddress() *Address {
+	if w == nil {
+		return nil
+	}
+	return w.BankAddress
 }
 
 func (w *WalletDetails) GetAuthorizedRepresentative() []*UserDetails {
