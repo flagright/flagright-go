@@ -18,8 +18,10 @@ type AchDetails struct {
 	// Name of the bank
 	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
 	// Name of the account holder
-	Name                 *string      `json:"name,omitempty" url:"name,omitempty"`
-	BankAddress          *Address     `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
+	Name        *string  `json:"name,omitempty" url:"name,omitempty"`
+	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
+	// Address of the account holder
+	Address              *Address     `json:"address,omitempty" url:"address,omitempty"`
 	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
 	CountryOfResidence   *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
 	// Beneficiary name of the account
@@ -72,6 +74,13 @@ func (a *AchDetails) GetBankAddress() *Address {
 		return nil
 	}
 	return a.BankAddress
+}
+
+func (a *AchDetails) GetAddress() *Address {
+	if a == nil {
+		return nil
+	}
+	return a.Address
 }
 
 func (a *AchDetails) GetCountryOfNationality() *CountryCode {
@@ -5860,6 +5869,7 @@ type CashDetails struct {
 	Identifier *string  `json:"identifier,omitempty" url:"identifier,omitempty"`
 	Address    *Address `json:"address,omitempty" url:"address,omitempty"`
 	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
+	EmailId    *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5884,6 +5894,13 @@ func (c *CashDetails) GetName() *string {
 		return nil
 	}
 	return c.Name
+}
+
+func (c *CashDetails) GetEmailId() *EmailId {
+	if c == nil {
+		return nil
+	}
+	return c.EmailId
 }
 
 func (c *CashDetails) GetExtraProperties() map[string]interface{} {
@@ -5959,15 +5976,19 @@ type CheckDetails struct {
 	CheckNumber     *string `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
 	CheckIdentifier *string `json:"checkIdentifier,omitempty" url:"checkIdentifier,omitempty"`
 	// Routing number of the bank
-	RoutingNumber        *string              `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
-	Name                 *string              `json:"name,omitempty" url:"name,omitempty"`
-	DeliveryStatus       *CheckDeliveryStatus `json:"deliveryStatus,omitempty" url:"deliveryStatus,omitempty"`
-	EtaTimestamp         *float64             `json:"etaTimestamp,omitempty" url:"etaTimestamp,omitempty"`
-	ShippingAddress      *Address             `json:"shippingAddress,omitempty" url:"shippingAddress,omitempty"`
-	AccountNumber        *string              `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
-	CountryOfNationality *CountryCode         `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
-	CountryOfResidence   *CountryCode         `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
-	BankAddress          *Address             `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
+	RoutingNumber   *string              `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
+	Name            *string              `json:"name,omitempty" url:"name,omitempty"`
+	DeliveryStatus  *CheckDeliveryStatus `json:"deliveryStatus,omitempty" url:"deliveryStatus,omitempty"`
+	EtaTimestamp    *float64             `json:"etaTimestamp,omitempty" url:"etaTimestamp,omitempty"`
+	ShippingAddress *Address             `json:"shippingAddress,omitempty" url:"shippingAddress,omitempty"`
+	// Address of the account holder
+	Address       *Address `json:"address,omitempty" url:"address,omitempty"`
+	AccountNumber *string  `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	// Email ID of the account holder
+	EmailId              *string      `json:"emailId,omitempty" url:"emailId,omitempty"`
+	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	CountryOfResidence   *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
+	BankAddress          *Address     `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -6024,11 +6045,25 @@ func (c *CheckDetails) GetShippingAddress() *Address {
 	return c.ShippingAddress
 }
 
+func (c *CheckDetails) GetAddress() *Address {
+	if c == nil {
+		return nil
+	}
+	return c.Address
+}
+
 func (c *CheckDetails) GetAccountNumber() *string {
 	if c == nil {
 		return nil
 	}
 	return c.AccountNumber
+}
+
+func (c *CheckDetails) GetEmailId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.EmailId
 }
 
 func (c *CheckDetails) GetCountryOfNationality() *CountryCode {
@@ -10365,9 +10400,11 @@ type IbanDetails struct {
 	// Identifier for the bank. Can be routing number, BIK number, SWIFT code, BIC number etc.
 	Bic *string `json:"BIC,omitempty" url:"BIC,omitempty"`
 	// Name of the bank
-	BankName    *string      `json:"bankName,omitempty" url:"bankName,omitempty"`
-	BankAddress *Address     `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
-	Country     *CountryCode `json:"country,omitempty" url:"country,omitempty"`
+	BankName    *string  `json:"bankName,omitempty" url:"bankName,omitempty"`
+	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
+	// Address of the account holder
+	Address *Address     `json:"address,omitempty" url:"address,omitempty"`
+	Country *CountryCode `json:"country,omitempty" url:"country,omitempty"`
 	// Account number of the user. Can be account number, IBAN number etc.
 	Iban           *string `json:"IBAN,omitempty" url:"IBAN,omitempty"`
 	AccountBalance *Amount `json:"accountBalance,omitempty" url:"accountBalance,omitempty"`
@@ -10405,6 +10442,13 @@ func (i *IbanDetails) GetBankAddress() *Address {
 		return nil
 	}
 	return i.BankAddress
+}
+
+func (i *IbanDetails) GetAddress() *Address {
+	if i == nil {
+		return nil
+	}
+	return i.Address
 }
 
 func (i *IbanDetails) GetCountry() *CountryCode {
