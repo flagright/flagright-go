@@ -10055,6 +10055,8 @@ type GenericBankAccountDetails struct {
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 	// Country of nationality of the account holder
 	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	// Country of residence of the account holder
+	CountryOfResidence *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
 	// Date of birth of the account holder (YYYY-MM-DD)
 	DateOfBirth *string  `json:"dateOfBirth,omitempty" url:"dateOfBirth,omitempty"`
 	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
@@ -10128,6 +10130,13 @@ func (g *GenericBankAccountDetails) GetCountryOfNationality() *CountryCode {
 		return nil
 	}
 	return g.CountryOfNationality
+}
+
+func (g *GenericBankAccountDetails) GetCountryOfResidence() *CountryCode {
+	if g == nil {
+		return nil
+	}
+	return g.CountryOfResidence
 }
 
 func (g *GenericBankAccountDetails) GetDateOfBirth() *string {
