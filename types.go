@@ -648,6 +648,8 @@ type BatchBusinessUserWithRulesResult struct {
 	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities []*CorporateEntityDetails `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
 	ShareHolders []*BatchBusinessUserWithRulesResultShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
@@ -723,6 +725,13 @@ func (b *BatchBusinessUserWithRulesResult) GetKycStatusDetails() *KycStatusDetai
 		return nil
 	}
 	return b.KycStatusDetails
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetCorporateEntities() []*CorporateEntityDetails {
+	if b == nil {
+		return nil
+	}
+	return b.CorporateEntities
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetShareHolders() []*BatchBusinessUserWithRulesResultShareHoldersItem {
@@ -1594,9 +1603,11 @@ type BatchConsumerUserWithRulesResult struct {
 	SanctionsStatus         *SanctionsStatus     `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	AdverseMediaStatus      *AdverseMediaStatus  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64                                                   `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
-	LinkedEntities           *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
-	SavedPaymentDetails      []*BatchConsumerUserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	LastTransactionTimestamp *float64 `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities   []*CorporateEntityDetails                                  `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
+	LinkedEntities      *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	SavedPaymentDetails []*BatchConsumerUserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
@@ -1779,6 +1790,13 @@ func (b *BatchConsumerUserWithRulesResult) GetLastTransactionTimestamp() *float6
 		return nil
 	}
 	return b.LastTransactionTimestamp
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetCorporateEntities() []*CorporateEntityDetails {
+	if b == nil {
+		return nil
+	}
+	return b.CorporateEntities
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetLinkedEntities() *UserEntityLink {
@@ -2703,6 +2721,8 @@ type Business struct {
 	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities []*CorporateEntityDetails `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
 	ShareHolders []*BusinessShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
@@ -2776,6 +2796,13 @@ func (b *Business) GetKycStatusDetails() *KycStatusDetails {
 		return nil
 	}
 	return b.KycStatusDetails
+}
+
+func (b *Business) GetCorporateEntities() []*CorporateEntityDetails {
+	if b == nil {
+		return nil
+	}
+	return b.CorporateEntities
 }
 
 func (b *Business) GetShareHolders() []*BusinessShareHoldersItem {
@@ -3022,6 +3049,8 @@ type BusinessOptional struct {
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
 	LegalEntity        *LegalEntity      `json:"legalEntity,omitempty" url:"legalEntity,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities []*CorporateEntityDetails `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
 	ShareHolders []*BusinessOptionalShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
@@ -3081,6 +3110,13 @@ func (b *BusinessOptional) GetLegalEntity() *LegalEntity {
 		return nil
 	}
 	return b.LegalEntity
+}
+
+func (b *BusinessOptional) GetCorporateEntities() []*CorporateEntityDetails {
+	if b == nil {
+		return nil
+	}
+	return b.CorporateEntities
 }
 
 func (b *BusinessOptional) GetShareHolders() []*BusinessOptionalShareHoldersItem {
@@ -4264,6 +4300,8 @@ type BusinessWithRulesResult struct {
 	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities []*CorporateEntityDetails `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
 	ShareHolders []*BusinessWithRulesResultShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
@@ -4340,6 +4378,13 @@ func (b *BusinessWithRulesResult) GetKycStatusDetails() *KycStatusDetails {
 		return nil
 	}
 	return b.KycStatusDetails
+}
+
+func (b *BusinessWithRulesResult) GetCorporateEntities() []*CorporateEntityDetails {
+	if b == nil {
+		return nil
+	}
+	return b.CorporateEntities
 }
 
 func (b *BusinessWithRulesResult) GetShareHolders() []*BusinessWithRulesResultShareHoldersItem {
@@ -6331,8 +6376,8 @@ func (c *CompanyGeneralDetails) String() string {
 // Model for business user company registration details
 type CompanyRegistrationDetails struct {
 	// Commercial registry registration number for the company in its registration country
-	RegistrationIdentifier string       `json:"registrationIdentifier" url:"registrationIdentifier"`
-	RegistrationCountry    CountryCode  `json:"registrationCountry" url:"registrationCountry"`
+	RegistrationIdentifier *string      `json:"registrationIdentifier,omitempty" url:"registrationIdentifier,omitempty"`
+	RegistrationCountry    *CountryCode `json:"registrationCountry,omitempty" url:"registrationCountry,omitempty"`
 	TaxResidenceCountry    *CountryCode `json:"taxResidenceCountry,omitempty" url:"taxResidenceCountry,omitempty"`
 	// Tax ID number of the registered entity
 	TaxIdentifier *string `json:"taxIdentifier,omitempty" url:"taxIdentifier,omitempty"`
@@ -6346,16 +6391,16 @@ type CompanyRegistrationDetails struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CompanyRegistrationDetails) GetRegistrationIdentifier() string {
+func (c *CompanyRegistrationDetails) GetRegistrationIdentifier() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.RegistrationIdentifier
 }
 
-func (c *CompanyRegistrationDetails) GetRegistrationCountry() CountryCode {
+func (c *CompanyRegistrationDetails) GetRegistrationCountry() *CountryCode {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.RegistrationCountry
 }
@@ -6705,6 +6750,54 @@ func (c *ContactDetails) UnmarshalJSON(data []byte) error {
 }
 
 func (c *ContactDetails) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Model for corporate entity details
+type CorporateEntityDetails struct {
+	// Legal name of the corporate entity
+	LegalName string `json:"legalName" url:"legalName"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CorporateEntityDetails) GetLegalName() string {
+	if c == nil {
+		return ""
+	}
+	return c.LegalName
+}
+
+func (c *CorporateEntityDetails) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CorporateEntityDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler CorporateEntityDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CorporateEntityDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CorporateEntityDetails) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -13611,6 +13704,7 @@ type Transaction struct {
 	OriginPaymentDetails      *TransactionOriginPaymentDetails      `json:"originPaymentDetails,omitempty" url:"originPaymentDetails,omitempty"`
 	DestinationPaymentDetails *TransactionDestinationPaymentDetails `json:"destinationPaymentDetails,omitempty" url:"destinationPaymentDetails,omitempty"`
 	OriginFundsInfo           *OriginFundsInfo                      `json:"originFundsInfo,omitempty" url:"originFundsInfo,omitempty"`
+	OriginCorporateEntity     *CorporateEntityDetails               `json:"originCorporateEntity,omitempty" url:"originCorporateEntity,omitempty"`
 	// IDs of transactions related to this transaction. Ex: refund, split bills
 	RelatedTransactionIds []string `json:"relatedTransactionIds,omitempty" url:"relatedTransactionIds,omitempty"`
 	// Type of produce being used by the consumer (ex wallets, payments etc)
@@ -13707,6 +13801,13 @@ func (t *Transaction) GetOriginFundsInfo() *OriginFundsInfo {
 		return nil
 	}
 	return t.OriginFundsInfo
+}
+
+func (t *Transaction) GetOriginCorporateEntity() *CorporateEntityDetails {
+	if t == nil {
+		return nil
+	}
+	return t.OriginCorporateEntity
 }
 
 func (t *Transaction) GetRelatedTransactionIds() []string {
@@ -15449,6 +15550,7 @@ type TransactionUpdatable struct {
 	OriginPaymentDetails      *TransactionUpdatableOriginPaymentDetails      `json:"originPaymentDetails,omitempty" url:"originPaymentDetails,omitempty"`
 	DestinationPaymentDetails *TransactionUpdatableDestinationPaymentDetails `json:"destinationPaymentDetails,omitempty" url:"destinationPaymentDetails,omitempty"`
 	OriginFundsInfo           *OriginFundsInfo                               `json:"originFundsInfo,omitempty" url:"originFundsInfo,omitempty"`
+	OriginCorporateEntity     *CorporateEntityDetails                        `json:"originCorporateEntity,omitempty" url:"originCorporateEntity,omitempty"`
 	// IDs of transactions related to this transaction. Ex: refund, split bills
 	RelatedTransactionIds []string `json:"relatedTransactionIds,omitempty" url:"relatedTransactionIds,omitempty"`
 	// Type of produce being used by the consumer (ex wallets, payments etc)
@@ -15503,6 +15605,13 @@ func (t *TransactionUpdatable) GetOriginFundsInfo() *OriginFundsInfo {
 		return nil
 	}
 	return t.OriginFundsInfo
+}
+
+func (t *TransactionUpdatable) GetOriginCorporateEntity() *CorporateEntityDetails {
+	if t == nil {
+		return nil
+	}
+	return t.OriginCorporateEntity
 }
 
 func (t *TransactionUpdatable) GetRelatedTransactionIds() []string {
@@ -16462,9 +16571,11 @@ type User struct {
 	SanctionsStatus         *SanctionsStatus     `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	AdverseMediaStatus      *AdverseMediaStatus  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64                       `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
-	LinkedEntities           *UserEntityLink                `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
-	SavedPaymentDetails      []*UserSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	LastTransactionTimestamp *float64 `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities   []*CorporateEntityDetails      `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
+	LinkedEntities      *UserEntityLink                `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	SavedPaymentDetails []*UserSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
@@ -16645,6 +16756,13 @@ func (u *User) GetLastTransactionTimestamp() *float64 {
 		return nil
 	}
 	return u.LastTransactionTimestamp
+}
+
+func (u *User) GetCorporateEntities() []*CorporateEntityDetails {
+	if u == nil {
+		return nil
+	}
+	return u.CorporateEntities
 }
 
 func (u *User) GetLinkedEntities() *UserEntityLink {
@@ -16986,9 +17104,11 @@ type UserOptional struct {
 	SanctionsStatus         *SanctionsStatus     `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	AdverseMediaStatus      *AdverseMediaStatus  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64                               `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
-	LinkedEntities           *UserEntityLink                        `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
-	SavedPaymentDetails      []*UserOptionalSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	LastTransactionTimestamp *float64 `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities   []*CorporateEntityDetails              `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
+	LinkedEntities      *UserEntityLink                        `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	SavedPaymentDetails []*UserOptionalSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
@@ -17155,6 +17275,13 @@ func (u *UserOptional) GetLastTransactionTimestamp() *float64 {
 		return nil
 	}
 	return u.LastTransactionTimestamp
+}
+
+func (u *UserOptional) GetCorporateEntities() []*CorporateEntityDetails {
+	if u == nil {
+		return nil
+	}
+	return u.CorporateEntities
 }
 
 func (u *UserOptional) GetLinkedEntities() *UserEntityLink {
@@ -18369,9 +18496,11 @@ type UserWithRulesResult struct {
 	SanctionsStatus         *SanctionsStatus     `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	AdverseMediaStatus      *AdverseMediaStatus  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64                                      `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
-	LinkedEntities           *UserEntityLink                               `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
-	SavedPaymentDetails      []*UserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	LastTransactionTimestamp *float64 `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities   []*CorporateEntityDetails                     `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
+	LinkedEntities      *UserEntityLink                               `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	SavedPaymentDetails []*UserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Uploaded user's attachment
@@ -18555,6 +18684,13 @@ func (u *UserWithRulesResult) GetLastTransactionTimestamp() *float64 {
 		return nil
 	}
 	return u.LastTransactionTimestamp
+}
+
+func (u *UserWithRulesResult) GetCorporateEntities() []*CorporateEntityDetails {
+	if u == nil {
+		return nil
+	}
+	return u.CorporateEntities
 }
 
 func (u *UserWithRulesResult) GetLinkedEntities() *UserEntityLink {

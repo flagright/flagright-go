@@ -107,6 +107,7 @@ type TransactionWithRulesResult struct {
 	OriginPaymentDetails      *TransactionWithRulesResultOriginPaymentDetails      `json:"originPaymentDetails,omitempty" url:"originPaymentDetails,omitempty"`
 	DestinationPaymentDetails *TransactionWithRulesResultDestinationPaymentDetails `json:"destinationPaymentDetails,omitempty" url:"destinationPaymentDetails,omitempty"`
 	OriginFundsInfo           *OriginFundsInfo                                     `json:"originFundsInfo,omitempty" url:"originFundsInfo,omitempty"`
+	OriginCorporateEntity     *CorporateEntityDetails                              `json:"originCorporateEntity,omitempty" url:"originCorporateEntity,omitempty"`
 	// IDs of transactions related to this transaction. Ex: refund, split bills
 	RelatedTransactionIds []string `json:"relatedTransactionIds,omitempty" url:"relatedTransactionIds,omitempty"`
 	// Type of produce being used by the consumer (ex wallets, payments etc)
@@ -207,6 +208,13 @@ func (t *TransactionWithRulesResult) GetOriginFundsInfo() *OriginFundsInfo {
 		return nil
 	}
 	return t.OriginFundsInfo
+}
+
+func (t *TransactionWithRulesResult) GetOriginCorporateEntity() *CorporateEntityDetails {
+	if t == nil {
+		return nil
+	}
+	return t.OriginCorporateEntity
 }
 
 func (t *TransactionWithRulesResult) GetRelatedTransactionIds() []string {
