@@ -115,9 +115,10 @@ type TransactionWithRulesResult struct {
 	// Whether a promotion code was used or not the transaction
 	PromotionCodeUsed *bool `json:"promotionCodeUsed,omitempty" url:"promotionCodeUsed,omitempty"`
 	// Reference field for the transaction indicating the purpose of the transaction etc.
-	Reference             *string     `json:"reference,omitempty" url:"reference,omitempty"`
-	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
-	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
+	Reference             *string              `json:"reference,omitempty" url:"reference,omitempty"`
+	OriginDeviceData      *DeviceData          `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
+	DestinationDeviceData *DeviceData          `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
+	Metadata              *TransactionMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Legal authority or region governing the transaction
@@ -257,6 +258,13 @@ func (t *TransactionWithRulesResult) GetDestinationDeviceData() *DeviceData {
 		return nil
 	}
 	return t.DestinationDeviceData
+}
+
+func (t *TransactionWithRulesResult) GetMetadata() *TransactionMetadata {
+	if t == nil {
+		return nil
+	}
+	return t.Metadata
 }
 
 func (t *TransactionWithRulesResult) GetTags() []*Tag {

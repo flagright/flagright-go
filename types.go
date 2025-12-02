@@ -2689,6 +2689,383 @@ func (b *BatchUserRulesResult) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+// Information about a counterparty in a blockchain transaction
+type BlockchainCounterparty struct {
+	// Name of the counterparty (e.g., exchange name)
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Category identifier for the counterparty
+	CategoryId *string `json:"categoryId,omitempty" url:"categoryId,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BlockchainCounterparty) GetName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Name
+}
+
+func (b *BlockchainCounterparty) GetCategoryId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.CategoryId
+}
+
+func (b *BlockchainCounterparty) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BlockchainCounterparty) UnmarshalJSON(data []byte) error {
+	type unmarshaler BlockchainCounterparty
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BlockchainCounterparty(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BlockchainCounterparty) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+// Blockchain-specific risk analysis from a provider including risk assessment and counterparty information
+type BlockchainRisk struct {
+	// Risk analysis provider (e.g., chainalysis)
+	Provider *string `json:"provider,omitempty" url:"provider,omitempty"`
+	// Overall risk level of the transaction
+	RiskLevel *RiskLevel `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	// Numeric risk score from 0 to 100
+	RiskScore *float64 `json:"riskScore,omitempty" url:"riskScore,omitempty"`
+	// List of counterparties involved in the transaction
+	Counterparties []*BlockchainCounterparty `json:"counterparties,omitempty" url:"counterparties,omitempty"`
+	// Subject of the risk analysis (address, transaction, entity, or smart contract)
+	Subject *BlockchainRiskSubject `json:"subject,omitempty" url:"subject,omitempty"`
+	// Detailed risk categories and their analysis
+	Risks []*BlockchainRiskDetail `json:"risks,omitempty" url:"risks,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BlockchainRisk) GetProvider() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Provider
+}
+
+func (b *BlockchainRisk) GetRiskLevel() *RiskLevel {
+	if b == nil {
+		return nil
+	}
+	return b.RiskLevel
+}
+
+func (b *BlockchainRisk) GetRiskScore() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScore
+}
+
+func (b *BlockchainRisk) GetCounterparties() []*BlockchainCounterparty {
+	if b == nil {
+		return nil
+	}
+	return b.Counterparties
+}
+
+func (b *BlockchainRisk) GetSubject() *BlockchainRiskSubject {
+	if b == nil {
+		return nil
+	}
+	return b.Subject
+}
+
+func (b *BlockchainRisk) GetRisks() []*BlockchainRiskDetail {
+	if b == nil {
+		return nil
+	}
+	return b.Risks
+}
+
+func (b *BlockchainRisk) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BlockchainRisk) UnmarshalJSON(data []byte) error {
+	type unmarshaler BlockchainRisk
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BlockchainRisk(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BlockchainRisk) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+// Detailed risk category analysis for a specific risk type
+type BlockchainRiskDetail struct {
+	// Optional alert identifier (alerts don't always exist)
+	AlertId *string `json:"alertId,omitempty" url:"alertId,omitempty"`
+	// Unique identifier for the risk category
+	CategoryId *string `json:"categoryId,omitempty" url:"categoryId,omitempty"`
+	// Human-readable name of the risk category
+	CategoryName *string `json:"categoryName,omitempty" url:"categoryName,omitempty"`
+	// Risk level specific to this category
+	CategoryRiskLevel *RiskLevel `json:"categoryRiskLevel,omitempty" url:"categoryRiskLevel,omitempty"`
+	// Numeric risk score for this specific category
+	CategoryRiskScore *float64 `json:"categoryRiskScore,omitempty" url:"categoryRiskScore,omitempty"`
+	// Type of exposure to the risk entity
+	ExposureType *RiskExposureType `json:"exposureType,omitempty" url:"exposureType,omitempty"`
+	// Name of the specific entity that poses the risk
+	Entity *string `json:"entity,omitempty" url:"entity,omitempty"`
+	// Amount of the transaction exposed to this risk
+	ExposureAmount *TransactionAmountDetails `json:"exposureAmount,omitempty" url:"exposureAmount,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BlockchainRiskDetail) GetAlertId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AlertId
+}
+
+func (b *BlockchainRiskDetail) GetCategoryId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.CategoryId
+}
+
+func (b *BlockchainRiskDetail) GetCategoryName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.CategoryName
+}
+
+func (b *BlockchainRiskDetail) GetCategoryRiskLevel() *RiskLevel {
+	if b == nil {
+		return nil
+	}
+	return b.CategoryRiskLevel
+}
+
+func (b *BlockchainRiskDetail) GetCategoryRiskScore() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.CategoryRiskScore
+}
+
+func (b *BlockchainRiskDetail) GetExposureType() *RiskExposureType {
+	if b == nil {
+		return nil
+	}
+	return b.ExposureType
+}
+
+func (b *BlockchainRiskDetail) GetEntity() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Entity
+}
+
+func (b *BlockchainRiskDetail) GetExposureAmount() *TransactionAmountDetails {
+	if b == nil {
+		return nil
+	}
+	return b.ExposureAmount
+}
+
+func (b *BlockchainRiskDetail) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BlockchainRiskDetail) UnmarshalJSON(data []byte) error {
+	type unmarshaler BlockchainRiskDetail
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BlockchainRiskDetail(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BlockchainRiskDetail) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+// Subject of the blockchain risk analysis
+type BlockchainRiskSubject struct {
+	// Type of the subject being analyzed
+	Type *BlockchainRiskSubjectType `json:"type,omitempty" url:"type,omitempty"`
+	// Single canonical value for the subject (e.g., address hash)
+	Value *string `json:"value,omitempty" url:"value,omitempty"`
+	// Direction of the subject in the transaction (maps to origin/destination)
+	Direction *BlockchainRiskSubjectDirection `json:"direction,omitempty" url:"direction,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BlockchainRiskSubject) GetType() *BlockchainRiskSubjectType {
+	if b == nil {
+		return nil
+	}
+	return b.Type
+}
+
+func (b *BlockchainRiskSubject) GetValue() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Value
+}
+
+func (b *BlockchainRiskSubject) GetDirection() *BlockchainRiskSubjectDirection {
+	if b == nil {
+		return nil
+	}
+	return b.Direction
+}
+
+func (b *BlockchainRiskSubject) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BlockchainRiskSubject) UnmarshalJSON(data []byte) error {
+	type unmarshaler BlockchainRiskSubject
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BlockchainRiskSubject(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BlockchainRiskSubject) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BlockchainRiskSubjectDirection string
+
+const (
+	BlockchainRiskSubjectDirectionOrigin      BlockchainRiskSubjectDirection = "ORIGIN"
+	BlockchainRiskSubjectDirectionDestination BlockchainRiskSubjectDirection = "DESTINATION"
+)
+
+func NewBlockchainRiskSubjectDirectionFromString(s string) (BlockchainRiskSubjectDirection, error) {
+	switch s {
+	case "ORIGIN":
+		return BlockchainRiskSubjectDirectionOrigin, nil
+	case "DESTINATION":
+		return BlockchainRiskSubjectDirectionDestination, nil
+	}
+	var t BlockchainRiskSubjectDirection
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BlockchainRiskSubjectDirection) Ptr() *BlockchainRiskSubjectDirection {
+	return &b
+}
+
+type BlockchainRiskSubjectType string
+
+const (
+	BlockchainRiskSubjectTypeAddress       BlockchainRiskSubjectType = "ADDRESS"
+	BlockchainRiskSubjectTypeTransaction   BlockchainRiskSubjectType = "TRANSACTION"
+	BlockchainRiskSubjectTypeSmartContract BlockchainRiskSubjectType = "SMART_CONTRACT"
+	BlockchainRiskSubjectTypeEntity        BlockchainRiskSubjectType = "ENTITY"
+)
+
+func NewBlockchainRiskSubjectTypeFromString(s string) (BlockchainRiskSubjectType, error) {
+	switch s {
+	case "ADDRESS":
+		return BlockchainRiskSubjectTypeAddress, nil
+	case "TRANSACTION":
+		return BlockchainRiskSubjectTypeTransaction, nil
+	case "SMART_CONTRACT":
+		return BlockchainRiskSubjectTypeSmartContract, nil
+	case "ENTITY":
+		return BlockchainRiskSubjectTypeEntity, nil
+	}
+	var t BlockchainRiskSubjectType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BlockchainRiskSubjectType) Ptr() *BlockchainRiskSubjectType {
+	return &b
+}
+
 type BooleanString string
 
 const (
@@ -12630,6 +13007,28 @@ func (p *ProductsEnabled) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type RiskExposureType string
+
+const (
+	RiskExposureTypeDirect   RiskExposureType = "DIRECT"
+	RiskExposureTypeIndirect RiskExposureType = "INDIRECT"
+)
+
+func NewRiskExposureTypeFromString(s string) (RiskExposureType, error) {
+	switch s {
+	case "DIRECT":
+		return RiskExposureTypeDirect, nil
+	case "INDIRECT":
+		return RiskExposureTypeIndirect, nil
+	}
+	var t RiskExposureType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r RiskExposureType) Ptr() *RiskExposureType {
+	return &r
+}
+
 type RiskLevel string
 
 const (
@@ -13712,9 +14111,10 @@ type Transaction struct {
 	// Whether a promotion code was used or not the transaction
 	PromotionCodeUsed *bool `json:"promotionCodeUsed,omitempty" url:"promotionCodeUsed,omitempty"`
 	// Reference field for the transaction indicating the purpose of the transaction etc.
-	Reference             *string     `json:"reference,omitempty" url:"reference,omitempty"`
-	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
-	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
+	Reference             *string              `json:"reference,omitempty" url:"reference,omitempty"`
+	OriginDeviceData      *DeviceData          `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
+	DestinationDeviceData *DeviceData          `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
+	Metadata              *TransactionMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Legal authority or region governing the transaction
@@ -13850,6 +14250,13 @@ func (t *Transaction) GetDestinationDeviceData() *DeviceData {
 		return nil
 	}
 	return t.DestinationDeviceData
+}
+
+func (t *Transaction) GetMetadata() *TransactionMetadata {
+	if t == nil {
+		return nil
+	}
+	return t.Metadata
 }
 
 func (t *Transaction) GetTags() []*Tag {
@@ -14968,6 +15375,54 @@ func (t *TransactionLimitsPaymentMethodLimits) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+// Additional metadata for transactions including risk analysis and counterparty information
+type TransactionMetadata struct {
+	// List of blockchain risk analyses from different providers
+	BlockchainRisk []*BlockchainRisk `json:"blockchainRisk,omitempty" url:"blockchainRisk,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransactionMetadata) GetBlockchainRisk() []*BlockchainRisk {
+	if t == nil {
+		return nil
+	}
+	return t.BlockchainRisk
+}
+
+func (t *TransactionMetadata) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransactionMetadata) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransactionMetadata
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransactionMetadata(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransactionMetadata) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
 // Payment details of the origin. It can be a bank account number, wallet ID, card fingerprint etc.
 type TransactionOriginPaymentDetails struct {
 	Method             string
@@ -15558,9 +16013,10 @@ type TransactionUpdatable struct {
 	// Whether a promotion code was used or not the transaction
 	PromotionCodeUsed *bool `json:"promotionCodeUsed,omitempty" url:"promotionCodeUsed,omitempty"`
 	// Reference field for the transaction indicating the purpose of the transaction etc.
-	Reference             *string     `json:"reference,omitempty" url:"reference,omitempty"`
-	OriginDeviceData      *DeviceData `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
-	DestinationDeviceData *DeviceData `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
+	Reference             *string              `json:"reference,omitempty" url:"reference,omitempty"`
+	OriginDeviceData      *DeviceData          `json:"originDeviceData,omitempty" url:"originDeviceData,omitempty"`
+	DestinationDeviceData *DeviceData          `json:"destinationDeviceData,omitempty" url:"destinationDeviceData,omitempty"`
+	Metadata              *TransactionMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Legal authority or region governing the transaction
@@ -15654,6 +16110,13 @@ func (t *TransactionUpdatable) GetDestinationDeviceData() *DeviceData {
 		return nil
 	}
 	return t.DestinationDeviceData
+}
+
+func (t *TransactionUpdatable) GetMetadata() *TransactionMetadata {
+	if t == nil {
+		return nil
+	}
+	return t.Metadata
 }
 
 func (t *TransactionUpdatable) GetTags() []*Tag {
