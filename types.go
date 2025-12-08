@@ -7456,7 +7456,10 @@ func (c *CorporateEntityDetails) String() string {
 // Model for Correspondent bank details
 type CorrespondentBankDetails struct {
 	// Name of the bank
-	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
+	BankName    *string  `json:"bankName,omitempty" url:"bankName,omitempty"`
+	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
+	// SWIFT code of the correspondent bank
+	SwiftCode *string `json:"swiftCode,omitempty" url:"swiftCode,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
@@ -7469,6 +7472,20 @@ func (c *CorrespondentBankDetails) GetBankName() *string {
 		return nil
 	}
 	return c.BankName
+}
+
+func (c *CorrespondentBankDetails) GetBankAddress() *Address {
+	if c == nil {
+		return nil
+	}
+	return c.BankAddress
+}
+
+func (c *CorrespondentBankDetails) GetSwiftCode() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SwiftCode
 }
 
 func (c *CorrespondentBankDetails) GetTags() []*Tag {
