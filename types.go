@@ -653,7 +653,9 @@ type BatchBusinessUserWithRulesResult struct {
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
 	ShareHolders []*BatchBusinessUserWithRulesResultShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
-	Directors             []*Person          `json:"directors,omitempty" url:"directors,omitempty"`
+	Directors []*Person `json:"directors,omitempty" url:"directors,omitempty"`
+	// Business partners of the company
+	BusinessPartners      []*LegalEntity     `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
 	RiskLevel             *RiskLevel         `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
 	KycRiskLevel          *RiskLevel         `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
@@ -746,6 +748,13 @@ func (b *BatchBusinessUserWithRulesResult) GetDirectors() []*Person {
 		return nil
 	}
 	return b.Directors
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetBusinessPartners() []*LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.BusinessPartners
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetTransactionLimits() *TransactionLimits {
@@ -2689,12 +2698,71 @@ func (b *BatchUserRulesResult) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+// Entity of the blockchain risk
+type BlockChainEntity struct {
+	// Name of the entity
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BlockChainEntity) GetName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Name
+}
+
+func (b *BlockChainEntity) GetTags() []*Tag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
+}
+
+func (b *BlockChainEntity) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BlockChainEntity) UnmarshalJSON(data []byte) error {
+	type unmarshaler BlockChainEntity
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BlockChainEntity(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BlockChainEntity) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 // Information about a counterparty in a blockchain transaction
 type BlockchainCounterparty struct {
 	// Name of the counterparty (e.g., exchange name)
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
 	// Category identifier for the counterparty
 	CategoryId *string `json:"categoryId,omitempty" url:"categoryId,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2712,6 +2780,13 @@ func (b *BlockchainCounterparty) GetCategoryId() *string {
 		return nil
 	}
 	return b.CategoryId
+}
+
+func (b *BlockchainCounterparty) GetTags() []*Tag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
 }
 
 func (b *BlockchainCounterparty) GetExtraProperties() map[string]interface{} {
@@ -2750,6 +2825,8 @@ func (b *BlockchainCounterparty) String() string {
 type BlockchainRisk struct {
 	// Risk analysis provider (e.g., chainalysis)
 	Provider *string `json:"provider,omitempty" url:"provider,omitempty"`
+	// Unix timestamp of when the risk analysis was performed
+	Timestamp *float64 `json:"timestamp,omitempty" url:"timestamp,omitempty"`
 	// Overall risk level of the transaction
 	RiskLevel *RiskLevel `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
 	// Numeric risk score from 0 to 100
@@ -2760,6 +2837,8 @@ type BlockchainRisk struct {
 	Subject *BlockchainRiskSubject `json:"subject,omitempty" url:"subject,omitempty"`
 	// Detailed risk categories and their analysis
 	Risks []*BlockchainRiskDetail `json:"risks,omitempty" url:"risks,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2770,6 +2849,13 @@ func (b *BlockchainRisk) GetProvider() *string {
 		return nil
 	}
 	return b.Provider
+}
+
+func (b *BlockchainRisk) GetTimestamp() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.Timestamp
 }
 
 func (b *BlockchainRisk) GetRiskLevel() *RiskLevel {
@@ -2807,6 +2893,13 @@ func (b *BlockchainRisk) GetRisks() []*BlockchainRiskDetail {
 	return b.Risks
 }
 
+func (b *BlockchainRisk) GetTags() []*Tag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
+}
+
 func (b *BlockchainRisk) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
@@ -2839,24 +2932,109 @@ func (b *BlockchainRisk) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+// Category of the blockchain risk
+type BlockchainRiskCategory struct {
+	// Unique identifier for the risk category
+	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	// Human-readable name of the risk category
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// Description of the risk category
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	// Numeric risk score for this category
+	RiskScore *float64 `json:"riskScore,omitempty" url:"riskScore,omitempty"`
+	// Risk level of this category
+	RiskLevel *RiskLevel `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BlockchainRiskCategory) GetId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Id
+}
+
+func (b *BlockchainRiskCategory) GetName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Name
+}
+
+func (b *BlockchainRiskCategory) GetDescription() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Description
+}
+
+func (b *BlockchainRiskCategory) GetTags() []*Tag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
+}
+
+func (b *BlockchainRiskCategory) GetRiskScore() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScore
+}
+
+func (b *BlockchainRiskCategory) GetRiskLevel() *RiskLevel {
+	if b == nil {
+		return nil
+	}
+	return b.RiskLevel
+}
+
+func (b *BlockchainRiskCategory) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BlockchainRiskCategory) UnmarshalJSON(data []byte) error {
+	type unmarshaler BlockchainRiskCategory
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BlockchainRiskCategory(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BlockchainRiskCategory) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 // Detailed risk category analysis for a specific risk type
 type BlockchainRiskDetail struct {
 	// Optional alert identifier (alerts don't always exist)
-	AlertId *string `json:"alertId,omitempty" url:"alertId,omitempty"`
-	// Unique identifier for the risk category
-	CategoryId *string `json:"categoryId,omitempty" url:"categoryId,omitempty"`
-	// Human-readable name of the risk category
-	CategoryName *string `json:"categoryName,omitempty" url:"categoryName,omitempty"`
-	// Risk level specific to this category
-	CategoryRiskLevel *RiskLevel `json:"categoryRiskLevel,omitempty" url:"categoryRiskLevel,omitempty"`
-	// Numeric risk score for this specific category
-	CategoryRiskScore *float64 `json:"categoryRiskScore,omitempty" url:"categoryRiskScore,omitempty"`
-	// Type of exposure to the risk entity
-	ExposureType *RiskExposureType `json:"exposureType,omitempty" url:"exposureType,omitempty"`
-	// Name of the specific entity that poses the risk
-	Entity *string `json:"entity,omitempty" url:"entity,omitempty"`
-	// Amount of the transaction exposed to this risk
-	ExposureAmount *TransactionAmountDetails `json:"exposureAmount,omitempty" url:"exposureAmount,omitempty"`
+	AlertId  *string                 `json:"alertId,omitempty" url:"alertId,omitempty"`
+	Category *BlockchainRiskCategory `json:"category,omitempty" url:"category,omitempty"`
+	Entity   *BlockChainEntity       `json:"entity,omitempty" url:"entity,omitempty"`
+	// Exposure details for this risk category
+	Exposure *BlockchainRiskExposure `json:"exposure,omitempty" url:"exposure,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2869,53 +3047,32 @@ func (b *BlockchainRiskDetail) GetAlertId() *string {
 	return b.AlertId
 }
 
-func (b *BlockchainRiskDetail) GetCategoryId() *string {
+func (b *BlockchainRiskDetail) GetCategory() *BlockchainRiskCategory {
 	if b == nil {
 		return nil
 	}
-	return b.CategoryId
+	return b.Category
 }
 
-func (b *BlockchainRiskDetail) GetCategoryName() *string {
-	if b == nil {
-		return nil
-	}
-	return b.CategoryName
-}
-
-func (b *BlockchainRiskDetail) GetCategoryRiskLevel() *RiskLevel {
-	if b == nil {
-		return nil
-	}
-	return b.CategoryRiskLevel
-}
-
-func (b *BlockchainRiskDetail) GetCategoryRiskScore() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.CategoryRiskScore
-}
-
-func (b *BlockchainRiskDetail) GetExposureType() *RiskExposureType {
-	if b == nil {
-		return nil
-	}
-	return b.ExposureType
-}
-
-func (b *BlockchainRiskDetail) GetEntity() *string {
+func (b *BlockchainRiskDetail) GetEntity() *BlockChainEntity {
 	if b == nil {
 		return nil
 	}
 	return b.Entity
 }
 
-func (b *BlockchainRiskDetail) GetExposureAmount() *TransactionAmountDetails {
+func (b *BlockchainRiskDetail) GetExposure() *BlockchainRiskExposure {
 	if b == nil {
 		return nil
 	}
-	return b.ExposureAmount
+	return b.Exposure
+}
+
+func (b *BlockchainRiskDetail) GetTags() []*Tag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
 }
 
 func (b *BlockchainRiskDetail) GetExtraProperties() map[string]interface{} {
@@ -2950,6 +3107,80 @@ func (b *BlockchainRiskDetail) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+// Exposure information for a blockchain risk category
+type BlockchainRiskExposure struct {
+	// Amount exposed to this risk (fraction of transaction amount)
+	Amount   *float64      `json:"amount,omitempty" url:"amount,omitempty"`
+	Currency *CurrencyCode `json:"currency,omitempty" url:"currency,omitempty"`
+	// Type of exposure (direct or indirect)
+	ExposureType *RiskExposureType `json:"exposureType,omitempty" url:"exposureType,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BlockchainRiskExposure) GetAmount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.Amount
+}
+
+func (b *BlockchainRiskExposure) GetCurrency() *CurrencyCode {
+	if b == nil {
+		return nil
+	}
+	return b.Currency
+}
+
+func (b *BlockchainRiskExposure) GetExposureType() *RiskExposureType {
+	if b == nil {
+		return nil
+	}
+	return b.ExposureType
+}
+
+func (b *BlockchainRiskExposure) GetTags() []*Tag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
+}
+
+func (b *BlockchainRiskExposure) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BlockchainRiskExposure) UnmarshalJSON(data []byte) error {
+	type unmarshaler BlockchainRiskExposure
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BlockchainRiskExposure(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BlockchainRiskExposure) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 // Subject of the blockchain risk analysis
 type BlockchainRiskSubject struct {
 	// Type of the subject being analyzed
@@ -2958,6 +3189,8 @@ type BlockchainRiskSubject struct {
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
 	// Direction of the subject in the transaction (maps to origin/destination)
 	Direction *BlockchainRiskSubjectDirection `json:"direction,omitempty" url:"direction,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2982,6 +3215,13 @@ func (b *BlockchainRiskSubject) GetDirection() *BlockchainRiskSubjectDirection {
 		return nil
 	}
 	return b.Direction
+}
+
+func (b *BlockchainRiskSubject) GetTags() []*Tag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
 }
 
 func (b *BlockchainRiskSubject) GetExtraProperties() map[string]interface{} {
@@ -3103,7 +3343,9 @@ type Business struct {
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
 	ShareHolders []*BusinessShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
-	Directors             []*Person          `json:"directors,omitempty" url:"directors,omitempty"`
+	Directors []*Person `json:"directors,omitempty" url:"directors,omitempty"`
+	// Business partners of the company
+	BusinessPartners      []*LegalEntity     `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
 	RiskLevel             *RiskLevel         `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
 	KycRiskLevel          *RiskLevel         `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
@@ -3194,6 +3436,13 @@ func (b *Business) GetDirectors() []*Person {
 		return nil
 	}
 	return b.Directors
+}
+
+func (b *Business) GetBusinessPartners() []*LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.BusinessPartners
 }
 
 func (b *Business) GetTransactionLimits() *TransactionLimits {
@@ -3431,7 +3680,9 @@ type BusinessOptional struct {
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
 	ShareHolders []*BusinessOptionalShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
-	Directors             []*Person          `json:"directors,omitempty" url:"directors,omitempty"`
+	Directors []*Person `json:"directors,omitempty" url:"directors,omitempty"`
+	// Business partners of the company
+	BusinessPartners      []*LegalEntity     `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
 	RiskLevel             *RiskLevel         `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
 	KycRiskLevel          *RiskLevel         `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
@@ -3508,6 +3759,13 @@ func (b *BusinessOptional) GetDirectors() []*Person {
 		return nil
 	}
 	return b.Directors
+}
+
+func (b *BusinessOptional) GetBusinessPartners() []*LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.BusinessPartners
 }
 
 func (b *BusinessOptional) GetTransactionLimits() *TransactionLimits {
@@ -4682,7 +4940,9 @@ type BusinessWithRulesResult struct {
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
 	ShareHolders []*BusinessWithRulesResultShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
-	Directors             []*Person          `json:"directors,omitempty" url:"directors,omitempty"`
+	Directors []*Person `json:"directors,omitempty" url:"directors,omitempty"`
+	// Business partners of the company
+	BusinessPartners      []*LegalEntity     `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
 	RiskLevel             *RiskLevel         `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
 	KycRiskLevel          *RiskLevel         `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
@@ -4776,6 +5036,13 @@ func (b *BusinessWithRulesResult) GetDirectors() []*Person {
 		return nil
 	}
 	return b.Directors
+}
+
+func (b *BusinessWithRulesResult) GetBusinessPartners() []*LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.BusinessPartners
 }
 
 func (b *BusinessWithRulesResult) GetTransactionLimits() *TransactionLimits {
@@ -15814,8 +16081,8 @@ func (t *TransactionOriginPaymentDetails) validate() error {
 
 type TransactionRiskScoringResult struct {
 	// Transaction risk scoring score
-	TrsScore     float64   `json:"trsScore" url:"trsScore"`
-	TrsRiskLevel RiskLevel `json:"trsRiskLevel" url:"trsRiskLevel"`
+	TrsScore     *float64   `json:"trsScore,omitempty" url:"trsScore,omitempty"`
+	TrsRiskLevel *RiskLevel `json:"trsRiskLevel,omitempty" url:"trsRiskLevel,omitempty"`
 	// Origin user's CRA risk score
 	OriginUserCraRiskScore *float64 `json:"originUserCraRiskScore,omitempty" url:"originUserCraRiskScore,omitempty"`
 	// Destination user's CRA risk score
@@ -15827,16 +16094,16 @@ type TransactionRiskScoringResult struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TransactionRiskScoringResult) GetTrsScore() float64 {
+func (t *TransactionRiskScoringResult) GetTrsScore() *float64 {
 	if t == nil {
-		return 0
+		return nil
 	}
 	return t.TrsScore
 }
 
-func (t *TransactionRiskScoringResult) GetTrsRiskLevel() RiskLevel {
+func (t *TransactionRiskScoringResult) GetTrsRiskLevel() *RiskLevel {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.TrsRiskLevel
 }
