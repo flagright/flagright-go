@@ -12759,6 +12759,7 @@ type PepStatus struct {
 	IsPepHit   bool         `json:"isPepHit" url:"isPepHit"`
 	PepCountry *CountryCode `json:"pepCountry,omitempty" url:"pepCountry,omitempty"`
 	PepRank    *PepRank     `json:"pepRank,omitempty" url:"pepRank,omitempty"`
+	Category   *string      `json:"category,omitempty" url:"category,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -12783,6 +12784,13 @@ func (p *PepStatus) GetPepRank() *PepRank {
 		return nil
 	}
 	return p.PepRank
+}
+
+func (p *PepStatus) GetCategory() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Category
 }
 
 func (p *PepStatus) GetExtraProperties() map[string]interface{} {
