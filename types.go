@@ -648,6 +648,7 @@ type BatchBusinessUserWithRulesResult struct {
 	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	EoddDate           *float64          `json:"eoddDate,omitempty" url:"eoddDate,omitempty"`
 	// Corporate entities of the user
 	CorporateEntities []*CorporateEntityDetails `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
@@ -727,6 +728,13 @@ func (b *BatchBusinessUserWithRulesResult) GetKycStatusDetails() *KycStatusDetai
 		return nil
 	}
 	return b.KycStatusDetails
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetEoddDate() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.EoddDate
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetCorporateEntities() []*CorporateEntityDetails {
@@ -1412,6 +1420,154 @@ func (b *BatchBusinessUsersWithRulesResults) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+// Payload sent when a batch import is fully processed
+type BatchCompletedDetails struct {
+	// Unique identifier of the batch
+	BatchId string `json:"batchId" url:"batchId"`
+	// Type of batch entity
+	Type BatchCompletedDetailsType `json:"type" url:"type"`
+	// Total number of successfully validated records in the batch
+	TotalCount int `json:"totalCount" url:"totalCount"`
+	// Number of records that were processed
+	ProcessedCount int `json:"processedCount" url:"processedCount"`
+	// Timestamp when the batch was created (in milliseconds)
+	CreatedAt int `json:"createdAt" url:"createdAt"`
+	// Timestamp when the batch was completed (in milliseconds)
+	CompletedAt int `json:"completedAt" url:"completedAt"`
+	status      string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BatchCompletedDetails) GetBatchId() string {
+	if b == nil {
+		return ""
+	}
+	return b.BatchId
+}
+
+func (b *BatchCompletedDetails) GetType() BatchCompletedDetailsType {
+	if b == nil {
+		return ""
+	}
+	return b.Type
+}
+
+func (b *BatchCompletedDetails) GetTotalCount() int {
+	if b == nil {
+		return 0
+	}
+	return b.TotalCount
+}
+
+func (b *BatchCompletedDetails) GetProcessedCount() int {
+	if b == nil {
+		return 0
+	}
+	return b.ProcessedCount
+}
+
+func (b *BatchCompletedDetails) GetCreatedAt() int {
+	if b == nil {
+		return 0
+	}
+	return b.CreatedAt
+}
+
+func (b *BatchCompletedDetails) GetCompletedAt() int {
+	if b == nil {
+		return 0
+	}
+	return b.CompletedAt
+}
+
+func (b *BatchCompletedDetails) Status() string {
+	return b.status
+}
+
+func (b *BatchCompletedDetails) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BatchCompletedDetails) UnmarshalJSON(data []byte) error {
+	type embed BatchCompletedDetails
+	var unmarshaler = struct {
+		embed
+		Status string `json:"status"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BatchCompletedDetails(unmarshaler.embed)
+	if unmarshaler.Status != "COMPLETED" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", b, "COMPLETED", unmarshaler.Status)
+	}
+	b.status = unmarshaler.Status
+	extraProperties, err := internal.ExtractExtraProperties(data, *b, "status")
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BatchCompletedDetails) MarshalJSON() ([]byte, error) {
+	type embed BatchCompletedDetails
+	var marshaler = struct {
+		embed
+		Status string `json:"status"`
+	}{
+		embed:  embed(*b),
+		Status: "COMPLETED",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BatchCompletedDetails) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+// Type of batch entity
+type BatchCompletedDetailsType string
+
+const (
+	BatchCompletedDetailsTypeTransactionBatch      BatchCompletedDetailsType = "TRANSACTION_BATCH"
+	BatchCompletedDetailsTypeTransactionEventBatch BatchCompletedDetailsType = "TRANSACTION_EVENT_BATCH"
+	BatchCompletedDetailsTypeUserBatch             BatchCompletedDetailsType = "USER_BATCH"
+	BatchCompletedDetailsTypeUserEventBatch        BatchCompletedDetailsType = "USER_EVENT_BATCH"
+)
+
+func NewBatchCompletedDetailsTypeFromString(s string) (BatchCompletedDetailsType, error) {
+	switch s {
+	case "TRANSACTION_BATCH":
+		return BatchCompletedDetailsTypeTransactionBatch, nil
+	case "TRANSACTION_EVENT_BATCH":
+		return BatchCompletedDetailsTypeTransactionEventBatch, nil
+	case "USER_BATCH":
+		return BatchCompletedDetailsTypeUserBatch, nil
+	case "USER_EVENT_BATCH":
+		return BatchCompletedDetailsTypeUserEventBatch, nil
+	}
+	var t BatchCompletedDetailsType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BatchCompletedDetailsType) Ptr() *BatchCompletedDetailsType {
+	return &b
 }
 
 type BatchConsumerUserEventWithRulesResult struct {
@@ -3338,6 +3494,7 @@ type Business struct {
 	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	EoddDate           *float64          `json:"eoddDate,omitempty" url:"eoddDate,omitempty"`
 	// Corporate entities of the user
 	CorporateEntities []*CorporateEntityDetails `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
@@ -3415,6 +3572,13 @@ func (b *Business) GetKycStatusDetails() *KycStatusDetails {
 		return nil
 	}
 	return b.KycStatusDetails
+}
+
+func (b *Business) GetEoddDate() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.EoddDate
 }
 
 func (b *Business) GetCorporateEntities() []*CorporateEntityDetails {
@@ -3674,6 +3838,7 @@ type BusinessOptional struct {
 	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	EoddDate           *float64          `json:"eoddDate,omitempty" url:"eoddDate,omitempty"`
 	LegalEntity        *LegalEntity      `json:"legalEntity,omitempty" url:"legalEntity,omitempty"`
 	// Corporate entities of the user
 	CorporateEntities []*CorporateEntityDetails `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
@@ -3731,6 +3896,13 @@ func (b *BusinessOptional) GetKycStatusDetails() *KycStatusDetails {
 		return nil
 	}
 	return b.KycStatusDetails
+}
+
+func (b *BusinessOptional) GetEoddDate() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.EoddDate
 }
 
 func (b *BusinessOptional) GetLegalEntity() *LegalEntity {
@@ -4935,6 +5107,7 @@ type BusinessWithRulesResult struct {
 	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
 	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
 	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	EoddDate           *float64          `json:"eoddDate,omitempty" url:"eoddDate,omitempty"`
 	// Corporate entities of the user
 	CorporateEntities []*CorporateEntityDetails `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
@@ -5015,6 +5188,13 @@ func (b *BusinessWithRulesResult) GetKycStatusDetails() *KycStatusDetails {
 		return nil
 	}
 	return b.KycStatusDetails
+}
+
+func (b *BusinessWithRulesResult) GetEoddDate() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.EoddDate
 }
 
 func (b *BusinessWithRulesResult) GetCorporateEntities() []*CorporateEntityDetails {
@@ -20415,6 +20595,7 @@ type WebhookEventData struct {
 	KycStatusDetails           *KycStatusDetails
 	UserTagsUpdate             *UserTagsUpdate
 	CraRiskLevelUpdatedDetails *CraRiskLevelUpdatedDetails
+	BatchCompletedDetails      *BatchCompletedDetails
 
 	typ string
 }
@@ -20453,6 +20634,10 @@ func NewWebhookEventDataFromUserTagsUpdate(value *UserTagsUpdate) *WebhookEventD
 
 func NewWebhookEventDataFromCraRiskLevelUpdatedDetails(value *CraRiskLevelUpdatedDetails) *WebhookEventData {
 	return &WebhookEventData{typ: "CraRiskLevelUpdatedDetails", CraRiskLevelUpdatedDetails: value}
+}
+
+func NewWebhookEventDataFromBatchCompletedDetails(value *BatchCompletedDetails) *WebhookEventData {
+	return &WebhookEventData{typ: "BatchCompletedDetails", BatchCompletedDetails: value}
 }
 
 func (w *WebhookEventData) GetUserStateDetails() *UserStateDetails {
@@ -20518,6 +20703,13 @@ func (w *WebhookEventData) GetCraRiskLevelUpdatedDetails() *CraRiskLevelUpdatedD
 	return w.CraRiskLevelUpdatedDetails
 }
 
+func (w *WebhookEventData) GetBatchCompletedDetails() *BatchCompletedDetails {
+	if w == nil {
+		return nil
+	}
+	return w.BatchCompletedDetails
+}
+
 func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 	valueUserStateDetails := new(UserStateDetails)
 	if err := json.Unmarshal(data, &valueUserStateDetails); err == nil {
@@ -20573,6 +20765,12 @@ func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 		w.CraRiskLevelUpdatedDetails = valueCraRiskLevelUpdatedDetails
 		return nil
 	}
+	valueBatchCompletedDetails := new(BatchCompletedDetails)
+	if err := json.Unmarshal(data, &valueBatchCompletedDetails); err == nil {
+		w.typ = "BatchCompletedDetails"
+		w.BatchCompletedDetails = valueBatchCompletedDetails
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, w)
 }
 
@@ -20604,6 +20802,9 @@ func (w WebhookEventData) MarshalJSON() ([]byte, error) {
 	if w.typ == "CraRiskLevelUpdatedDetails" || w.CraRiskLevelUpdatedDetails != nil {
 		return json.Marshal(w.CraRiskLevelUpdatedDetails)
 	}
+	if w.typ == "BatchCompletedDetails" || w.BatchCompletedDetails != nil {
+		return json.Marshal(w.BatchCompletedDetails)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", w)
 }
 
@@ -20617,6 +20818,7 @@ type WebhookEventDataVisitor interface {
 	VisitKycStatusDetails(*KycStatusDetails) error
 	VisitUserTagsUpdate(*UserTagsUpdate) error
 	VisitCraRiskLevelUpdatedDetails(*CraRiskLevelUpdatedDetails) error
+	VisitBatchCompletedDetails(*BatchCompletedDetails) error
 }
 
 func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
@@ -20646,6 +20848,9 @@ func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
 	}
 	if w.typ == "CraRiskLevelUpdatedDetails" || w.CraRiskLevelUpdatedDetails != nil {
 		return visitor.VisitCraRiskLevelUpdatedDetails(w.CraRiskLevelUpdatedDetails)
+	}
+	if w.typ == "BatchCompletedDetails" || w.BatchCompletedDetails != nil {
+		return visitor.VisitBatchCompletedDetails(w.BatchCompletedDetails)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", w)
 }
@@ -20692,6 +20897,7 @@ const (
 	WebhookEventTypeAdverseMediaStatusUpdated WebhookEventType = "ADVERSE_MEDIA_STATUS_UPDATED"
 	WebhookEventTypeCaseEscalated             WebhookEventType = "CASE_ESCALATED"
 	WebhookEventTypeAlertEscalated            WebhookEventType = "ALERT_ESCALATED"
+	WebhookEventTypeBatchCompleted            WebhookEventType = "BATCH_COMPLETED"
 )
 
 func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
@@ -20728,6 +20934,8 @@ func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
 		return WebhookEventTypeCaseEscalated, nil
 	case "ALERT_ESCALATED":
 		return WebhookEventTypeAlertEscalated, nil
+	case "BATCH_COMPLETED":
+		return WebhookEventTypeBatchCompleted, nil
 	}
 	var t WebhookEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
