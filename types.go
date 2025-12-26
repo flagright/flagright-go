@@ -20898,6 +20898,8 @@ const (
 	WebhookEventTypeCaseEscalated             WebhookEventType = "CASE_ESCALATED"
 	WebhookEventTypeAlertEscalated            WebhookEventType = "ALERT_ESCALATED"
 	WebhookEventTypeBatchCompleted            WebhookEventType = "BATCH_COMPLETED"
+	WebhookEventTypeCaseInterimStatusUpdate   WebhookEventType = "CASE_INTERIM_STATUS_UPDATE"
+	WebhookEventTypeAlertInterimStatusUpdate  WebhookEventType = "ALERT_INTERIM_STATUS_UPDATE"
 )
 
 func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
@@ -20936,6 +20938,10 @@ func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
 		return WebhookEventTypeAlertEscalated, nil
 	case "BATCH_COMPLETED":
 		return WebhookEventTypeBatchCompleted, nil
+	case "CASE_INTERIM_STATUS_UPDATE":
+		return WebhookEventTypeCaseInterimStatusUpdate, nil
+	case "ALERT_INTERIM_STATUS_UPDATE":
+		return WebhookEventTypeAlertInterimStatusUpdate, nil
 	}
 	var t WebhookEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
