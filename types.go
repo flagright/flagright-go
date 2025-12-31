@@ -11731,6 +11731,9 @@ type LegalEntity struct {
 	ReasonForAccountOpening    []string                    `json:"reasonForAccountOpening,omitempty" url:"reasonForAccountOpening,omitempty"`
 	SourceOfFunds              []SourceOfFunds             `json:"sourceOfFunds,omitempty" url:"sourceOfFunds,omitempty"`
 	ContactDetails             *ContactDetails             `json:"contactDetails,omitempty" url:"contactDetails,omitempty"`
+	// Additional information that can be added via tags
+	Tags      []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	PepStatus []*PepStatus `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -11776,6 +11779,20 @@ func (l *LegalEntity) GetContactDetails() *ContactDetails {
 		return nil
 	}
 	return l.ContactDetails
+}
+
+func (l *LegalEntity) GetTags() []*Tag {
+	if l == nil {
+		return nil
+	}
+	return l.Tags
+}
+
+func (l *LegalEntity) GetPepStatus() []*PepStatus {
+	if l == nil {
+		return nil
+	}
+	return l.PepStatus
 }
 
 func (l *LegalEntity) GetExtraProperties() map[string]interface{} {
