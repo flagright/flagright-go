@@ -655,6 +655,8 @@ type BatchBusinessUserWithRulesResult struct {
 	ShareHolders []*BatchBusinessUserWithRulesResultShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
 	Directors []*Person `json:"directors,omitempty" url:"directors,omitempty"`
+	// Parties associated with the company. Can be another company or an individual
+	AssociatedParties []*BatchBusinessUserWithRulesResultAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
 	// Business partners of the company
 	BusinessPartners      []*LegalEntity     `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
@@ -756,6 +758,13 @@ func (b *BatchBusinessUserWithRulesResult) GetDirectors() []*Person {
 		return nil
 	}
 	return b.Directors
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetAssociatedParties() []*BatchBusinessUserWithRulesResultAssociatedPartiesItem {
+	if b == nil {
+		return nil
+	}
+	return b.AssociatedParties
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetBusinessPartners() []*LegalEntity {
@@ -935,6 +944,76 @@ func (b *BatchBusinessUserWithRulesResult) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type BatchBusinessUserWithRulesResultAssociatedPartiesItem struct {
+	PersonWithRole      *PersonWithRole
+	LegalEntityWithRole *LegalEntityWithRole
+
+	typ string
+}
+
+func NewBatchBusinessUserWithRulesResultAssociatedPartiesItemFromPersonWithRole(value *PersonWithRole) *BatchBusinessUserWithRulesResultAssociatedPartiesItem {
+	return &BatchBusinessUserWithRulesResultAssociatedPartiesItem{typ: "PersonWithRole", PersonWithRole: value}
+}
+
+func NewBatchBusinessUserWithRulesResultAssociatedPartiesItemFromLegalEntityWithRole(value *LegalEntityWithRole) *BatchBusinessUserWithRulesResultAssociatedPartiesItem {
+	return &BatchBusinessUserWithRulesResultAssociatedPartiesItem{typ: "LegalEntityWithRole", LegalEntityWithRole: value}
+}
+
+func (b *BatchBusinessUserWithRulesResultAssociatedPartiesItem) GetPersonWithRole() *PersonWithRole {
+	if b == nil {
+		return nil
+	}
+	return b.PersonWithRole
+}
+
+func (b *BatchBusinessUserWithRulesResultAssociatedPartiesItem) GetLegalEntityWithRole() *LegalEntityWithRole {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntityWithRole
+}
+
+func (b *BatchBusinessUserWithRulesResultAssociatedPartiesItem) UnmarshalJSON(data []byte) error {
+	valuePersonWithRole := new(PersonWithRole)
+	if err := json.Unmarshal(data, &valuePersonWithRole); err == nil {
+		b.typ = "PersonWithRole"
+		b.PersonWithRole = valuePersonWithRole
+		return nil
+	}
+	valueLegalEntityWithRole := new(LegalEntityWithRole)
+	if err := json.Unmarshal(data, &valueLegalEntityWithRole); err == nil {
+		b.typ = "LegalEntityWithRole"
+		b.LegalEntityWithRole = valueLegalEntityWithRole
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, b)
+}
+
+func (b BatchBusinessUserWithRulesResultAssociatedPartiesItem) MarshalJSON() ([]byte, error) {
+	if b.typ == "PersonWithRole" || b.PersonWithRole != nil {
+		return json.Marshal(b.PersonWithRole)
+	}
+	if b.typ == "LegalEntityWithRole" || b.LegalEntityWithRole != nil {
+		return json.Marshal(b.LegalEntityWithRole)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
+type BatchBusinessUserWithRulesResultAssociatedPartiesItemVisitor interface {
+	VisitPersonWithRole(*PersonWithRole) error
+	VisitLegalEntityWithRole(*LegalEntityWithRole) error
+}
+
+func (b *BatchBusinessUserWithRulesResultAssociatedPartiesItem) Accept(visitor BatchBusinessUserWithRulesResultAssociatedPartiesItemVisitor) error {
+	if b.typ == "PersonWithRole" || b.PersonWithRole != nil {
+		return visitor.VisitPersonWithRole(b.PersonWithRole)
+	}
+	if b.typ == "LegalEntityWithRole" || b.LegalEntityWithRole != nil {
+		return visitor.VisitLegalEntityWithRole(b.LegalEntityWithRole)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", b)
 }
 
 type BatchBusinessUserWithRulesResultSavedPaymentDetailsItem struct {
@@ -3501,6 +3580,8 @@ type Business struct {
 	ShareHolders []*BusinessShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
 	Directors []*Person `json:"directors,omitempty" url:"directors,omitempty"`
+	// Parties associated with the company. Can be another company or an individual
+	AssociatedParties []*BusinessAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
 	// Business partners of the company
 	BusinessPartners      []*LegalEntity     `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
@@ -3600,6 +3681,13 @@ func (b *Business) GetDirectors() []*Person {
 		return nil
 	}
 	return b.Directors
+}
+
+func (b *Business) GetAssociatedParties() []*BusinessAssociatedPartiesItem {
+	if b == nil {
+		return nil
+	}
+	return b.AssociatedParties
 }
 
 func (b *Business) GetBusinessPartners() []*LegalEntity {
@@ -3767,6 +3855,76 @@ func (b *Business) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+type BusinessAssociatedPartiesItem struct {
+	PersonWithRole      *PersonWithRole
+	LegalEntityWithRole *LegalEntityWithRole
+
+	typ string
+}
+
+func NewBusinessAssociatedPartiesItemFromPersonWithRole(value *PersonWithRole) *BusinessAssociatedPartiesItem {
+	return &BusinessAssociatedPartiesItem{typ: "PersonWithRole", PersonWithRole: value}
+}
+
+func NewBusinessAssociatedPartiesItemFromLegalEntityWithRole(value *LegalEntityWithRole) *BusinessAssociatedPartiesItem {
+	return &BusinessAssociatedPartiesItem{typ: "LegalEntityWithRole", LegalEntityWithRole: value}
+}
+
+func (b *BusinessAssociatedPartiesItem) GetPersonWithRole() *PersonWithRole {
+	if b == nil {
+		return nil
+	}
+	return b.PersonWithRole
+}
+
+func (b *BusinessAssociatedPartiesItem) GetLegalEntityWithRole() *LegalEntityWithRole {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntityWithRole
+}
+
+func (b *BusinessAssociatedPartiesItem) UnmarshalJSON(data []byte) error {
+	valuePersonWithRole := new(PersonWithRole)
+	if err := json.Unmarshal(data, &valuePersonWithRole); err == nil {
+		b.typ = "PersonWithRole"
+		b.PersonWithRole = valuePersonWithRole
+		return nil
+	}
+	valueLegalEntityWithRole := new(LegalEntityWithRole)
+	if err := json.Unmarshal(data, &valueLegalEntityWithRole); err == nil {
+		b.typ = "LegalEntityWithRole"
+		b.LegalEntityWithRole = valueLegalEntityWithRole
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, b)
+}
+
+func (b BusinessAssociatedPartiesItem) MarshalJSON() ([]byte, error) {
+	if b.typ == "PersonWithRole" || b.PersonWithRole != nil {
+		return json.Marshal(b.PersonWithRole)
+	}
+	if b.typ == "LegalEntityWithRole" || b.LegalEntityWithRole != nil {
+		return json.Marshal(b.LegalEntityWithRole)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
+type BusinessAssociatedPartiesItemVisitor interface {
+	VisitPersonWithRole(*PersonWithRole) error
+	VisitLegalEntityWithRole(*LegalEntityWithRole) error
+}
+
+func (b *BusinessAssociatedPartiesItem) Accept(visitor BusinessAssociatedPartiesItemVisitor) error {
+	if b.typ == "PersonWithRole" || b.PersonWithRole != nil {
+		return visitor.VisitPersonWithRole(b.PersonWithRole)
+	}
+	if b.typ == "LegalEntityWithRole" || b.LegalEntityWithRole != nil {
+		return visitor.VisitLegalEntityWithRole(b.LegalEntityWithRole)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
 // Model for a business user base fields
 type BusinessBase struct {
 	// Unique user ID for the user
@@ -3846,6 +4004,8 @@ type BusinessOptional struct {
 	ShareHolders []*BusinessOptionalShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
 	Directors []*Person `json:"directors,omitempty" url:"directors,omitempty"`
+	// Parties associated with the company. Can be another company or an individual
+	AssociatedParties []*BusinessOptionalAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
 	// Business partners of the company
 	BusinessPartners      []*LegalEntity     `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
@@ -3931,6 +4091,13 @@ func (b *BusinessOptional) GetDirectors() []*Person {
 		return nil
 	}
 	return b.Directors
+}
+
+func (b *BusinessOptional) GetAssociatedParties() []*BusinessOptionalAssociatedPartiesItem {
+	if b == nil {
+		return nil
+	}
+	return b.AssociatedParties
 }
 
 func (b *BusinessOptional) GetBusinessPartners() []*LegalEntity {
@@ -4096,6 +4263,76 @@ func (b *BusinessOptional) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type BusinessOptionalAssociatedPartiesItem struct {
+	PersonWithRole      *PersonWithRole
+	LegalEntityWithRole *LegalEntityWithRole
+
+	typ string
+}
+
+func NewBusinessOptionalAssociatedPartiesItemFromPersonWithRole(value *PersonWithRole) *BusinessOptionalAssociatedPartiesItem {
+	return &BusinessOptionalAssociatedPartiesItem{typ: "PersonWithRole", PersonWithRole: value}
+}
+
+func NewBusinessOptionalAssociatedPartiesItemFromLegalEntityWithRole(value *LegalEntityWithRole) *BusinessOptionalAssociatedPartiesItem {
+	return &BusinessOptionalAssociatedPartiesItem{typ: "LegalEntityWithRole", LegalEntityWithRole: value}
+}
+
+func (b *BusinessOptionalAssociatedPartiesItem) GetPersonWithRole() *PersonWithRole {
+	if b == nil {
+		return nil
+	}
+	return b.PersonWithRole
+}
+
+func (b *BusinessOptionalAssociatedPartiesItem) GetLegalEntityWithRole() *LegalEntityWithRole {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntityWithRole
+}
+
+func (b *BusinessOptionalAssociatedPartiesItem) UnmarshalJSON(data []byte) error {
+	valuePersonWithRole := new(PersonWithRole)
+	if err := json.Unmarshal(data, &valuePersonWithRole); err == nil {
+		b.typ = "PersonWithRole"
+		b.PersonWithRole = valuePersonWithRole
+		return nil
+	}
+	valueLegalEntityWithRole := new(LegalEntityWithRole)
+	if err := json.Unmarshal(data, &valueLegalEntityWithRole); err == nil {
+		b.typ = "LegalEntityWithRole"
+		b.LegalEntityWithRole = valueLegalEntityWithRole
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, b)
+}
+
+func (b BusinessOptionalAssociatedPartiesItem) MarshalJSON() ([]byte, error) {
+	if b.typ == "PersonWithRole" || b.PersonWithRole != nil {
+		return json.Marshal(b.PersonWithRole)
+	}
+	if b.typ == "LegalEntityWithRole" || b.LegalEntityWithRole != nil {
+		return json.Marshal(b.LegalEntityWithRole)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
+type BusinessOptionalAssociatedPartiesItemVisitor interface {
+	VisitPersonWithRole(*PersonWithRole) error
+	VisitLegalEntityWithRole(*LegalEntityWithRole) error
+}
+
+func (b *BusinessOptionalAssociatedPartiesItem) Accept(visitor BusinessOptionalAssociatedPartiesItemVisitor) error {
+	if b.typ == "PersonWithRole" || b.PersonWithRole != nil {
+		return visitor.VisitPersonWithRole(b.PersonWithRole)
+	}
+	if b.typ == "LegalEntityWithRole" || b.LegalEntityWithRole != nil {
+		return visitor.VisitLegalEntityWithRole(b.LegalEntityWithRole)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", b)
 }
 
 type BusinessOptionalSavedPaymentDetailsItem struct {
@@ -5114,6 +5351,8 @@ type BusinessWithRulesResult struct {
 	ShareHolders []*BusinessWithRulesResultShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
 	// Director(s) of the company. Must be at least one
 	Directors []*Person `json:"directors,omitempty" url:"directors,omitempty"`
+	// Parties associated with the company. Can be another company or an individual
+	AssociatedParties []*BusinessWithRulesResultAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
 	// Business partners of the company
 	BusinessPartners      []*LegalEntity     `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
 	TransactionLimits     *TransactionLimits `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
@@ -5216,6 +5455,13 @@ func (b *BusinessWithRulesResult) GetDirectors() []*Person {
 		return nil
 	}
 	return b.Directors
+}
+
+func (b *BusinessWithRulesResult) GetAssociatedParties() []*BusinessWithRulesResultAssociatedPartiesItem {
+	if b == nil {
+		return nil
+	}
+	return b.AssociatedParties
 }
 
 func (b *BusinessWithRulesResult) GetBusinessPartners() []*LegalEntity {
@@ -5402,6 +5648,76 @@ func (b *BusinessWithRulesResult) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
+}
+
+type BusinessWithRulesResultAssociatedPartiesItem struct {
+	PersonWithRole      *PersonWithRole
+	LegalEntityWithRole *LegalEntityWithRole
+
+	typ string
+}
+
+func NewBusinessWithRulesResultAssociatedPartiesItemFromPersonWithRole(value *PersonWithRole) *BusinessWithRulesResultAssociatedPartiesItem {
+	return &BusinessWithRulesResultAssociatedPartiesItem{typ: "PersonWithRole", PersonWithRole: value}
+}
+
+func NewBusinessWithRulesResultAssociatedPartiesItemFromLegalEntityWithRole(value *LegalEntityWithRole) *BusinessWithRulesResultAssociatedPartiesItem {
+	return &BusinessWithRulesResultAssociatedPartiesItem{typ: "LegalEntityWithRole", LegalEntityWithRole: value}
+}
+
+func (b *BusinessWithRulesResultAssociatedPartiesItem) GetPersonWithRole() *PersonWithRole {
+	if b == nil {
+		return nil
+	}
+	return b.PersonWithRole
+}
+
+func (b *BusinessWithRulesResultAssociatedPartiesItem) GetLegalEntityWithRole() *LegalEntityWithRole {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntityWithRole
+}
+
+func (b *BusinessWithRulesResultAssociatedPartiesItem) UnmarshalJSON(data []byte) error {
+	valuePersonWithRole := new(PersonWithRole)
+	if err := json.Unmarshal(data, &valuePersonWithRole); err == nil {
+		b.typ = "PersonWithRole"
+		b.PersonWithRole = valuePersonWithRole
+		return nil
+	}
+	valueLegalEntityWithRole := new(LegalEntityWithRole)
+	if err := json.Unmarshal(data, &valueLegalEntityWithRole); err == nil {
+		b.typ = "LegalEntityWithRole"
+		b.LegalEntityWithRole = valueLegalEntityWithRole
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, b)
+}
+
+func (b BusinessWithRulesResultAssociatedPartiesItem) MarshalJSON() ([]byte, error) {
+	if b.typ == "PersonWithRole" || b.PersonWithRole != nil {
+		return json.Marshal(b.PersonWithRole)
+	}
+	if b.typ == "LegalEntityWithRole" || b.LegalEntityWithRole != nil {
+		return json.Marshal(b.LegalEntityWithRole)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
+type BusinessWithRulesResultAssociatedPartiesItemVisitor interface {
+	VisitPersonWithRole(*PersonWithRole) error
+	VisitLegalEntityWithRole(*LegalEntityWithRole) error
+}
+
+func (b *BusinessWithRulesResultAssociatedPartiesItem) Accept(visitor BusinessWithRulesResultAssociatedPartiesItemVisitor) error {
+	if b.typ == "PersonWithRole" || b.PersonWithRole != nil {
+		return visitor.VisitPersonWithRole(b.PersonWithRole)
+	}
+	if b.typ == "LegalEntityWithRole" || b.LegalEntityWithRole != nil {
+		return visitor.VisitLegalEntityWithRole(b.LegalEntityWithRole)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", b)
 }
 
 type BusinessWithRulesResultSavedPaymentDetailsItem struct {
@@ -11827,6 +12143,117 @@ func (l *LegalEntity) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
+type LegalEntityWithRole struct {
+	CompanyGeneralDetails      *CompanyGeneralDetails      `json:"companyGeneralDetails,omitempty" url:"companyGeneralDetails,omitempty"`
+	CompanyFinancialDetails    *CompanyFinancialDetails    `json:"companyFinancialDetails,omitempty" url:"companyFinancialDetails,omitempty"`
+	CompanyRegistrationDetails *CompanyRegistrationDetails `json:"companyRegistrationDetails,omitempty" url:"companyRegistrationDetails,omitempty"`
+	ReasonForAccountOpening    []string                    `json:"reasonForAccountOpening,omitempty" url:"reasonForAccountOpening,omitempty"`
+	SourceOfFunds              []SourceOfFunds             `json:"sourceOfFunds,omitempty" url:"sourceOfFunds,omitempty"`
+	ContactDetails             *ContactDetails             `json:"contactDetails,omitempty" url:"contactDetails,omitempty"`
+	// Additional information that can be added via tags
+	Tags      []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	PepStatus []*PepStatus `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	Role      string       `json:"role" url:"role"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *LegalEntityWithRole) GetCompanyGeneralDetails() *CompanyGeneralDetails {
+	if l == nil {
+		return nil
+	}
+	return l.CompanyGeneralDetails
+}
+
+func (l *LegalEntityWithRole) GetCompanyFinancialDetails() *CompanyFinancialDetails {
+	if l == nil {
+		return nil
+	}
+	return l.CompanyFinancialDetails
+}
+
+func (l *LegalEntityWithRole) GetCompanyRegistrationDetails() *CompanyRegistrationDetails {
+	if l == nil {
+		return nil
+	}
+	return l.CompanyRegistrationDetails
+}
+
+func (l *LegalEntityWithRole) GetReasonForAccountOpening() []string {
+	if l == nil {
+		return nil
+	}
+	return l.ReasonForAccountOpening
+}
+
+func (l *LegalEntityWithRole) GetSourceOfFunds() []SourceOfFunds {
+	if l == nil {
+		return nil
+	}
+	return l.SourceOfFunds
+}
+
+func (l *LegalEntityWithRole) GetContactDetails() *ContactDetails {
+	if l == nil {
+		return nil
+	}
+	return l.ContactDetails
+}
+
+func (l *LegalEntityWithRole) GetTags() []*Tag {
+	if l == nil {
+		return nil
+	}
+	return l.Tags
+}
+
+func (l *LegalEntityWithRole) GetPepStatus() []*PepStatus {
+	if l == nil {
+		return nil
+	}
+	return l.PepStatus
+}
+
+func (l *LegalEntityWithRole) GetRole() string {
+	if l == nil {
+		return ""
+	}
+	return l.Role
+}
+
+func (l *LegalEntityWithRole) GetExtraProperties() map[string]interface{} {
+	return l.extraProperties
+}
+
+func (l *LegalEntityWithRole) UnmarshalJSON(data []byte) error {
+	type unmarshaler LegalEntityWithRole
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LegalEntityWithRole(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LegalEntityWithRole) String() string {
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
 // Payload of a list, new or existed
 type ListData struct {
 	Metadata *ListMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
@@ -13414,6 +13841,112 @@ func (p *PersonAttachment) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+type PersonWithRole struct {
+	// Unique user ID for the person
+	UserId         *string      `json:"userId,omitempty" url:"userId,omitempty"`
+	GeneralDetails *UserDetails `json:"generalDetails,omitempty" url:"generalDetails,omitempty"`
+	// User's legal identity documents - See Document Model for details
+	LegalDocuments []*LegalDocument `json:"legalDocuments,omitempty" url:"legalDocuments,omitempty"`
+	ContactDetails *ContactDetails  `json:"contactDetails,omitempty" url:"contactDetails,omitempty"`
+	PepStatus      []*PepStatus     `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	// User's attachments uploaded by business user
+	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	Role        string              `json:"role" url:"role"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PersonWithRole) GetUserId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.UserId
+}
+
+func (p *PersonWithRole) GetGeneralDetails() *UserDetails {
+	if p == nil {
+		return nil
+	}
+	return p.GeneralDetails
+}
+
+func (p *PersonWithRole) GetLegalDocuments() []*LegalDocument {
+	if p == nil {
+		return nil
+	}
+	return p.LegalDocuments
+}
+
+func (p *PersonWithRole) GetContactDetails() *ContactDetails {
+	if p == nil {
+		return nil
+	}
+	return p.ContactDetails
+}
+
+func (p *PersonWithRole) GetPepStatus() []*PepStatus {
+	if p == nil {
+		return nil
+	}
+	return p.PepStatus
+}
+
+func (p *PersonWithRole) GetTags() []*Tag {
+	if p == nil {
+		return nil
+	}
+	return p.Tags
+}
+
+func (p *PersonWithRole) GetAttachments() []*PersonAttachment {
+	if p == nil {
+		return nil
+	}
+	return p.Attachments
+}
+
+func (p *PersonWithRole) GetRole() string {
+	if p == nil {
+		return ""
+	}
+	return p.Role
+}
+
+func (p *PersonWithRole) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PersonWithRole) UnmarshalJSON(data []byte) error {
+	type unmarshaler PersonWithRole
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PersonWithRole(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PersonWithRole) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 // Place of birth of the individual
 type PlaceOfBirth struct {
 	City    *string     `json:"city,omitempty" url:"city,omitempty"`
@@ -14271,6 +14804,8 @@ const (
 	SanctionsDetailsEntityTypePaymentBeneficiaryName SanctionsDetailsEntityType = "PAYMENT_BENEFICIARY_NAME"
 	SanctionsDetailsEntityTypeBankName               SanctionsDetailsEntityType = "BANK_NAME"
 	SanctionsDetailsEntityTypeBankAccountHolderName  SanctionsDetailsEntityType = "BANK_ACCOUNT_HOLDER_NAME"
+	SanctionsDetailsEntityTypeBusinessPartner        SanctionsDetailsEntityType = "BUSINESS_PARTNER"
+	SanctionsDetailsEntityTypeAssociatedParty        SanctionsDetailsEntityType = "ASSOCIATED_PARTY"
 )
 
 func NewSanctionsDetailsEntityTypeFromString(s string) (SanctionsDetailsEntityType, error) {
@@ -14293,6 +14828,10 @@ func NewSanctionsDetailsEntityTypeFromString(s string) (SanctionsDetailsEntityTy
 		return SanctionsDetailsEntityTypeBankName, nil
 	case "BANK_ACCOUNT_HOLDER_NAME":
 		return SanctionsDetailsEntityTypeBankAccountHolderName, nil
+	case "BUSINESS_PARTNER":
+		return SanctionsDetailsEntityTypeBusinessPartner, nil
+	case "ASSOCIATED_PARTY":
+		return SanctionsDetailsEntityTypeAssociatedParty, nil
 	}
 	var t SanctionsDetailsEntityType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
