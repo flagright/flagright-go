@@ -31,7 +31,7 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
-// Conflict
+// Too Many Transaction Events
 type ConflictError struct {
 	*core.APIError
 	Body *ApiErrorResponse
