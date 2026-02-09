@@ -416,6 +416,69 @@ func (c *Client) GetConsumerUsers(
 	return response, nil
 }
 
+func (c *Client) CreateBusinessUsers(
+	ctx context.Context,
+	request *flagrightgo.BusinessBatchRequest,
+	opts ...option.RequestOption,
+) (*flagrightgo.BatchResponse, error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		c.baseURL,
+		"https://sandbox.api.flagright.com",
+	)
+	endpointURL := baseURL + "/batch/business/users"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		c.header.Clone(),
+		options.ToHeader(),
+	)
+	headers.Set("Content-Type", "application/json")
+	errorCodes := internal.ErrorCodes{
+		400: func(apiError *core.APIError) error {
+			return &flagrightgo.BadRequestError{
+				APIError: apiError,
+			}
+		},
+		401: func(apiError *core.APIError) error {
+			return &flagrightgo.UnauthorizedError{
+				APIError: apiError,
+			}
+		},
+		429: func(apiError *core.APIError) error {
+			return &flagrightgo.TooManyRequestsError{
+				APIError: apiError,
+			}
+		},
+	}
+
+	var response *flagrightgo.BatchResponse
+	if err := c.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (c *Client) GetBusinessUsers(
 	ctx context.Context,
 	// Unique Batch Identifier
@@ -482,9 +545,9 @@ func (c *Client) GetBusinessUsers(
 	return response, nil
 }
 
-func (c *Client) CreateBusinessUsers(
+func (c *Client) CreateConsumerUserEvents(
 	ctx context.Context,
-	request *flagrightgo.BusinessBatchRequest,
+	request *flagrightgo.ConsumerUserEventBatchRequest,
 	opts ...option.RequestOption,
 ) (*flagrightgo.BatchResponse, error) {
 	options := core.NewRequestOptions(opts...)
@@ -493,7 +556,7 @@ func (c *Client) CreateBusinessUsers(
 		c.baseURL,
 		"https://sandbox.api.flagright.com",
 	)
-	endpointURL := baseURL + "/batch/business/users"
+	endpointURL := baseURL + "/batch/events/consumer/user"
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
 		return nil, err
@@ -611,6 +674,69 @@ func (c *Client) GetConsumerUserEvents(
 	return response, nil
 }
 
+func (c *Client) CreateBusinessUserEvents(
+	ctx context.Context,
+	request *flagrightgo.BusinessUserEventBatchRequest,
+	opts ...option.RequestOption,
+) (*flagrightgo.BatchResponse, error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		c.baseURL,
+		"https://sandbox.api.flagright.com",
+	)
+	endpointURL := baseURL + "/batch/events/business/user"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		c.header.Clone(),
+		options.ToHeader(),
+	)
+	headers.Set("Content-Type", "application/json")
+	errorCodes := internal.ErrorCodes{
+		400: func(apiError *core.APIError) error {
+			return &flagrightgo.BadRequestError{
+				APIError: apiError,
+			}
+		},
+		401: func(apiError *core.APIError) error {
+			return &flagrightgo.UnauthorizedError{
+				APIError: apiError,
+			}
+		},
+		429: func(apiError *core.APIError) error {
+			return &flagrightgo.TooManyRequestsError{
+				APIError: apiError,
+			}
+		},
+	}
+
+	var response *flagrightgo.BatchResponse
+	if err := c.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		},
+	); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (c *Client) GetBusinessUserEvents(
 	ctx context.Context,
 	// Unique Batch Identifier
@@ -668,132 +794,6 @@ func (c *Client) GetBusinessUserEvents(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
-		},
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
-func (c *Client) CreateConsumerUserEvents(
-	ctx context.Context,
-	request *flagrightgo.ConsumerUserEventBatchRequest,
-	opts ...option.RequestOption,
-) (*flagrightgo.BatchResponse, error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://sandbox.api.flagright.com",
-	)
-	endpointURL := baseURL + "/batch/events/consumer/user"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &flagrightgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &flagrightgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		429: func(apiError *core.APIError) error {
-			return &flagrightgo.TooManyRequestsError{
-				APIError: apiError,
-			}
-		},
-	}
-
-	var response *flagrightgo.BatchResponse
-	if err := c.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
-		},
-	); err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
-func (c *Client) CreateBusinessUserEvents(
-	ctx context.Context,
-	request *flagrightgo.BusinessUserEventBatchRequest,
-	opts ...option.RequestOption,
-) (*flagrightgo.BatchResponse, error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		c.baseURL,
-		"https://sandbox.api.flagright.com",
-	)
-	endpointURL := baseURL + "/batch/events/business/user"
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-	headers := internal.MergeHeaders(
-		c.header.Clone(),
-		options.ToHeader(),
-	)
-	headers.Set("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &flagrightgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &flagrightgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		429: func(apiError *core.APIError) error {
-			return &flagrightgo.TooManyRequestsError{
-				APIError: apiError,
-			}
-		},
-	}
-
-	var response *flagrightgo.BatchResponse
-	if err := c.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
 			Response:        &response,
 			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
 		},

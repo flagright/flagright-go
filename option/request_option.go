@@ -69,3 +69,10 @@ func WithApiKey(apiKey string) *core.ApiKeyOption {
 		ApiKey: apiKey,
 	}
 }
+
+// WithAuthorization sets the authorization request header.
+func WithAuthorization(authorization string) *core.AuthorizationOption {
+	return &core.AuthorizationOption{
+		Authorization: authorization,
+	}
+}
