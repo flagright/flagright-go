@@ -103,7 +103,6 @@ type BatchBusinessUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedBusinessUserAttributes *BusinessOptional      `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
-	UpdateCount                   *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -151,13 +150,6 @@ func (b *BatchBusinessUserEventWithRulesResult) GetUpdatedBusinessUserAttributes
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
-}
-
-func (b *BatchBusinessUserEventWithRulesResult) GetUpdateCount() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.UpdateCount
 }
 
 func (b *BatchBusinessUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -280,18 +272,16 @@ type BatchBusinessUserWithRulesResult struct {
 	// Parties associated with the company. Can be another company or an individual
 	AssociatedParties []*BatchBusinessUserWithRulesResultAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
 	// Business partners of the company
-	BusinessPartners             []*LegalEntity                `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
-	TransactionLimits            *TransactionLimits            `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
-	ExpectedTransactionCountries *ExpectedTransactionCountries `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
-	RiskLevel                    *RiskLevel                    `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
-	KycRiskLevel                 *RiskLevel                    `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
-	AllowedPaymentMethods        []PaymentMethod               `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
-	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64                                                   `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
-	LinkedEntities           *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
-	AcquisitionChannel       *AcquisitionChannel                                        `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
-	SavedPaymentDetails      []*BatchBusinessUserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
-	MccDetails               *MccDetails                                                `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
+	BusinessPartners             []*LegalEntity                                             `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
+	TransactionLimits            *TransactionLimits                                         `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	ExpectedTransactionCountries *ExpectedTransactionCountries                              `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
+	RiskLevel                    *RiskLevel                                                 `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel                 *RiskLevel                                                 `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AllowedPaymentMethods        []PaymentMethod                                            `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
+	LinkedEntities               *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	AcquisitionChannel           *AcquisitionChannel                                        `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	SavedPaymentDetails          []*BatchBusinessUserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	MccDetails                   *MccDetails                                                `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
@@ -299,7 +289,6 @@ type BatchBusinessUserWithRulesResult struct {
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	PepStatus       []*PepStatus       `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
 	// Whether the user is sanctioned
@@ -432,13 +421,6 @@ func (b *BatchBusinessUserWithRulesResult) GetAllowedPaymentMethods() []PaymentM
 	return b.AllowedPaymentMethods
 }
 
-func (b *BatchBusinessUserWithRulesResult) GetLastTransactionTimestamp() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.LastTransactionTimestamp
-}
-
 func (b *BatchBusinessUserWithRulesResult) GetLinkedEntities() *UserEntityLink {
 	if b == nil {
 		return nil
@@ -493,13 +475,6 @@ func (b *BatchBusinessUserWithRulesResult) GetJurisdiction() *string {
 		return nil
 	}
 	return b.Jurisdiction
-}
-
-func (b *BatchBusinessUserWithRulesResult) GetUpdateCount() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.UpdateCount
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
@@ -1213,7 +1188,6 @@ type BatchConsumerUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedConsumerUserAttributes *UserOptional          `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
-	UpdateCount                   *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -1261,13 +1235,6 @@ func (b *BatchConsumerUserEventWithRulesResult) GetUpdatedConsumerUserAttributes
 		return nil
 	}
 	return b.UpdatedConsumerUserAttributes
-}
-
-func (b *BatchConsumerUserEventWithRulesResult) GetUpdateCount() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.UpdateCount
 }
 
 func (b *BatchConsumerUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -1399,8 +1366,6 @@ type BatchConsumerUserWithRulesResult struct {
 	PepStatus                    []*PepStatus                  `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
 	SanctionsStatus              *SanctionsStatus              `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	AdverseMediaStatus           *AdverseMediaStatus           `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
-	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64 `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
 	// Corporate entities of the user
 	CorporateEntities   []*CorporateEntityDetails                                  `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	LinkedEntities      *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
@@ -1412,7 +1377,6 @@ type BatchConsumerUserWithRulesResult struct {
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -1589,13 +1553,6 @@ func (b *BatchConsumerUserWithRulesResult) GetAdverseMediaStatus() *AdverseMedia
 	return b.AdverseMediaStatus
 }
 
-func (b *BatchConsumerUserWithRulesResult) GetLastTransactionTimestamp() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.LastTransactionTimestamp
-}
-
 func (b *BatchConsumerUserWithRulesResult) GetCorporateEntities() []*CorporateEntityDetails {
 	if b == nil {
 		return nil
@@ -1643,13 +1600,6 @@ func (b *BatchConsumerUserWithRulesResult) GetJurisdiction() *string {
 		return nil
 	}
 	return b.Jurisdiction
-}
-
-func (b *BatchConsumerUserWithRulesResult) GetUpdateCount() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.UpdateCount
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
@@ -2302,7 +2252,6 @@ type BatchTransactionEventMonitoringResult struct {
 	EventDescription             *string                       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedTransactionAttributes *TransactionUpdatable         `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
 	MetaData                     *DeviceData                   `json:"metaData,omitempty" url:"metaData,omitempty"`
-	UpdateCount                  *float64                      `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	HitRules                     []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	Status                       *RuleAction                   `json:"status,omitempty" url:"status,omitempty"`
 	RiskScoreDetails             *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -2365,13 +2314,6 @@ func (b *BatchTransactionEventMonitoringResult) GetMetaData() *DeviceData {
 		return nil
 	}
 	return b.MetaData
-}
-
-func (b *BatchTransactionEventMonitoringResult) GetUpdateCount() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.UpdateCount
 }
 
 func (b *BatchTransactionEventMonitoringResult) GetHitRules() []*HitRulesDetails {

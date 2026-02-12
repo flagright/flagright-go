@@ -122,13 +122,11 @@ type TransactionWithRulesResult struct {
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction             *string                       `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount              *float64                      `json:"updateCount,omitempty" url:"updateCount,omitempty"`
-	PaymentApprovalTimestamp *float64                      `json:"paymentApprovalTimestamp,omitempty" url:"paymentApprovalTimestamp,omitempty"`
-	ExecutedRules            []*ExecutedRulesResult        `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	HitRules                 []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
-	Status                   RuleAction                    `json:"status" url:"status"`
-	RiskScoreDetails         *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	Jurisdiction     *string                       `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult        `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	HitRules         []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	Status           RuleAction                    `json:"status" url:"status"`
+	RiskScoreDetails *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -279,20 +277,6 @@ func (t *TransactionWithRulesResult) GetJurisdiction() *string {
 		return nil
 	}
 	return t.Jurisdiction
-}
-
-func (t *TransactionWithRulesResult) GetUpdateCount() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.UpdateCount
-}
-
-func (t *TransactionWithRulesResult) GetPaymentApprovalTimestamp() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.PaymentApprovalTimestamp
 }
 
 func (t *TransactionWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

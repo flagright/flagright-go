@@ -43,7 +43,6 @@ type ConsumerUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedConsumerUserAttributes *UserOptional          `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
-	UpdateCount                   *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules                      []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -92,13 +91,6 @@ func (c *ConsumerUserEventWithRulesResult) GetUpdatedConsumerUserAttributes() *U
 		return nil
 	}
 	return c.UpdatedConsumerUserAttributes
-}
-
-func (c *ConsumerUserEventWithRulesResult) GetUpdateCount() *float64 {
-	if c == nil {
-		return nil
-	}
-	return c.UpdateCount
 }
 
 func (c *ConsumerUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

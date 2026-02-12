@@ -110,7 +110,6 @@ type TransactionEventWithRulesResult struct {
 	EventDescription             *string                       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedTransactionAttributes *TransactionUpdatable         `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
 	MetaData                     *DeviceData                   `json:"metaData,omitempty" url:"metaData,omitempty"`
-	UpdateCount                  *float64                      `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ExecutedRules                []*ExecutedRulesResult        `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules                     []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	Status                       *RuleAction                   `json:"status,omitempty" url:"status,omitempty"`
@@ -174,13 +173,6 @@ func (t *TransactionEventWithRulesResult) GetMetaData() *DeviceData {
 		return nil
 	}
 	return t.MetaData
-}
-
-func (t *TransactionEventWithRulesResult) GetUpdateCount() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.UpdateCount
 }
 
 func (t *TransactionEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

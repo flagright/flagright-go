@@ -1498,18 +1498,16 @@ type Business struct {
 	// Parties associated with the company. Can be another company or an individual
 	AssociatedParties []*BusinessAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
 	// Business partners of the company
-	BusinessPartners             []*LegalEntity                `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
-	TransactionLimits            *TransactionLimits            `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
-	ExpectedTransactionCountries *ExpectedTransactionCountries `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
-	RiskLevel                    *RiskLevel                    `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
-	KycRiskLevel                 *RiskLevel                    `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
-	AllowedPaymentMethods        []PaymentMethod               `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
-	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64                           `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
-	LinkedEntities           *UserEntityLink                    `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
-	AcquisitionChannel       *AcquisitionChannel                `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
-	SavedPaymentDetails      []*BusinessSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
-	MccDetails               *MccDetails                        `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
+	BusinessPartners             []*LegalEntity                     `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
+	TransactionLimits            *TransactionLimits                 `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	ExpectedTransactionCountries *ExpectedTransactionCountries      `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
+	RiskLevel                    *RiskLevel                         `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel                 *RiskLevel                         `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AllowedPaymentMethods        []PaymentMethod                    `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
+	LinkedEntities               *UserEntityLink                    `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	AcquisitionChannel           *AcquisitionChannel                `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	SavedPaymentDetails          []*BusinessSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	MccDetails                   *MccDetails                        `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
@@ -1517,7 +1515,6 @@ type Business struct {
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	PepStatus       []*PepStatus       `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
 	// Whether the user is sanctioned
@@ -1648,13 +1645,6 @@ func (b *Business) GetAllowedPaymentMethods() []PaymentMethod {
 	return b.AllowedPaymentMethods
 }
 
-func (b *Business) GetLastTransactionTimestamp() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.LastTransactionTimestamp
-}
-
 func (b *Business) GetLinkedEntities() *UserEntityLink {
 	if b == nil {
 		return nil
@@ -1709,13 +1699,6 @@ func (b *Business) GetJurisdiction() *string {
 		return nil
 	}
 	return b.Jurisdiction
-}
-
-func (b *Business) GetUpdateCount() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.UpdateCount
 }
 
 func (b *Business) GetProductsEnabled() []*ProductsEnabled {
@@ -2000,18 +1983,16 @@ type BusinessOptional struct {
 	// Parties associated with the company. Can be another company or an individual
 	AssociatedParties []*BusinessOptionalAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
 	// Business partners of the company
-	BusinessPartners             []*LegalEntity                `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
-	TransactionLimits            *TransactionLimits            `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
-	ExpectedTransactionCountries *ExpectedTransactionCountries `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
-	RiskLevel                    *RiskLevel                    `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
-	KycRiskLevel                 *RiskLevel                    `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
-	AllowedPaymentMethods        []PaymentMethod               `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
-	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64                                   `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
-	LinkedEntities           *UserEntityLink                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
-	AcquisitionChannel       *AcquisitionChannel                        `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
-	SavedPaymentDetails      []*BusinessOptionalSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
-	MccDetails               *MccDetails                                `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
+	BusinessPartners             []*LegalEntity                             `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
+	TransactionLimits            *TransactionLimits                         `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	ExpectedTransactionCountries *ExpectedTransactionCountries              `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
+	RiskLevel                    *RiskLevel                                 `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel                 *RiskLevel                                 `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AllowedPaymentMethods        []PaymentMethod                            `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
+	LinkedEntities               *UserEntityLink                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	AcquisitionChannel           *AcquisitionChannel                        `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	SavedPaymentDetails          []*BusinessOptionalSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	MccDetails                   *MccDetails                                `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
@@ -2019,7 +2000,6 @@ type BusinessOptional struct {
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	PepStatus       []*PepStatus       `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
 	// Whether the user is sanctioned
@@ -2136,13 +2116,6 @@ func (b *BusinessOptional) GetAllowedPaymentMethods() []PaymentMethod {
 	return b.AllowedPaymentMethods
 }
 
-func (b *BusinessOptional) GetLastTransactionTimestamp() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.LastTransactionTimestamp
-}
-
 func (b *BusinessOptional) GetLinkedEntities() *UserEntityLink {
 	if b == nil {
 		return nil
@@ -2197,13 +2170,6 @@ func (b *BusinessOptional) GetJurisdiction() *string {
 		return nil
 	}
 	return b.Jurisdiction
-}
-
-func (b *BusinessOptional) GetUpdateCount() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.UpdateCount
 }
 
 func (b *BusinessOptional) GetProductsEnabled() []*ProductsEnabled {
@@ -3281,7 +3247,6 @@ type BusinessUserEvent struct {
 	// Event description
 	EventDescription              *string           `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedBusinessUserAttributes *BusinessOptional `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
-	UpdateCount                   *float64          `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3327,13 +3292,6 @@ func (b *BusinessUserEvent) GetUpdatedBusinessUserAttributes() *BusinessOptional
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
-}
-
-func (b *BusinessUserEvent) GetUpdateCount() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.UpdateCount
 }
 
 func (b *BusinessUserEvent) GetExtraProperties() map[string]interface{} {
@@ -3425,18 +3383,16 @@ type BusinessWithRulesResult struct {
 	// Parties associated with the company. Can be another company or an individual
 	AssociatedParties []*BusinessWithRulesResultAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
 	// Business partners of the company
-	BusinessPartners             []*LegalEntity                `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
-	TransactionLimits            *TransactionLimits            `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
-	ExpectedTransactionCountries *ExpectedTransactionCountries `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
-	RiskLevel                    *RiskLevel                    `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
-	KycRiskLevel                 *RiskLevel                    `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
-	AllowedPaymentMethods        []PaymentMethod               `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
-	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64                                          `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
-	LinkedEntities           *UserEntityLink                                   `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
-	AcquisitionChannel       *AcquisitionChannel                               `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
-	SavedPaymentDetails      []*BusinessWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
-	MccDetails               *MccDetails                                       `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
+	BusinessPartners             []*LegalEntity                                    `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
+	TransactionLimits            *TransactionLimits                                `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	ExpectedTransactionCountries *ExpectedTransactionCountries                     `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
+	RiskLevel                    *RiskLevel                                        `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel                 *RiskLevel                                        `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AllowedPaymentMethods        []PaymentMethod                                   `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
+	LinkedEntities               *UserEntityLink                                   `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	AcquisitionChannel           *AcquisitionChannel                               `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	SavedPaymentDetails          []*BusinessWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	MccDetails                   *MccDetails                                       `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
@@ -3444,7 +3400,6 @@ type BusinessWithRulesResult struct {
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	PepStatus       []*PepStatus       `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
 	// Whether the user is sanctioned
@@ -3578,13 +3533,6 @@ func (b *BusinessWithRulesResult) GetAllowedPaymentMethods() []PaymentMethod {
 	return b.AllowedPaymentMethods
 }
 
-func (b *BusinessWithRulesResult) GetLastTransactionTimestamp() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.LastTransactionTimestamp
-}
-
 func (b *BusinessWithRulesResult) GetLinkedEntities() *UserEntityLink {
 	if b == nil {
 		return nil
@@ -3639,13 +3587,6 @@ func (b *BusinessWithRulesResult) GetJurisdiction() *string {
 		return nil
 	}
 	return b.Jurisdiction
-}
-
-func (b *BusinessWithRulesResult) GetUpdateCount() *float64 {
-	if b == nil {
-		return nil
-	}
-	return b.UpdateCount
 }
 
 func (b *BusinessWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
@@ -5864,7 +5805,6 @@ type ConsumerUserEvent struct {
 	// Event description
 	EventDescription              *string       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedConsumerUserAttributes *UserOptional `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
-	UpdateCount                   *float64      `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5910,13 +5850,6 @@ func (c *ConsumerUserEvent) GetUpdatedConsumerUserAttributes() *UserOptional {
 		return nil
 	}
 	return c.UpdatedConsumerUserAttributes
-}
-
-func (c *ConsumerUserEvent) GetUpdateCount() *float64 {
-	if c == nil {
-		return nil
-	}
-	return c.UpdateCount
 }
 
 func (c *ConsumerUserEvent) GetExtraProperties() map[string]interface{} {
@@ -7252,6 +7185,7 @@ const (
 	CurrencyCodeHrk       CurrencyCode = "HRK"
 	CurrencyCodeHtg       CurrencyCode = "HTG"
 	CurrencyCodeHuf       CurrencyCode = "HUF"
+	CurrencyCodeHype      CurrencyCode = "HYPE"
 	CurrencyCodeIcp       CurrencyCode = "ICP"
 	CurrencyCodeIdex      CurrencyCode = "IDEX"
 	CurrencyCodeIdr       CurrencyCode = "IDR"
@@ -7952,6 +7886,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeHtg, nil
 	case "HUF":
 		return CurrencyCodeHuf, nil
+	case "HYPE":
+		return CurrencyCodeHype, nil
 	case "ICP":
 		return CurrencyCodeIcp, nil
 	case "IDEX":
@@ -9055,13 +8991,12 @@ type ExecutedRulesResult struct {
 	RuleHit         bool       `json:"ruleHit" url:"ruleHit"`
 	VersionId       *string    `json:"versionId,omitempty" url:"versionId,omitempty"`
 	// Timestamp when the rule was executed
-	ExecutedAt       *float64                         `json:"executedAt,omitempty" url:"executedAt,omitempty"`
-	RuleHitMeta      *RuleHitMeta                     `json:"ruleHitMeta,omitempty" url:"ruleHitMeta,omitempty"`
-	Vars             []*ExecutedLogicVars             `json:"vars,omitempty" url:"vars,omitempty"`
-	Labels           []RuleLabels                     `json:"labels,omitempty" url:"labels,omitempty"`
-	Nature           *RuleNature                      `json:"nature,omitempty" url:"nature,omitempty"`
-	IsShadow         *bool                            `json:"isShadow,omitempty" url:"isShadow,omitempty"`
-	SanctionsDetails []*RuleExecutionSanctionsDetails `json:"sanctionsDetails,omitempty" url:"sanctionsDetails,omitempty"`
+	ExecutedAt  *float64             `json:"executedAt,omitempty" url:"executedAt,omitempty"`
+	RuleHitMeta *RuleHitMeta         `json:"ruleHitMeta,omitempty" url:"ruleHitMeta,omitempty"`
+	Vars        []*ExecutedLogicVars `json:"vars,omitempty" url:"vars,omitempty"`
+	Labels      []RuleLabels         `json:"labels,omitempty" url:"labels,omitempty"`
+	Nature      *RuleNature          `json:"nature,omitempty" url:"nature,omitempty"`
+	IsShadow    *bool                `json:"isShadow,omitempty" url:"isShadow,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -9156,13 +9091,6 @@ func (e *ExecutedRulesResult) GetIsShadow() *bool {
 		return nil
 	}
 	return e.IsShadow
-}
-
-func (e *ExecutedRulesResult) GetSanctionsDetails() []*RuleExecutionSanctionsDetails {
-	if e == nil {
-		return nil
-	}
-	return e.SanctionsDetails
 }
 
 func (e *ExecutedRulesResult) GetExtraProperties() map[string]interface{} {
@@ -13545,9 +13473,7 @@ type Transaction struct {
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction             *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount              *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
-	PaymentApprovalTimestamp *float64 `json:"paymentApprovalTimestamp,omitempty" url:"paymentApprovalTimestamp,omitempty"`
+	Jurisdiction *string `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -13698,20 +13624,6 @@ func (t *Transaction) GetJurisdiction() *string {
 		return nil
 	}
 	return t.Jurisdiction
-}
-
-func (t *Transaction) GetUpdateCount() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.UpdateCount
-}
-
-func (t *Transaction) GetPaymentApprovalTimestamp() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.PaymentApprovalTimestamp
 }
 
 func (t *Transaction) GetExtraProperties() map[string]interface{} {
@@ -14418,7 +14330,6 @@ type TransactionEvent struct {
 	EventDescription             *string               `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedTransactionAttributes *TransactionUpdatable `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
 	MetaData                     *DeviceData           `json:"metaData,omitempty" url:"metaData,omitempty"`
-	UpdateCount                  *float64              `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -14478,13 +14389,6 @@ func (t *TransactionEvent) GetMetaData() *DeviceData {
 		return nil
 	}
 	return t.MetaData
-}
-
-func (t *TransactionEvent) GetUpdateCount() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.UpdateCount
 }
 
 func (t *TransactionEvent) GetExtraProperties() map[string]interface{} {
@@ -15447,9 +15351,7 @@ type TransactionUpdatable struct {
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction             *string  `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount              *float64 `json:"updateCount,omitempty" url:"updateCount,omitempty"`
-	PaymentApprovalTimestamp *float64 `json:"paymentApprovalTimestamp,omitempty" url:"paymentApprovalTimestamp,omitempty"`
+	Jurisdiction *string `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -15558,20 +15460,6 @@ func (t *TransactionUpdatable) GetJurisdiction() *string {
 		return nil
 	}
 	return t.Jurisdiction
-}
-
-func (t *TransactionUpdatable) GetUpdateCount() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.UpdateCount
-}
-
-func (t *TransactionUpdatable) GetPaymentApprovalTimestamp() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.PaymentApprovalTimestamp
 }
 
 func (t *TransactionUpdatable) GetExtraProperties() map[string]interface{} {
@@ -16469,8 +16357,6 @@ type User struct {
 	PepStatus                    []*PepStatus                  `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
 	SanctionsStatus              *SanctionsStatus              `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	AdverseMediaStatus           *AdverseMediaStatus           `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
-	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64 `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
 	// Corporate entities of the user
 	CorporateEntities   []*CorporateEntityDetails      `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	LinkedEntities      *UserEntityLink                `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
@@ -16482,7 +16368,6 @@ type User struct {
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -16657,13 +16542,6 @@ func (u *User) GetAdverseMediaStatus() *AdverseMediaStatus {
 	return u.AdverseMediaStatus
 }
 
-func (u *User) GetLastTransactionTimestamp() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.LastTransactionTimestamp
-}
-
 func (u *User) GetCorporateEntities() []*CorporateEntityDetails {
 	if u == nil {
 		return nil
@@ -16711,13 +16589,6 @@ func (u *User) GetJurisdiction() *string {
 		return nil
 	}
 	return u.Jurisdiction
-}
-
-func (u *User) GetUpdateCount() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.UpdateCount
 }
 
 func (u *User) GetProductsEnabled() []*ProductsEnabled {
@@ -17010,8 +16881,6 @@ type UserOptional struct {
 	PepStatus                    []*PepStatus                  `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
 	SanctionsStatus              *SanctionsStatus              `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	AdverseMediaStatus           *AdverseMediaStatus           `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
-	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64 `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
 	// Corporate entities of the user
 	CorporateEntities   []*CorporateEntityDetails              `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	LinkedEntities      *UserEntityLink                        `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
@@ -17023,7 +16892,6 @@ type UserOptional struct {
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount     *float64           `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -17184,13 +17052,6 @@ func (u *UserOptional) GetAdverseMediaStatus() *AdverseMediaStatus {
 	return u.AdverseMediaStatus
 }
 
-func (u *UserOptional) GetLastTransactionTimestamp() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.LastTransactionTimestamp
-}
-
 func (u *UserOptional) GetCorporateEntities() []*CorporateEntityDetails {
 	if u == nil {
 		return nil
@@ -17238,13 +17099,6 @@ func (u *UserOptional) GetJurisdiction() *string {
 		return nil
 	}
 	return u.Jurisdiction
-}
-
-func (u *UserOptional) GetUpdateCount() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.UpdateCount
 }
 
 func (u *UserOptional) GetProductsEnabled() []*ProductsEnabled {
@@ -18410,8 +18264,6 @@ type UserWithRulesResult struct {
 	PepStatus                    []*PepStatus                  `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
 	SanctionsStatus              *SanctionsStatus              `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	AdverseMediaStatus           *AdverseMediaStatus           `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
-	// Timestamp of the last successful transaction of the user
-	LastTransactionTimestamp *float64 `json:"lastTransactionTimestamp,omitempty" url:"lastTransactionTimestamp,omitempty"`
 	// Corporate entities of the user
 	CorporateEntities   []*CorporateEntityDetails                     `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	LinkedEntities      *UserEntityLink                               `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
@@ -18423,7 +18275,6 @@ type UserWithRulesResult struct {
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	UpdateCount      *float64               `json:"updateCount,omitempty" url:"updateCount,omitempty"`
 	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
@@ -18601,13 +18452,6 @@ func (u *UserWithRulesResult) GetAdverseMediaStatus() *AdverseMediaStatus {
 	return u.AdverseMediaStatus
 }
 
-func (u *UserWithRulesResult) GetLastTransactionTimestamp() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.LastTransactionTimestamp
-}
-
 func (u *UserWithRulesResult) GetCorporateEntities() []*CorporateEntityDetails {
 	if u == nil {
 		return nil
@@ -18655,13 +18499,6 @@ func (u *UserWithRulesResult) GetJurisdiction() *string {
 		return nil
 	}
 	return u.Jurisdiction
-}
-
-func (u *UserWithRulesResult) GetUpdateCount() *float64 {
-	if u == nil {
-		return nil
-	}
-	return u.UpdateCount
 }
 
 func (u *UserWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
@@ -19285,6 +19122,7 @@ const (
 	WalletNetworkLitecoin        WalletNetwork = "LITECOIN"
 	WalletNetworkBitcoinCash     WalletNetwork = "BITCOIN_CASH"
 	WalletNetworkRipple          WalletNetwork = "RIPPLE"
+	WalletNetworkHyperliquid     WalletNetwork = "HYPERLIQUID"
 	WalletNetworkStellar         WalletNetwork = "STELLAR"
 	WalletNetworkEosPublic       WalletNetwork = "EOS_PUBLIC"
 	WalletNetworkTron            WalletNetwork = "TRON"
@@ -19330,6 +19168,8 @@ func NewWalletNetworkFromString(s string) (WalletNetwork, error) {
 		return WalletNetworkBitcoinCash, nil
 	case "RIPPLE":
 		return WalletNetworkRipple, nil
+	case "HYPERLIQUID":
+		return WalletNetworkHyperliquid, nil
 	case "STELLAR":
 		return WalletNetworkStellar, nil
 	case "EOS_PUBLIC":
