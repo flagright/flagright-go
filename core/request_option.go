@@ -25,7 +25,6 @@ type RequestOptions struct {
 	QueryParameters url.Values
 	MaxAttempts     uint
 	ApiKey          string
-	Authorization   string
 }
 
 // NewRequestOptions returns a new *RequestOptions value.
@@ -51,7 +50,6 @@ func (r *RequestOptions) ToHeader() http.Header {
 	if r.ApiKey != "" {
 		header.Set("x-api-key", fmt.Sprintf("%v", r.ApiKey))
 	}
-	header.Set("Authorization", fmt.Sprintf("%v", r.Authorization))
 	return header
 }
 
@@ -59,8 +57,8 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/flagright/flagright-go")
-	headers.Set("X-Fern-SDK-Version", "v1.8.41")
-	headers.Set("User-Agent", "github.com/flagright/flagright-go/1.8.41")
+	headers.Set("X-Fern-SDK-Version", "v1.8.42")
+	headers.Set("User-Agent", "github.com/flagright/flagright-go/1.8.42")
 	return headers
 }
 
@@ -125,13 +123,4 @@ type ApiKeyOption struct {
 
 func (a *ApiKeyOption) applyRequestOptions(opts *RequestOptions) {
 	opts.ApiKey = a.ApiKey
-}
-
-// AuthorizationOption implements the RequestOption interface.
-type AuthorizationOption struct {
-	Authorization string
-}
-
-func (a *AuthorizationOption) applyRequestOptions(opts *RequestOptions) {
-	opts.Authorization = a.Authorization
 }
