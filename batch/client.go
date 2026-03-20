@@ -188,11 +188,6 @@ func (c *Client) CreateTransactionEvents(
 				APIError: apiError,
 			}
 		},
-		409: func(apiError *core.APIError) error {
-			return &flagrightgo.ConflictError{
-				APIError: apiError,
-			}
-		},
 		429: func(apiError *core.APIError) error {
 			return &flagrightgo.TooManyRequestsError{
 				APIError: apiError,
