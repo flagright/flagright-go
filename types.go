@@ -4374,9 +4374,11 @@ type CardDetails struct {
 	CardExpiry                *CardExpiry   `json:"cardExpiry,omitempty" url:"cardExpiry,omitempty"`
 	PosDetails                *PosDetails   `json:"posDetails,omitempty" url:"posDetails,omitempty"`
 	// Last 4 digits of Card
-	CardLast4Digits *string      `json:"cardLast4Digits,omitempty" url:"cardLast4Digits,omitempty"`
-	CardBrand       *CardBrand   `json:"cardBrand,omitempty" url:"cardBrand,omitempty"`
-	CardFunding     *CardFunding `json:"cardFunding,omitempty" url:"cardFunding,omitempty"`
+	CardLast4Digits *string `json:"cardLast4Digits,omitempty" url:"cardLast4Digits,omitempty"`
+	// First 6 digits of Card
+	CardFirst6Digits *string      `json:"cardFirst6Digits,omitempty" url:"cardFirst6Digits,omitempty"`
+	CardBrand        *CardBrand   `json:"cardBrand,omitempty" url:"cardBrand,omitempty"`
+	CardFunding      *CardFunding `json:"cardFunding,omitempty" url:"cardFunding,omitempty"`
 	// Authentication of Card
 	CardAuthenticated *bool `json:"cardAuthenticated,omitempty" url:"cardAuthenticated,omitempty"`
 	// Was the card tokenized
@@ -4468,6 +4470,13 @@ func (c *CardDetails) GetCardLast4Digits() *string {
 		return nil
 	}
 	return c.CardLast4Digits
+}
+
+func (c *CardDetails) GetCardFirst6Digits() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CardFirst6Digits
 }
 
 func (c *CardDetails) GetCardBrand() *CardBrand {
@@ -10362,8 +10371,8 @@ type LegalDocument struct {
 	// User's identity document issuance date (UNIX timestamp in milliseconds)
 	DocumentIssuedDate *float64 `json:"documentIssuedDate,omitempty" url:"documentIssuedDate,omitempty"`
 	// User's identity document expiration date (UNIX timestamp in milliseconds)
-	DocumentExpirationDate *float64    `json:"documentExpirationDate,omitempty" url:"documentExpirationDate,omitempty"`
-	DocumentIssuedCountry  CountryCode `json:"documentIssuedCountry" url:"documentIssuedCountry"`
+	DocumentExpirationDate *float64     `json:"documentExpirationDate,omitempty" url:"documentExpirationDate,omitempty"`
+	DocumentIssuedCountry  *CountryCode `json:"documentIssuedCountry,omitempty" url:"documentIssuedCountry,omitempty"`
 	// Additional information that can be added via tags
 	Tags           []*Tag        `json:"tags,omitempty" url:"tags,omitempty"`
 	NameOnDocument *ConsumerName `json:"nameOnDocument,omitempty" url:"nameOnDocument,omitempty"`
@@ -10400,9 +10409,9 @@ func (l *LegalDocument) GetDocumentExpirationDate() *float64 {
 	return l.DocumentExpirationDate
 }
 
-func (l *LegalDocument) GetDocumentIssuedCountry() CountryCode {
+func (l *LegalDocument) GetDocumentIssuedCountry() *CountryCode {
 	if l == nil {
-		return ""
+		return nil
 	}
 	return l.DocumentIssuedCountry
 }
