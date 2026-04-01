@@ -7078,6 +7078,7 @@ const (
 	CurrencyCodeBal       CurrencyCode = "BAL"
 	CurrencyCodeBam       CurrencyCode = "BAM"
 	CurrencyCodeBand      CurrencyCode = "BAND"
+	CurrencyCodeBase      CurrencyCode = "BASE"
 	CurrencyCodeBat       CurrencyCode = "BAT"
 	CurrencyCodeBbd       CurrencyCode = "BBD"
 	CurrencyCodeBch       CurrencyCode = "BCH"
@@ -7638,6 +7639,8 @@ func NewCurrencyCodeFromString(s string) (CurrencyCode, error) {
 		return CurrencyCodeBam, nil
 	case "BAND":
 		return CurrencyCodeBand, nil
+	case "BASE":
+		return CurrencyCodeBase, nil
 	case "BAT":
 		return CurrencyCodeBat, nil
 	case "BBD":
