@@ -272,16 +272,17 @@ type BatchBusinessUserWithRulesResult struct {
 	// Parties associated with the company. Can be another company or an individual
 	AssociatedParties []*BatchBusinessUserWithRulesResultAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
 	// Business partners of the company
-	BusinessPartners             []*LegalEntity                                             `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
-	TransactionLimits            *TransactionLimits                                         `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
-	ExpectedTransactionCountries *ExpectedTransactionCountries                              `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
-	RiskLevel                    *RiskLevel                                                 `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
-	KycRiskLevel                 *RiskLevel                                                 `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
-	AllowedPaymentMethods        []PaymentMethod                                            `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
-	LinkedEntities               *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
-	AcquisitionChannel           *AcquisitionChannel                                        `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
-	SavedPaymentDetails          []*BatchBusinessUserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
-	MccDetails                   *MccDetails                                                `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
+	BusinessPartners              []*LegalEntity                                             `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
+	TransactionLimits             *TransactionLimits                                         `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	ExpectedTransactionCountries  *ExpectedTransactionCountries                              `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
+	ExpectedTransactionCurrencies *ExpectedTransactionCurrencies                             `json:"expectedTransactionCurrencies,omitempty" url:"expectedTransactionCurrencies,omitempty"`
+	RiskLevel                     *RiskLevel                                                 `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel                  *RiskLevel                                                 `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AllowedPaymentMethods         []PaymentMethod                                            `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
+	LinkedEntities                *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	AcquisitionChannel            *AcquisitionChannel                                        `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	SavedPaymentDetails           []*BatchBusinessUserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	MccDetails                    *MccDetails                                                `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 	// User's attachments uploaded by business user
@@ -398,6 +399,13 @@ func (b *BatchBusinessUserWithRulesResult) GetExpectedTransactionCountries() *Ex
 		return nil
 	}
 	return b.ExpectedTransactionCountries
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetExpectedTransactionCurrencies() *ExpectedTransactionCurrencies {
+	if b == nil {
+		return nil
+	}
+	return b.ExpectedTransactionCurrencies
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetRiskLevel() *RiskLevel {
@@ -1351,21 +1359,22 @@ type BatchConsumerUserWithRulesResult struct {
 	EmploymentStatus   *EmploymentStatus `json:"employmentStatus,omitempty" url:"employmentStatus,omitempty"`
 	Occupation         *string           `json:"occupation,omitempty" url:"occupation,omitempty"`
 	// User's legal identity documents - See Document Model for details
-	LegalDocuments               []*LegalDocument              `json:"legalDocuments,omitempty" url:"legalDocuments,omitempty"`
-	ContactDetails               *ContactDetails               `json:"contactDetails,omitempty" url:"contactDetails,omitempty"`
-	EmploymentDetails            *EmploymentDetails            `json:"employmentDetails,omitempty" url:"employmentDetails,omitempty"`
-	TransactionLimits            *TransactionLimits            `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
-	ExpectedIncome               *ExpectedIncome               `json:"expectedIncome,omitempty" url:"expectedIncome,omitempty"`
-	ExpectedTransactionCountries *ExpectedTransactionCountries `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
-	RiskLevel                    *RiskLevel                    `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
-	KycRiskLevel                 *RiskLevel                    `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
-	AcquisitionChannel           *AcquisitionChannel           `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
-	ReasonForAccountOpening      []string                      `json:"reasonForAccountOpening,omitempty" url:"reasonForAccountOpening,omitempty"`
-	SourceOfFunds                []SourceOfFunds               `json:"sourceOfFunds,omitempty" url:"sourceOfFunds,omitempty"`
-	UserSegment                  *ConsumerUserSegment          `json:"userSegment,omitempty" url:"userSegment,omitempty"`
-	PepStatus                    []*PepStatus                  `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
-	SanctionsStatus              *SanctionsStatus              `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
-	AdverseMediaStatus           *AdverseMediaStatus           `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	LegalDocuments                []*LegalDocument               `json:"legalDocuments,omitempty" url:"legalDocuments,omitempty"`
+	ContactDetails                *ContactDetails                `json:"contactDetails,omitempty" url:"contactDetails,omitempty"`
+	EmploymentDetails             *EmploymentDetails             `json:"employmentDetails,omitempty" url:"employmentDetails,omitempty"`
+	TransactionLimits             *TransactionLimits             `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	ExpectedIncome                *ExpectedIncome                `json:"expectedIncome,omitempty" url:"expectedIncome,omitempty"`
+	ExpectedTransactionCountries  *ExpectedTransactionCountries  `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
+	ExpectedTransactionCurrencies *ExpectedTransactionCurrencies `json:"expectedTransactionCurrencies,omitempty" url:"expectedTransactionCurrencies,omitempty"`
+	RiskLevel                     *RiskLevel                     `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel                  *RiskLevel                     `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AcquisitionChannel            *AcquisitionChannel            `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	ReasonForAccountOpening       []string                       `json:"reasonForAccountOpening,omitempty" url:"reasonForAccountOpening,omitempty"`
+	SourceOfFunds                 []SourceOfFunds                `json:"sourceOfFunds,omitempty" url:"sourceOfFunds,omitempty"`
+	UserSegment                   *ConsumerUserSegment           `json:"userSegment,omitempty" url:"userSegment,omitempty"`
+	PepStatus                     []*PepStatus                   `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	SanctionsStatus               *SanctionsStatus               `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	AdverseMediaStatus            *AdverseMediaStatus            `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// Corporate entities of the user
 	CorporateEntities   []*CorporateEntityDetails                                  `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
 	LinkedEntities      *UserEntityLink                                            `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
@@ -1488,6 +1497,13 @@ func (b *BatchConsumerUserWithRulesResult) GetExpectedTransactionCountries() *Ex
 		return nil
 	}
 	return b.ExpectedTransactionCountries
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetExpectedTransactionCurrencies() *ExpectedTransactionCurrencies {
+	if b == nil {
+		return nil
+	}
+	return b.ExpectedTransactionCurrencies
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetRiskLevel() *RiskLevel {
