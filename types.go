@@ -4266,10 +4266,8 @@ func (b *BusinessWithRulesResultShareHoldersItem) Accept(visitor BusinessWithRul
 }
 
 type CraRiskLevelUpdatedDetails struct {
-	RiskLevel *string  `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
-	RiskScore *float64 `json:"riskScore,omitempty" url:"riskScore,omitempty"`
-	Type      *string  `json:"type,omitempty" url:"type,omitempty"`
-	UserId    *string  `json:"userId,omitempty" url:"userId,omitempty"`
+	RiskLevel *string `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	UserId    *string `json:"userId,omitempty" url:"userId,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4280,13 +4278,6 @@ func (c *CraRiskLevelUpdatedDetails) GetRiskLevel() *string {
 		return nil
 	}
 	return c.RiskLevel
-}
-
-func (c *CraRiskLevelUpdatedDetails) GetRiskScore() *float64 {
-	if c == nil {
-		return nil
-	}
-	return c.RiskScore
 }
 
 func (c *CraRiskLevelUpdatedDetails) GetUserId() *string {
@@ -9723,6 +9714,8 @@ type GenericBankAccountDetails struct {
 	// Special instructions to be specified if any
 	SpecialInstructions *string `json:"specialInstructions,omitempty" url:"specialInstructions,omitempty"`
 	PaymentChannel      *string `json:"paymentChannel,omitempty" url:"paymentChannel,omitempty"`
+	// Beneficiary name of the account
+	BeneficiaryName *string `json:"beneficiaryName,omitempty" url:"beneficiaryName,omitempty"`
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Transit number of the bank account
@@ -9838,6 +9831,13 @@ func (g *GenericBankAccountDetails) GetPaymentChannel() *string {
 		return nil
 	}
 	return g.PaymentChannel
+}
+
+func (g *GenericBankAccountDetails) GetBeneficiaryName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.BeneficiaryName
 }
 
 func (g *GenericBankAccountDetails) GetTags() []*Tag {
@@ -10096,7 +10096,9 @@ type IbanDetails struct {
 	Name    *string  `json:"name,omitempty" url:"name,omitempty"`
 	EmailId *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Branch code of the bank. In some countries, this can be the same as the bank's SWIFT code
-	BankBranchCode       *string      `json:"bankBranchCode,omitempty" url:"bankBranchCode,omitempty"`
+	BankBranchCode *string `json:"bankBranchCode,omitempty" url:"bankBranchCode,omitempty"`
+	// Beneficiary name of the account
+	BeneficiaryName      *string      `json:"beneficiaryName,omitempty" url:"beneficiaryName,omitempty"`
 	PaymentChannel       *string      `json:"paymentChannel,omitempty" url:"paymentChannel,omitempty"`
 	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
 	CountryOfResidence   *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
@@ -10182,6 +10184,13 @@ func (i *IbanDetails) GetBankBranchCode() *string {
 		return nil
 	}
 	return i.BankBranchCode
+}
+
+func (i *IbanDetails) GetBeneficiaryName() *string {
+	if i == nil {
+		return nil
+	}
+	return i.BeneficiaryName
 }
 
 func (i *IbanDetails) GetPaymentChannel() *string {
@@ -12969,6 +12978,8 @@ type SwiftDetails struct {
 	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
 	CountryOfResidence   *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
 	EmailId              *EmailId     `json:"emailId,omitempty" url:"emailId,omitempty"`
+	// Beneficiary name of the account
+	BeneficiaryName *string `json:"beneficiaryName,omitempty" url:"beneficiaryName,omitempty"`
 	// Special instructions if any
 	SpecialInstructions      *string                     `json:"specialInstructions,omitempty" url:"specialInstructions,omitempty"`
 	Address                  *Address                    `json:"address,omitempty" url:"address,omitempty"`
@@ -13062,6 +13073,13 @@ func (s *SwiftDetails) GetEmailId() *EmailId {
 		return nil
 	}
 	return s.EmailId
+}
+
+func (s *SwiftDetails) GetBeneficiaryName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.BeneficiaryName
 }
 
 func (s *SwiftDetails) GetSpecialInstructions() *string {
@@ -19110,12 +19128,14 @@ type WalletDetails struct {
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Phone number associated with the wallet, if any
-	WalletPhoneNumber        *string        `json:"walletPhoneNumber,omitempty" url:"walletPhoneNumber,omitempty"`
-	WalletBalance            *Amount        `json:"walletBalance,omitempty" url:"walletBalance,omitempty"`
-	Network                  *WalletNetwork `json:"network,omitempty" url:"network,omitempty"`
-	Address                  *Address       `json:"address,omitempty" url:"address,omitempty"`
-	CountryOfNationality     *CountryCode   `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
-	CountryOfResidence       *CountryCode   `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
+	WalletPhoneNumber    *string        `json:"walletPhoneNumber,omitempty" url:"walletPhoneNumber,omitempty"`
+	WalletBalance        *Amount        `json:"walletBalance,omitempty" url:"walletBalance,omitempty"`
+	Network              *WalletNetwork `json:"network,omitempty" url:"network,omitempty"`
+	Address              *Address       `json:"address,omitempty" url:"address,omitempty"`
+	CountryOfNationality *CountryCode   `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	CountryOfResidence   *CountryCode   `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
+	// Beneficiary name of the account
+	BeneficiaryName          *string        `json:"beneficiaryName,omitempty" url:"beneficiaryName,omitempty"`
 	BankAddress              *Address       `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	AuthorizedRepresentative []*UserDetails `json:"authorizedRepresentative,omitempty" url:"authorizedRepresentative,omitempty"`
 	// Date of birth of the account holder (YYYY-MM-DD)
@@ -19216,6 +19236,13 @@ func (w *WalletDetails) GetCountryOfResidence() *CountryCode {
 		return nil
 	}
 	return w.CountryOfResidence
+}
+
+func (w *WalletDetails) GetBeneficiaryName() *string {
+	if w == nil {
+		return nil
+	}
+	return w.BeneficiaryName
 }
 
 func (w *WalletDetails) GetBankAddress() *Address {
