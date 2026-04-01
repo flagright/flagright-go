@@ -4266,8 +4266,10 @@ func (b *BusinessWithRulesResultShareHoldersItem) Accept(visitor BusinessWithRul
 }
 
 type CraRiskLevelUpdatedDetails struct {
-	RiskLevel *string `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
-	UserId    *string `json:"userId,omitempty" url:"userId,omitempty"`
+	RiskLevel *string  `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	RiskScore *float64 `json:"riskScore,omitempty" url:"riskScore,omitempty"`
+	Type      *string  `json:"type,omitempty" url:"type,omitempty"`
+	UserId    *string  `json:"userId,omitempty" url:"userId,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4278,6 +4280,13 @@ func (c *CraRiskLevelUpdatedDetails) GetRiskLevel() *string {
 		return nil
 	}
 	return c.RiskLevel
+}
+
+func (c *CraRiskLevelUpdatedDetails) GetRiskScore() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.RiskScore
 }
 
 func (c *CraRiskLevelUpdatedDetails) GetUserId() *string {
