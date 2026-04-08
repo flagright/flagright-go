@@ -122,7 +122,9 @@ type TransactionWithRulesResult struct {
 	// Additional information that can be added via tags
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction     *string                       `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	Jurisdiction *string `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	// External links related to the transaction
+	ExternalLinks    []string                      `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult        `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	Status           RuleAction                    `json:"status" url:"status"`
@@ -277,6 +279,13 @@ func (t *TransactionWithRulesResult) GetJurisdiction() *string {
 		return nil
 	}
 	return t.Jurisdiction
+}
+
+func (t *TransactionWithRulesResult) GetExternalLinks() []string {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalLinks
 }
 
 func (t *TransactionWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

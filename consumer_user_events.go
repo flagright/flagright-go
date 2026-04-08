@@ -41,11 +41,13 @@ type ConsumerUserEventWithRulesResult struct {
 	// Reason for the event or a state change
 	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
 	// Event description
-	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
-	UpdatedConsumerUserAttributes *UserOptional          `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
-	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	HitRules                      []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
-	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	EventDescription              *string       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
+	UpdatedConsumerUserAttributes *UserOptional `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
+	// External links related to the consumer user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -91,6 +93,13 @@ func (c *ConsumerUserEventWithRulesResult) GetUpdatedConsumerUserAttributes() *U
 		return nil
 	}
 	return c.UpdatedConsumerUserAttributes
+}
+
+func (c *ConsumerUserEventWithRulesResult) GetExternalLinks() []string {
+	if c == nil {
+		return nil
+	}
+	return c.ExternalLinks
 }
 
 func (c *ConsumerUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

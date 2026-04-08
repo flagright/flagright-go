@@ -538,7 +538,7 @@ func (a *AlertStatusDetails) String() string {
 
 // Model for amount
 type Amount struct {
-	// Numerical value of the transaction
+	// Numerical value of the transaction in major currency units (within IEEE 754 safe integer range for exact JSON representation)
 	AmountValue    float64      `json:"amountValue" url:"amountValue"`
 	AmountCurrency CurrencyCode `json:"amountCurrency" url:"amountCurrency"`
 
@@ -1522,6 +1522,8 @@ type Business struct {
 	SanctionsStatus *bool `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	// Whether the user is in the adverse media list
 	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	// External links related to the business user
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1735,6 +1737,13 @@ func (b *Business) GetAdverseMediaStatus() *bool {
 		return nil
 	}
 	return b.AdverseMediaStatus
+}
+
+func (b *Business) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *Business) GetExtraProperties() map[string]interface{} {
@@ -2015,6 +2024,8 @@ type BusinessOptional struct {
 	SanctionsStatus *bool `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	// Whether the user is in the adverse media list
 	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	// External links related to the business user
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2214,6 +2225,13 @@ func (b *BusinessOptional) GetAdverseMediaStatus() *bool {
 		return nil
 	}
 	return b.AdverseMediaStatus
+}
+
+func (b *BusinessOptional) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *BusinessOptional) GetExtraProperties() map[string]interface{} {
@@ -3263,6 +3281,8 @@ type BusinessUserEvent struct {
 	// Event description
 	EventDescription              *string           `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedBusinessUserAttributes *BusinessOptional `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	// External links related to the business user
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3308,6 +3328,13 @@ func (b *BusinessUserEvent) GetUpdatedBusinessUserAttributes() *BusinessOptional
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BusinessUserEvent) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *BusinessUserEvent) GetExtraProperties() map[string]interface{} {
@@ -3422,10 +3449,12 @@ type BusinessWithRulesResult struct {
 	// Whether the user is sanctioned
 	SanctionsStatus *bool `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	// Whether the user is in the adverse media list
-	AdverseMediaStatus *bool                  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
-	ExecutedRules      []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	HitRules           []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
-	RiskScoreDetails   *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	// External links related to the business user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3639,6 +3668,13 @@ func (b *BusinessWithRulesResult) GetAdverseMediaStatus() *bool {
 		return nil
 	}
 	return b.AdverseMediaStatus
+}
+
+func (b *BusinessWithRulesResult) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *BusinessWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -4617,14 +4653,14 @@ func (c *CardDetails) String() string {
 }
 
 type CardExpiry struct {
-	Month *float64 `json:"month,omitempty" url:"month,omitempty"`
+	Month *int     `json:"month,omitempty" url:"month,omitempty"`
 	Year  *float64 `json:"year,omitempty" url:"year,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (c *CardExpiry) GetMonth() *float64 {
+func (c *CardExpiry) GetMonth() *int {
 	if c == nil {
 		return nil
 	}
@@ -5841,6 +5877,8 @@ type ConsumerUserEvent struct {
 	// Event description
 	EventDescription              *string       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedConsumerUserAttributes *UserOptional `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
+	// External links related to the consumer user
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5886,6 +5924,13 @@ func (c *ConsumerUserEvent) GetUpdatedConsumerUserAttributes() *UserOptional {
 		return nil
 	}
 	return c.UpdatedConsumerUserAttributes
+}
+
+func (c *ConsumerUserEvent) GetExternalLinks() []string {
+	if c == nil {
+		return nil
+	}
+	return c.ExternalLinks
 }
 
 func (c *ConsumerUserEvent) GetExtraProperties() map[string]interface{} {
@@ -8639,31 +8684,31 @@ func (c *CustomColumn) String() string {
 // Model for date
 type Date struct {
 	// Day of date
-	Day float64 `json:"day" url:"day"`
+	Day int `json:"day" url:"day"`
 	// Month of date
-	Month float64 `json:"month" url:"month"`
+	Month int `json:"month" url:"month"`
 	// Year of date
-	Year float64 `json:"year" url:"year"`
+	Year int `json:"year" url:"year"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (d *Date) GetDay() float64 {
+func (d *Date) GetDay() int {
 	if d == nil {
 		return 0
 	}
 	return d.Day
 }
 
-func (d *Date) GetMonth() float64 {
+func (d *Date) GetMonth() int {
 	if d == nil {
 		return 0
 	}
 	return d.Month
 }
 
-func (d *Date) GetYear() float64 {
+func (d *Date) GetYear() int {
 	if d == nil {
 		return 0
 	}
@@ -9586,9 +9631,10 @@ func (f *FalsePositiveDetails) String() string {
 }
 
 type FileInfo struct {
-	S3Key        string  `json:"s3Key" url:"s3Key"`
-	Bucket       *string `json:"bucket,omitempty" url:"bucket,omitempty"`
-	Filename     string  `json:"filename" url:"filename"`
+	S3Key    string  `json:"s3Key" url:"s3Key"`
+	Bucket   *string `json:"bucket,omitempty" url:"bucket,omitempty"`
+	Filename string  `json:"filename" url:"filename"`
+	// File size in bytes
 	Size         float64 `json:"size" url:"size"`
 	DownloadLink *string `json:"downloadLink,omitempty" url:"downloadLink,omitempty"`
 	AiSummary    *string `json:"aiSummary,omitempty" url:"aiSummary,omitempty"`
@@ -10806,8 +10852,9 @@ type ListHeader struct {
 	Subtype          ListSubtype   `json:"subtype" url:"subtype"`
 	Metadata         *ListMetadata `json:"metadata,omitempty" url:"metadata,omitempty"`
 	CreatedTimestamp float64       `json:"createdTimestamp" url:"createdTimestamp"`
-	Size             *float64      `json:"size,omitempty" url:"size,omitempty"`
-	Version          *float64      `json:"version,omitempty" url:"version,omitempty"`
+	// Approximate number of entries in the list
+	Size    *float64 `json:"size,omitempty" url:"size,omitempty"`
+	Version *float64 `json:"version,omitempty" url:"version,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -11309,7 +11356,7 @@ func (l ListUpdatedDetailsAction) Ptr() *ListUpdatedDetailsAction {
 
 type MccDetails struct {
 	// Merchant code
-	Code float64 `json:"code" url:"code"`
+	Code int `json:"code" url:"code"`
 	// Merchant Description
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
 
@@ -11317,7 +11364,7 @@ type MccDetails struct {
 	rawJSON         json.RawMessage
 }
 
-func (m *MccDetails) GetCode() float64 {
+func (m *MccDetails) GetCode() int {
 	if m == nil {
 		return 0
 	}
@@ -13328,7 +13375,7 @@ type SanctionsHitContext struct {
 	RuleInstanceId  *string                     `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
 	RuleId          *string                     `json:"ruleId,omitempty" url:"ruleId,omitempty"`
 	Iban            *string                     `json:"iban,omitempty" url:"iban,omitempty"`
-	YearOfBirth     *float64                    `json:"yearOfBirth,omitempty" url:"yearOfBirth,omitempty"`
+	YearOfBirth     *int                        `json:"yearOfBirth,omitempty" url:"yearOfBirth,omitempty"`
 	SearchTerm      *string                     `json:"searchTerm,omitempty" url:"searchTerm,omitempty"`
 	PaymentMethodId *string                     `json:"paymentMethodId,omitempty" url:"paymentMethodId,omitempty"`
 
@@ -13385,7 +13432,7 @@ func (s *SanctionsHitContext) GetIban() *string {
 	return s.Iban
 }
 
-func (s *SanctionsHitContext) GetYearOfBirth() *float64 {
+func (s *SanctionsHitContext) GetYearOfBirth() *int {
 	if s == nil {
 		return nil
 	}
@@ -13653,6 +13700,8 @@ type Transaction struct {
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction *string `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	// External links related to the transaction
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -13803,6 +13852,13 @@ func (t *Transaction) GetJurisdiction() *string {
 		return nil
 	}
 	return t.Jurisdiction
+}
+
+func (t *Transaction) GetExternalLinks() []string {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalLinks
 }
 
 func (t *Transaction) GetExtraProperties() map[string]interface{} {
@@ -14064,10 +14120,14 @@ func (t *TransactionBase) String() string {
 }
 
 type TransactionCountLimit struct {
-	Day   *float64 `json:"day,omitempty" url:"day,omitempty"`
-	Week  *float64 `json:"week,omitempty" url:"week,omitempty"`
+	// Maximum transaction count allowed per calendar day
+	Day *float64 `json:"day,omitempty" url:"day,omitempty"`
+	// Maximum transaction count allowed per calendar week
+	Week *float64 `json:"week,omitempty" url:"week,omitempty"`
+	// Maximum transaction count allowed per calendar month
 	Month *float64 `json:"month,omitempty" url:"month,omitempty"`
-	Year  *float64 `json:"year,omitempty" url:"year,omitempty"`
+	// Maximum transaction count allowed per calendar year
+	Year *float64 `json:"year,omitempty" url:"year,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -14509,6 +14569,8 @@ type TransactionEvent struct {
 	EventDescription             *string               `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedTransactionAttributes *TransactionUpdatable `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
 	MetaData                     *DeviceData           `json:"metaData,omitempty" url:"metaData,omitempty"`
+	// External links related to the transaction
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -14568,6 +14630,13 @@ func (t *TransactionEvent) GetMetaData() *DeviceData {
 		return nil
 	}
 	return t.MetaData
+}
+
+func (t *TransactionEvent) GetExternalLinks() []string {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalLinks
 }
 
 func (t *TransactionEvent) GetExtraProperties() map[string]interface{} {
@@ -15531,6 +15600,8 @@ type TransactionUpdatable struct {
 	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 	// Legal authority or region governing the transaction
 	Jurisdiction *string `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	// External links related to the transaction
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -15639,6 +15710,13 @@ func (t *TransactionUpdatable) GetJurisdiction() *string {
 		return nil
 	}
 	return t.Jurisdiction
+}
+
+func (t *TransactionUpdatable) GetExternalLinks() []string {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalLinks
 }
 
 func (t *TransactionUpdatable) GetExtraProperties() map[string]interface{} {
@@ -16549,6 +16627,8 @@ type User struct {
 	// Legal authority or region governing the transaction
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	// External links related to the consumer user
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -16783,6 +16863,13 @@ func (u *User) GetProductsEnabled() []*ProductsEnabled {
 		return nil
 	}
 	return u.ProductsEnabled
+}
+
+func (u *User) GetExternalLinks() []string {
+	if u == nil {
+		return nil
+	}
+	return u.ExternalLinks
 }
 
 func (u *User) GetExtraProperties() map[string]interface{} {
@@ -17081,6 +17168,8 @@ type UserOptional struct {
 	// Legal authority or region governing the transaction
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	// External links related to the consumer user
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -17301,6 +17390,13 @@ func (u *UserOptional) GetProductsEnabled() []*ProductsEnabled {
 		return nil
 	}
 	return u.ProductsEnabled
+}
+
+func (u *UserOptional) GetExternalLinks() []string {
+	if u == nil {
+		return nil
+	}
+	return u.ExternalLinks
 }
 
 func (u *UserOptional) GetExtraProperties() map[string]interface{} {
@@ -18470,8 +18566,10 @@ type UserWithRulesResult struct {
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	// External links related to the consumer user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -18709,6 +18807,13 @@ func (u *UserWithRulesResult) GetProductsEnabled() []*ProductsEnabled {
 		return nil
 	}
 	return u.ProductsEnabled
+}
+
+func (u *UserWithRulesResult) GetExternalLinks() []string {
+	if u == nil {
+		return nil
+	}
+	return u.ExternalLinks
 }
 
 func (u *UserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

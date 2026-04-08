@@ -101,10 +101,12 @@ type BatchBusinessUserEventWithRulesResult struct {
 	// Reason for the event or a state change
 	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
 	// Event description
-	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
-	UpdatedBusinessUserAttributes *BusinessOptional      `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
-	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	EventDescription              *string           `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
+	UpdatedBusinessUserAttributes *BusinessOptional `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	// External links related to the business user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -150,6 +152,13 @@ func (b *BatchBusinessUserEventWithRulesResult) GetUpdatedBusinessUserAttributes
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *BatchBusinessUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -295,9 +304,11 @@ type BatchBusinessUserWithRulesResult struct {
 	// Whether the user is sanctioned
 	SanctionsStatus *bool `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
 	// Whether the user is in the adverse media list
-	AdverseMediaStatus *bool                  `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
-	ExecutedRules      []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	RiskScoreDetails   *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	// External links related to the business user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -511,6 +522,13 @@ func (b *BatchBusinessUserWithRulesResult) GetAdverseMediaStatus() *bool {
 		return nil
 	}
 	return b.AdverseMediaStatus
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -1194,10 +1212,12 @@ type BatchConsumerUserEventWithRulesResult struct {
 	// Reason for the event or a state change
 	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
 	// Event description
-	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
-	UpdatedConsumerUserAttributes *UserOptional          `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
-	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	EventDescription              *string       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
+	UpdatedConsumerUserAttributes *UserOptional `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
+	// External links related to the consumer user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1243,6 +1263,13 @@ func (b *BatchConsumerUserEventWithRulesResult) GetUpdatedConsumerUserAttributes
 		return nil
 	}
 	return b.UpdatedConsumerUserAttributes
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *BatchConsumerUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -1385,8 +1412,10 @@ type BatchConsumerUserWithRulesResult struct {
 	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
 	// Legal authority or region governing the transaction
-	Jurisdiction     *string                `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
-	ProductsEnabled  []*ProductsEnabled     `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	// External links related to the consumer user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -1623,6 +1652,13 @@ func (b *BatchConsumerUserWithRulesResult) GetProductsEnabled() []*ProductsEnabl
 		return nil
 	}
 	return b.ProductsEnabled
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -2265,12 +2301,14 @@ type BatchTransactionEventMonitoringResult struct {
 	// Reason for the event or a state change
 	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
 	// Event description
-	EventDescription             *string                       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
-	UpdatedTransactionAttributes *TransactionUpdatable         `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
-	MetaData                     *DeviceData                   `json:"metaData,omitempty" url:"metaData,omitempty"`
-	HitRules                     []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
-	Status                       *RuleAction                   `json:"status,omitempty" url:"status,omitempty"`
-	RiskScoreDetails             *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	EventDescription             *string               `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
+	UpdatedTransactionAttributes *TransactionUpdatable `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
+	MetaData                     *DeviceData           `json:"metaData,omitempty" url:"metaData,omitempty"`
+	// External links related to the transaction
+	ExternalLinks    []string                      `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	HitRules         []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	Status           *RuleAction                   `json:"status,omitempty" url:"status,omitempty"`
+	RiskScoreDetails *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2330,6 +2368,13 @@ func (b *BatchTransactionEventMonitoringResult) GetMetaData() *DeviceData {
 		return nil
 	}
 	return b.MetaData
+}
+
+func (b *BatchTransactionEventMonitoringResult) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *BatchTransactionEventMonitoringResult) GetHitRules() []*HitRulesDetails {

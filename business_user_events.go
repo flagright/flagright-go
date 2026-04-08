@@ -41,11 +41,13 @@ type BusinessUserEventWithRulesResult struct {
 	// Reason for the event or a state change
 	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
 	// Event description
-	EventDescription              *string                `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
-	UpdatedBusinessUserAttributes *BusinessOptional      `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
-	ExecutedRules                 []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	HitRules                      []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
-	RiskScoreDetails              *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	EventDescription              *string           `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
+	UpdatedBusinessUserAttributes *BusinessOptional `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	// External links related to the business user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -91,6 +93,13 @@ func (b *BusinessUserEventWithRulesResult) GetUpdatedBusinessUserAttributes() *B
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BusinessUserEventWithRulesResult) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
 }
 
 func (b *BusinessUserEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {

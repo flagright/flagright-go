@@ -107,13 +107,15 @@ type TransactionEventWithRulesResult struct {
 	// Reason for the event or a state change
 	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
 	// Event description
-	EventDescription             *string                       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
-	UpdatedTransactionAttributes *TransactionUpdatable         `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
-	MetaData                     *DeviceData                   `json:"metaData,omitempty" url:"metaData,omitempty"`
-	ExecutedRules                []*ExecutedRulesResult        `json:"executedRules,omitempty" url:"executedRules,omitempty"`
-	HitRules                     []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
-	Status                       *RuleAction                   `json:"status,omitempty" url:"status,omitempty"`
-	RiskScoreDetails             *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	EventDescription             *string               `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
+	UpdatedTransactionAttributes *TransactionUpdatable `json:"updatedTransactionAttributes,omitempty" url:"updatedTransactionAttributes,omitempty"`
+	MetaData                     *DeviceData           `json:"metaData,omitempty" url:"metaData,omitempty"`
+	// External links related to the transaction
+	ExternalLinks    []string                      `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult        `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	HitRules         []*HitRulesDetails            `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	Status           *RuleAction                   `json:"status,omitempty" url:"status,omitempty"`
+	RiskScoreDetails *TransactionRiskScoringResult `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -173,6 +175,13 @@ func (t *TransactionEventWithRulesResult) GetMetaData() *DeviceData {
 		return nil
 	}
 	return t.MetaData
+}
+
+func (t *TransactionEventWithRulesResult) GetExternalLinks() []string {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalLinks
 }
 
 func (t *TransactionEventWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
