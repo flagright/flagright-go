@@ -4304,6 +4304,14 @@ func (b *BusinessWithRulesResultShareHoldersItem) Accept(visitor BusinessWithRul
 type CraRiskLevelUpdatedDetails struct {
 	RiskLevel *string `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
 	UserId    *string `json:"userId,omitempty" url:"userId,omitempty"`
+	// Current CRA (DRS) risk score for the user
+	RiskScore *float64 `json:"riskScore,omitempty" url:"riskScore,omitempty"`
+	// KRS score when a KRS record exists for the user
+	KycRiskScore *float64 `json:"kycRiskScore,omitempty" url:"kycRiskScore,omitempty"`
+	// Risk level derived from the KRS score
+	KycRiskLevel *string `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	// Per-factor or component breakdown from KRS when present; omitted when there is no KRS data or no breakdown rows
+	RiskFactors []*CraRiskLevelUpdatedRiskFactor `json:"riskFactors,omitempty" url:"riskFactors,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4321,6 +4329,34 @@ func (c *CraRiskLevelUpdatedDetails) GetUserId() *string {
 		return nil
 	}
 	return c.UserId
+}
+
+func (c *CraRiskLevelUpdatedDetails) GetRiskScore() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.RiskScore
+}
+
+func (c *CraRiskLevelUpdatedDetails) GetKycRiskScore() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.KycRiskScore
+}
+
+func (c *CraRiskLevelUpdatedDetails) GetKycRiskLevel() *string {
+	if c == nil {
+		return nil
+	}
+	return c.KycRiskLevel
+}
+
+func (c *CraRiskLevelUpdatedDetails) GetRiskFactors() []*CraRiskLevelUpdatedRiskFactor {
+	if c == nil {
+		return nil
+	}
+	return c.RiskFactors
 }
 
 func (c *CraRiskLevelUpdatedDetails) GetExtraProperties() map[string]interface{} {
@@ -4344,6 +4380,94 @@ func (c *CraRiskLevelUpdatedDetails) UnmarshalJSON(data []byte) error {
 }
 
 func (c *CraRiskLevelUpdatedDetails) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// KRS breakdown row from factor score details or component scores when available
+type CraRiskLevelUpdatedRiskFactor struct {
+	RiskFactorId *string `json:"riskFactorId,omitempty" url:"riskFactorId,omitempty"`
+	// Set for KRS factor score detail rows
+	RiskFactorVersionId *string  `json:"riskFactorVersionId,omitempty" url:"riskFactorVersionId,omitempty"`
+	Value               *string  `json:"value,omitempty" url:"value,omitempty"`
+	RiskScore           *float64 `json:"riskScore,omitempty" url:"riskScore,omitempty"`
+	RiskLevel           *string  `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	Weight              *float64 `json:"weight,omitempty" url:"weight,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CraRiskLevelUpdatedRiskFactor) GetRiskFactorId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.RiskFactorId
+}
+
+func (c *CraRiskLevelUpdatedRiskFactor) GetRiskFactorVersionId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.RiskFactorVersionId
+}
+
+func (c *CraRiskLevelUpdatedRiskFactor) GetValue() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Value
+}
+
+func (c *CraRiskLevelUpdatedRiskFactor) GetRiskScore() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.RiskScore
+}
+
+func (c *CraRiskLevelUpdatedRiskFactor) GetRiskLevel() *string {
+	if c == nil {
+		return nil
+	}
+	return c.RiskLevel
+}
+
+func (c *CraRiskLevelUpdatedRiskFactor) GetWeight() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.Weight
+}
+
+func (c *CraRiskLevelUpdatedRiskFactor) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CraRiskLevelUpdatedRiskFactor) UnmarshalJSON(data []byte) error {
+	type unmarshaler CraRiskLevelUpdatedRiskFactor
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CraRiskLevelUpdatedRiskFactor(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CraRiskLevelUpdatedRiskFactor) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -12630,6 +12754,7 @@ func (r RuleAction) Ptr() *RuleAction {
 type RuleExecutionSanctionsDetails struct {
 	Name           string                      `json:"name" url:"name"`
 	SearchId       string                      `json:"searchId" url:"searchId"`
+	RequestHash    *string                     `json:"requestHash,omitempty" url:"requestHash,omitempty"`
 	Iban           *string                     `json:"iban,omitempty" url:"iban,omitempty"`
 	EntityType     *SanctionsDetailsEntityType `json:"entityType,omitempty" url:"entityType,omitempty"`
 	SanctionHitIds []string                    `json:"sanctionHitIds,omitempty" url:"sanctionHitIds,omitempty"`
@@ -12653,6 +12778,13 @@ func (r *RuleExecutionSanctionsDetails) GetSearchId() string {
 		return ""
 	}
 	return r.SearchId
+}
+
+func (r *RuleExecutionSanctionsDetails) GetRequestHash() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RequestHash
 }
 
 func (r *RuleExecutionSanctionsDetails) GetIban() *string {
@@ -13207,6 +13339,7 @@ type SwiftPaymentMethod = string
 type SanctionsDetails struct {
 	Name           string                      `json:"name" url:"name"`
 	SearchId       string                      `json:"searchId" url:"searchId"`
+	RequestHash    *string                     `json:"requestHash,omitempty" url:"requestHash,omitempty"`
 	Iban           *string                     `json:"iban,omitempty" url:"iban,omitempty"`
 	EntityType     *SanctionsDetailsEntityType `json:"entityType,omitempty" url:"entityType,omitempty"`
 	SanctionHitIds []string                    `json:"sanctionHitIds,omitempty" url:"sanctionHitIds,omitempty"`
@@ -13230,6 +13363,13 @@ func (s *SanctionsDetails) GetSearchId() string {
 		return ""
 	}
 	return s.SearchId
+}
+
+func (s *SanctionsDetails) GetRequestHash() *string {
+	if s == nil {
+		return nil
+	}
+	return s.RequestHash
 }
 
 func (s *SanctionsDetails) GetIban() *string {
