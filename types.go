@@ -13655,6 +13655,287 @@ func (s SanctionsScreeningEntity) Ptr() *SanctionsScreeningEntity {
 
 type SanctionsStatus = bool
 
+// Attachment included with an inbound SAR message
+type SarMessageAttachment struct {
+	FileName string `json:"fileName" url:"fileName"`
+	// Time-limited URL to download the attachment
+	Url         *string `json:"url,omitempty" url:"url,omitempty"`
+	ContentType *string `json:"contentType,omitempty" url:"contentType,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SarMessageAttachment) GetFileName() string {
+	if s == nil {
+		return ""
+	}
+	return s.FileName
+}
+
+func (s *SarMessageAttachment) GetUrl() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Url
+}
+
+func (s *SarMessageAttachment) GetContentType() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ContentType
+}
+
+func (s *SarMessageAttachment) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SarMessageAttachment) UnmarshalJSON(data []byte) error {
+	type unmarshaler SarMessageAttachment
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SarMessageAttachment(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SarMessageAttachment) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+// Payload sent when an inbound message is received from a regulator or FIU on a previously submitted SAR.
+type SarMessageReceivedDetails struct {
+	// Unique identifier of the SAR report the message is associated with
+	ReportId string `json:"reportId" url:"reportId"`
+	// Unique identifier of the inbound message
+	MessageId string `json:"messageId" url:"messageId"`
+	// Name or identifier of the regulator/FIU that sent the message
+	Sender  *string `json:"sender,omitempty" url:"sender,omitempty"`
+	Subject *string `json:"subject,omitempty" url:"subject,omitempty"`
+	Body    *string `json:"body,omitempty" url:"body,omitempty"`
+	// Timestamp at which the message was received. Measured in ms since the Unix epoch.
+	ReceivedAt  float64                 `json:"receivedAt" url:"receivedAt"`
+	Attachments []*SarMessageAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SarMessageReceivedDetails) GetReportId() string {
+	if s == nil {
+		return ""
+	}
+	return s.ReportId
+}
+
+func (s *SarMessageReceivedDetails) GetMessageId() string {
+	if s == nil {
+		return ""
+	}
+	return s.MessageId
+}
+
+func (s *SarMessageReceivedDetails) GetSender() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Sender
+}
+
+func (s *SarMessageReceivedDetails) GetSubject() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Subject
+}
+
+func (s *SarMessageReceivedDetails) GetBody() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Body
+}
+
+func (s *SarMessageReceivedDetails) GetReceivedAt() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.ReceivedAt
+}
+
+func (s *SarMessageReceivedDetails) GetAttachments() []*SarMessageAttachment {
+	if s == nil {
+		return nil
+	}
+	return s.Attachments
+}
+
+func (s *SarMessageReceivedDetails) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SarMessageReceivedDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler SarMessageReceivedDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SarMessageReceivedDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SarMessageReceivedDetails) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+// Lifecycle status of a Suspicious Activity Report (SAR)
+type SarReportStatus string
+
+const (
+	SarReportStatusDraft                SarReportStatus = "DRAFT"
+	SarReportStatusSubmitting           SarReportStatus = "SUBMITTING"
+	SarReportStatusSubmissionAccepted   SarReportStatus = "SUBMISSION_ACCEPTED"
+	SarReportStatusSubmissionRejected   SarReportStatus = "SUBMISSION_REJECTED"
+	SarReportStatusSubmissionSuccessful SarReportStatus = "SUBMISSION_SUCCESSFUL"
+	SarReportStatusComplete             SarReportStatus = "COMPLETE"
+)
+
+func NewSarReportStatusFromString(s string) (SarReportStatus, error) {
+	switch s {
+	case "DRAFT":
+		return SarReportStatusDraft, nil
+	case "SUBMITTING":
+		return SarReportStatusSubmitting, nil
+	case "SUBMISSION_ACCEPTED":
+		return SarReportStatusSubmissionAccepted, nil
+	case "SUBMISSION_REJECTED":
+		return SarReportStatusSubmissionRejected, nil
+	case "SUBMISSION_SUCCESSFUL":
+		return SarReportStatusSubmissionSuccessful, nil
+	case "COMPLETE":
+		return SarReportStatusComplete, nil
+	}
+	var t SarReportStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SarReportStatus) Ptr() *SarReportStatus {
+	return &s
+}
+
+// Payload sent for SAR lifecycle webhook events (SAR_CREATED, SAR_SUBMITTED, SAR_SUBMISSION_ACCEPTED).
+type SarWebhookDetails struct {
+	// Unique identifier of the SAR report
+	ReportId string          `json:"reportId" url:"reportId"`
+	Status   SarReportStatus `json:"status" url:"status"`
+	// ID of the subject user the SAR is filed against, if any
+	UserId *string `json:"userId,omitempty" url:"userId,omitempty"`
+	// ID of the case the SAR is associated with, if any
+	CaseId *string `json:"caseId,omitempty" url:"caseId,omitempty"`
+	// Timestamp at which the SAR was created. Measured in ms since the Unix epoch.
+	CreatedAt *float64 `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SarWebhookDetails) GetReportId() string {
+	if s == nil {
+		return ""
+	}
+	return s.ReportId
+}
+
+func (s *SarWebhookDetails) GetStatus() SarReportStatus {
+	if s == nil {
+		return ""
+	}
+	return s.Status
+}
+
+func (s *SarWebhookDetails) GetUserId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.UserId
+}
+
+func (s *SarWebhookDetails) GetCaseId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.CaseId
+}
+
+func (s *SarWebhookDetails) GetCreatedAt() *float64 {
+	if s == nil {
+		return nil
+	}
+	return s.CreatedAt
+}
+
+func (s *SarWebhookDetails) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SarWebhookDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler SarWebhookDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SarWebhookDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SarWebhookDetails) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SourceOfFunds string
 
 const (
@@ -19867,6 +20148,8 @@ type WebhookEventData struct {
 	UserTagsUpdate             *UserTagsUpdate
 	CraRiskLevelUpdatedDetails *CraRiskLevelUpdatedDetails
 	BatchCompletedDetails      *BatchCompletedDetails
+	SarWebhookDetails          *SarWebhookDetails
+	SarMessageReceivedDetails  *SarMessageReceivedDetails
 
 	typ string
 }
@@ -19909,6 +20192,14 @@ func NewWebhookEventDataFromCraRiskLevelUpdatedDetails(value *CraRiskLevelUpdate
 
 func NewWebhookEventDataFromBatchCompletedDetails(value *BatchCompletedDetails) *WebhookEventData {
 	return &WebhookEventData{typ: "BatchCompletedDetails", BatchCompletedDetails: value}
+}
+
+func NewWebhookEventDataFromSarWebhookDetails(value *SarWebhookDetails) *WebhookEventData {
+	return &WebhookEventData{typ: "SarWebhookDetails", SarWebhookDetails: value}
+}
+
+func NewWebhookEventDataFromSarMessageReceivedDetails(value *SarMessageReceivedDetails) *WebhookEventData {
+	return &WebhookEventData{typ: "SarMessageReceivedDetails", SarMessageReceivedDetails: value}
 }
 
 func (w *WebhookEventData) GetUserStateDetails() *UserStateDetails {
@@ -19981,6 +20272,20 @@ func (w *WebhookEventData) GetBatchCompletedDetails() *BatchCompletedDetails {
 	return w.BatchCompletedDetails
 }
 
+func (w *WebhookEventData) GetSarWebhookDetails() *SarWebhookDetails {
+	if w == nil {
+		return nil
+	}
+	return w.SarWebhookDetails
+}
+
+func (w *WebhookEventData) GetSarMessageReceivedDetails() *SarMessageReceivedDetails {
+	if w == nil {
+		return nil
+	}
+	return w.SarMessageReceivedDetails
+}
+
 func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 	valueUserStateDetails := new(UserStateDetails)
 	if err := json.Unmarshal(data, &valueUserStateDetails); err == nil {
@@ -20042,6 +20347,18 @@ func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 		w.BatchCompletedDetails = valueBatchCompletedDetails
 		return nil
 	}
+	valueSarWebhookDetails := new(SarWebhookDetails)
+	if err := json.Unmarshal(data, &valueSarWebhookDetails); err == nil {
+		w.typ = "SarWebhookDetails"
+		w.SarWebhookDetails = valueSarWebhookDetails
+		return nil
+	}
+	valueSarMessageReceivedDetails := new(SarMessageReceivedDetails)
+	if err := json.Unmarshal(data, &valueSarMessageReceivedDetails); err == nil {
+		w.typ = "SarMessageReceivedDetails"
+		w.SarMessageReceivedDetails = valueSarMessageReceivedDetails
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, w)
 }
 
@@ -20076,6 +20393,12 @@ func (w WebhookEventData) MarshalJSON() ([]byte, error) {
 	if w.typ == "BatchCompletedDetails" || w.BatchCompletedDetails != nil {
 		return json.Marshal(w.BatchCompletedDetails)
 	}
+	if w.typ == "SarWebhookDetails" || w.SarWebhookDetails != nil {
+		return json.Marshal(w.SarWebhookDetails)
+	}
+	if w.typ == "SarMessageReceivedDetails" || w.SarMessageReceivedDetails != nil {
+		return json.Marshal(w.SarMessageReceivedDetails)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", w)
 }
 
@@ -20090,6 +20413,8 @@ type WebhookEventDataVisitor interface {
 	VisitUserTagsUpdate(*UserTagsUpdate) error
 	VisitCraRiskLevelUpdatedDetails(*CraRiskLevelUpdatedDetails) error
 	VisitBatchCompletedDetails(*BatchCompletedDetails) error
+	VisitSarWebhookDetails(*SarWebhookDetails) error
+	VisitSarMessageReceivedDetails(*SarMessageReceivedDetails) error
 }
 
 func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
@@ -20122,6 +20447,12 @@ func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
 	}
 	if w.typ == "BatchCompletedDetails" || w.BatchCompletedDetails != nil {
 		return visitor.VisitBatchCompletedDetails(w.BatchCompletedDetails)
+	}
+	if w.typ == "SarWebhookDetails" || w.SarWebhookDetails != nil {
+		return visitor.VisitSarWebhookDetails(w.SarWebhookDetails)
+	}
+	if w.typ == "SarMessageReceivedDetails" || w.SarMessageReceivedDetails != nil {
+		return visitor.VisitSarMessageReceivedDetails(w.SarMessageReceivedDetails)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", w)
 }
@@ -20171,6 +20502,10 @@ const (
 	WebhookEventTypeBatchCompleted            WebhookEventType = "BATCH_COMPLETED"
 	WebhookEventTypeCaseInterimStatusUpdate   WebhookEventType = "CASE_INTERIM_STATUS_UPDATE"
 	WebhookEventTypeAlertInterimStatusUpdate  WebhookEventType = "ALERT_INTERIM_STATUS_UPDATE"
+	WebhookEventTypeSarCreated                WebhookEventType = "SAR_CREATED"
+	WebhookEventTypeSarSubmitted              WebhookEventType = "SAR_SUBMITTED"
+	WebhookEventTypeSarSubmissionAccepted     WebhookEventType = "SAR_SUBMISSION_ACCEPTED"
+	WebhookEventTypeSarMessageReceived        WebhookEventType = "SAR_MESSAGE_RECEIVED"
 )
 
 func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
@@ -20213,6 +20548,14 @@ func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
 		return WebhookEventTypeCaseInterimStatusUpdate, nil
 	case "ALERT_INTERIM_STATUS_UPDATE":
 		return WebhookEventTypeAlertInterimStatusUpdate, nil
+	case "SAR_CREATED":
+		return WebhookEventTypeSarCreated, nil
+	case "SAR_SUBMITTED":
+		return WebhookEventTypeSarSubmitted, nil
+	case "SAR_SUBMISSION_ACCEPTED":
+		return WebhookEventTypeSarSubmissionAccepted, nil
+	case "SAR_MESSAGE_RECEIVED":
+		return WebhookEventTypeSarMessageReceived, nil
 	}
 	var t WebhookEventType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
