@@ -12946,6 +12946,62 @@ func (r RuleAction) Ptr() *RuleAction {
 	return &r
 }
 
+type RuleExecutionMetric struct {
+	// Rule execution duration in milliseconds.
+	ExecutionTimeMs float64 `json:"executionTimeMs" url:"executionTimeMs"`
+	// Lambda function where the rule was executed.
+	FunctionName *string `json:"functionName,omitempty" url:"functionName,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RuleExecutionMetric) GetExecutionTimeMs() float64 {
+	if r == nil {
+		return 0
+	}
+	return r.ExecutionTimeMs
+}
+
+func (r *RuleExecutionMetric) GetFunctionName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.FunctionName
+}
+
+func (r *RuleExecutionMetric) GetExtraProperties() map[string]interface{} {
+	return r.extraProperties
+}
+
+func (r *RuleExecutionMetric) UnmarshalJSON(data []byte) error {
+	type unmarshaler RuleExecutionMetric
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RuleExecutionMetric(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RuleExecutionMetric) String() string {
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
 type RuleExecutionSanctionsDetails struct {
 	Name           string                      `json:"name" url:"name"`
 	SearchId       string                      `json:"searchId" url:"searchId"`
