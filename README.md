@@ -6,14 +6,21 @@ The Flagright Go library provides convenient access to the Flagright APIs from G
 
 ## Table of Contents
 
+- [Reference](#reference)
 - [Usage](#usage)
 - [Environments](#environments)
 - [Errors](#errors)
 - [Request Options](#request-options)
 - [Advanced](#advanced)
+  - [Response Headers](#response-headers)
   - [Retries](#retries)
   - [Timeouts](#timeouts)
+  - [Explicit Null](#explicit-null)
 - [Contributing](#contributing)
+
+## Reference
+
+A full reference for this library is available [here](https://github.com/flagright/flagright-go/blob/HEAD/./reference.md).
 
 ## Usage
 
@@ -23,27 +30,157 @@ Instantiate and use the client with the following:
 package example
 
 import (
+    context "context"
+
+    flagrightgo "github.com/flagright/flagright-go"
     client "github.com/flagright/flagright-go/client"
     option "github.com/flagright/flagright-go/option"
-    context "context"
-    flagright "github.com/flagright/flagright-go"
 )
 
-func do() () {
+func do() {
     client := client.NewClient(
         option.WithApiKey(
             "<value>",
         ),
     )
-    client.Transactions.Verify(
-        context.TODO(),
-        &flagright.TransactionsVerifyRequest{
-            Body: &flagright.Transaction{
-                Type: "type",
-                TransactionId: "x",
-                Timestamp: 4133890801000,
+    request := &flagrightgo.TransactionsVerifyRequest{
+        ValidateOriginUserId: flagrightgo.BooleanStringTrue.Ptr(),
+        ValidateDestinationUserId: flagrightgo.BooleanStringTrue.Ptr(),
+        Body: &flagrightgo.Transaction{
+            Type: "DEPOSIT",
+            TransactionId: "7b80a539eea6e78acbd6d458e5971482",
+            Timestamp: 1641654664000,
+            OriginUserId: flagrightgo.String(
+                "8650a2611d0771cba03310f74bf6",
+            ),
+            DestinationUserId: flagrightgo.String(
+                "9350a2611e0771cba03310f74bf6",
+            ),
+            OriginAmountDetails: &flagrightgo.TransactionAmountDetails{
+                TransactionAmount: 2000,
+                TransactionCurrency: flagrightgo.CurrencyCodeEur,
+                Country: flagrightgo.CountryCodeDe.Ptr(),
+            },
+            DestinationAmountDetails: &flagrightgo.TransactionAmountDetails{
+                TransactionAmount: 68351.34,
+                TransactionCurrency: flagrightgo.CurrencyCodeInr,
+                Country: flagrightgo.CountryCodeIn.Ptr(),
+            },
+            OriginPaymentDetails: &flagrightgo.TransactionOriginPaymentDetails{
+                Card: &flagrightgo.CardDetails{
+                    CardFingerprint: flagrightgo.String(
+                        "20ac00fed8ef913aefb17cfae1097cce",
+                    ),
+                    CardIssuedCountry: flagrightgo.CountryCodeTr.Ptr(),
+                    TransactionReferenceField: flagrightgo.String(
+                        "Deposit",
+                    ),
+                    Field3DsDone: flagrightgo.Bool(
+                        true,
+                    ),
+                },
+            },
+            DestinationPaymentDetails: &flagrightgo.TransactionDestinationPaymentDetails{
+                Card: &flagrightgo.CardDetails{
+                    CardFingerprint: flagrightgo.String(
+                        "20ac00fed8ef913aefb17cfae1097cce",
+                    ),
+                    CardIssuedCountry: flagrightgo.CountryCodeTr.Ptr(),
+                    TransactionReferenceField: flagrightgo.String(
+                        "Deposit",
+                    ),
+                    Field3DsDone: flagrightgo.Bool(
+                        true,
+                    ),
+                },
+            },
+            PromotionCodeUsed: flagrightgo.Bool(
+                true,
+            ),
+            Reference: flagrightgo.String(
+                "loan repayment",
+            ),
+            OriginDeviceData: &flagrightgo.DeviceData{
+                BatteryLevel: flagrightgo.Float64(
+                    95,
+                ),
+                DeviceLatitude: flagrightgo.Float64(
+                    13.0033,
+                ),
+                DeviceLongitude: flagrightgo.Float64(
+                    76.1004,
+                ),
+                IpAddress: flagrightgo.String(
+                    "10.23.191.2",
+                ),
+                DeviceIdentifier: flagrightgo.String(
+                    "3c49f915d04485e34caba",
+                ),
+                VpnUsed: flagrightgo.Bool(
+                    false,
+                ),
+                OperatingSystem: flagrightgo.String(
+                    "Android 11.2",
+                ),
+                DeviceMaker: flagrightgo.String(
+                    "ASUS",
+                ),
+                DeviceModel: flagrightgo.String(
+                    "Zenphone M2 Pro Max",
+                ),
+                DeviceYear: flagrightgo.String(
+                    "2018",
+                ),
+                AppVersion: flagrightgo.String(
+                    "1.1.0",
+                ),
+            },
+            DestinationDeviceData: &flagrightgo.DeviceData{
+                BatteryLevel: flagrightgo.Float64(
+                    95,
+                ),
+                DeviceLatitude: flagrightgo.Float64(
+                    13.0033,
+                ),
+                DeviceLongitude: flagrightgo.Float64(
+                    76.1004,
+                ),
+                IpAddress: flagrightgo.String(
+                    "10.23.191.2",
+                ),
+                DeviceIdentifier: flagrightgo.String(
+                    "3c49f915d04485e34caba",
+                ),
+                VpnUsed: flagrightgo.Bool(
+                    false,
+                ),
+                OperatingSystem: flagrightgo.String(
+                    "Android 11.2",
+                ),
+                DeviceMaker: flagrightgo.String(
+                    "ASUS",
+                ),
+                DeviceModel: flagrightgo.String(
+                    "Zenphone M2 Pro Max",
+                ),
+                DeviceYear: flagrightgo.String(
+                    "2018",
+                ),
+                AppVersion: flagrightgo.String(
+                    "1.1.0",
+                ),
+            },
+            Tags: []*flagrightgo.Tag{
+                &flagrightgo.Tag{
+                    Key: "customKey",
+                    Value: "customValue",
+                },
             },
         },
+    }
+    client.Transactions.Verify(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -55,7 +192,7 @@ URL, which is particularly useful in test environments.
 
 ```go
 client := client.NewClient(
-    option.WithBaseURL(flagright.Environments.SandboxApiServerEu1),
+    option.WithBaseURL(api.Environments.SandboxApiServerEu1),
 )
 ```
 
@@ -107,17 +244,43 @@ response, err := client.Transactions.Verify(
 
 ## Advanced
 
+### Response Headers
+
+You can access the raw HTTP response data by using the `WithRawResponse` field on the client. This is useful
+when you need to examine the response headers received from the API call. (When the endpoint is paginated,
+the raw HTTP response data will be included automatically in the Page response object.)
+
+```go
+response, err := client.Transactions.WithRawResponse.Verify(...)
+if err != nil {
+    return err
+}
+fmt.Printf("Got response headers: %v", response.Header)
+fmt.Printf("Got status code: %d", response.StatusCode)
+```
+
 ### Retries
 
 The SDK is instrumented with automatic retries with exponential backoff. A request will be retried as long
 as the request is deemed retryable and the number of retry attempts has not grown larger than the configured
 retry limit (default: 2).
 
-A request is deemed retryable when any of the following HTTP status codes is returned:
+Which status codes are retried depends on the `retryStatusCodes` generator configuration:
 
+**`legacy`** (current default): retries on
 - [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
 - [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
-- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500) (Internal Server Errors)
+- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) (All server errors, including 500)
+
+**`recommended`**: retries on
+- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
+- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
+- [502](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502) (Bad Gateway)
+- [503](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) (Service Unavailable)
+- [504](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504) (Gateway Timeout)
+
+If the `Retry-After` header is present in the response, the SDK will prioritize respecting its value exactly
+over the default exponential backoff.
 
 Use the `option.WithMaxAttempts` option to configure this behavior for the entire client or an individual request:
 
@@ -141,6 +304,28 @@ ctx, cancel := context.WithTimeout(ctx, time.Second)
 defer cancel()
 
 response, err := client.Transactions.Verify(ctx, ...)
+```
+
+### Explicit Null
+
+If you want to send the explicit `null` JSON value through an optional parameter, you can use the setters\
+that come with every object. Calling a setter method for a property will flip a bit in the `explicitFields`
+bitfield for that setter's object; during serialization, any property with a flipped bit will have its
+omittable status stripped, so zero or `nil` values will be sent explicitly rather than omitted altogether:
+
+```go
+type ExampleRequest struct {
+    // An optional string parameter.
+    Name *string `json:"name,omitempty" url:"-"`
+
+    // Private bitmask of fields set to an explicit value and therefore not to be omitted
+    explicitFields *big.Int `json:"-" url:"-"`
+}
+
+request := &ExampleRequest{}
+request.SetName(nil)
+
+response, err := client.Transactions.Verify(ctx, request, ...)
 ```
 
 ## Contributing
