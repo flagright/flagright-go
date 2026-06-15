@@ -190,8 +190,8 @@
       }
     },
     {
-      "id": "19ff3bcb-cbe5-423e-bc3f-e02a1284e850",
-      "name": "Retrive transaction events batch - default",
+      "id": "942a9fd0-8886-4015-8f1c-5b55b9bb81f8",
+      "name": "Retrieve transaction events batch - default",
       "request": {
         "urlPathTemplate": "/batch/events/transaction/{batchId}",
         "method": "GET",
@@ -221,7 +221,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "19ff3bcb-cbe5-423e-bc3f-e02a1284e850",
+      "uuid": "942a9fd0-8886-4015-8f1c-5b55b9bb81f8",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -439,8 +439,8 @@
       }
     },
     {
-      "id": "b3ae8cbe-9587-4f33-b790-f2add5d0bfca",
-      "name": "Retrive consumer user events batch - default",
+      "id": "8184a024-bb8b-41d4-8fe0-fac6ccfbaacc",
+      "name": "Retrieve consumer user events batch - default",
       "request": {
         "urlPathTemplate": "/batch/events/consumer/user/{batchId}",
         "method": "GET",
@@ -470,7 +470,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "b3ae8cbe-9587-4f33-b790-f2add5d0bfca",
+      "uuid": "8184a024-bb8b-41d4-8fe0-fac6ccfbaacc",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -522,8 +522,8 @@
       }
     },
     {
-      "id": "93c257b7-369d-46ff-ad9d-8a101ea6070c",
-      "name": "Retrive business user events batch - default",
+      "id": "687e40d2-9e66-4c24-a060-2c629f83aeff",
+      "name": "Retrieve business user events batch - default",
       "request": {
         "urlPathTemplate": "/batch/events/business/user/{batchId}",
         "method": "GET",
@@ -553,7 +553,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "93c257b7-369d-46ff-ad9d-8a101ea6070c",
+      "uuid": "687e40d2-9e66-4c24-a060-2c629f83aeff",
       "persistent": true,
       "priority": 3,
       "metadata": {
