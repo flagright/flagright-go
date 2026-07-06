@@ -8950,20 +8950,26 @@ func (c *CompanyGeneralDetails) String() string {
 
 // Model for business user company registration details
 var (
-	companyRegistrationDetailsFieldRegistrationIdentifier = big.NewInt(1 << 0)
-	companyRegistrationDetailsFieldRegistrationCountry    = big.NewInt(1 << 1)
-	companyRegistrationDetailsFieldTaxResidenceCountry    = big.NewInt(1 << 2)
-	companyRegistrationDetailsFieldTaxIdentifier          = big.NewInt(1 << 3)
-	companyRegistrationDetailsFieldLegalEntityType        = big.NewInt(1 << 4)
-	companyRegistrationDetailsFieldDateOfRegistration     = big.NewInt(1 << 5)
-	companyRegistrationDetailsFieldTags                   = big.NewInt(1 << 6)
+	companyRegistrationDetailsFieldRegistrationIdentifier       = big.NewInt(1 << 0)
+	companyRegistrationDetailsFieldRegistrationCountry          = big.NewInt(1 << 1)
+	companyRegistrationDetailsFieldSecondaryRegistrationCountry = big.NewInt(1 << 2)
+	companyRegistrationDetailsFieldTaxResidenceCountry          = big.NewInt(1 << 3)
+	companyRegistrationDetailsFieldSecondaryTaxIdentifications  = big.NewInt(1 << 4)
+	companyRegistrationDetailsFieldTaxIdentifier                = big.NewInt(1 << 5)
+	companyRegistrationDetailsFieldLegalEntityType              = big.NewInt(1 << 6)
+	companyRegistrationDetailsFieldDateOfRegistration           = big.NewInt(1 << 7)
+	companyRegistrationDetailsFieldTags                         = big.NewInt(1 << 8)
 )
 
 type CompanyRegistrationDetails struct {
 	// Commercial registry registration number for the company in its registration country
 	RegistrationIdentifier *string      `json:"registrationIdentifier,omitempty" url:"registrationIdentifier,omitempty"`
 	RegistrationCountry    *CountryCode `json:"registrationCountry,omitempty" url:"registrationCountry,omitempty"`
-	TaxResidenceCountry    *CountryCode `json:"taxResidenceCountry,omitempty" url:"taxResidenceCountry,omitempty"`
+	// Additional registration countries for the company
+	SecondaryRegistrationCountry []CountryCode `json:"secondaryRegistrationCountry,omitempty" url:"secondaryRegistrationCountry,omitempty"`
+	TaxResidenceCountry          *CountryCode  `json:"taxResidenceCountry,omitempty" url:"taxResidenceCountry,omitempty"`
+	// Additional tax residence countries for the company with their tax identification details
+	SecondaryTaxIdentifications []*TaxIdentification `json:"secondaryTaxIdentifications,omitempty" url:"secondaryTaxIdentifications,omitempty"`
 	// Tax ID number of the registered entity
 	TaxIdentifier *string `json:"taxIdentifier,omitempty" url:"taxIdentifier,omitempty"`
 	// Type of legal entity, e.g., Limited Liability
@@ -8993,11 +8999,25 @@ func (c *CompanyRegistrationDetails) GetRegistrationCountry() *CountryCode {
 	return c.RegistrationCountry
 }
 
+func (c *CompanyRegistrationDetails) GetSecondaryRegistrationCountry() []CountryCode {
+	if c == nil {
+		return nil
+	}
+	return c.SecondaryRegistrationCountry
+}
+
 func (c *CompanyRegistrationDetails) GetTaxResidenceCountry() *CountryCode {
 	if c == nil {
 		return nil
 	}
 	return c.TaxResidenceCountry
+}
+
+func (c *CompanyRegistrationDetails) GetSecondaryTaxIdentifications() []*TaxIdentification {
+	if c == nil {
+		return nil
+	}
+	return c.SecondaryTaxIdentifications
 }
 
 func (c *CompanyRegistrationDetails) GetTaxIdentifier() *string {
@@ -9056,11 +9076,25 @@ func (c *CompanyRegistrationDetails) SetRegistrationCountry(registrationCountry 
 	c.require(companyRegistrationDetailsFieldRegistrationCountry)
 }
 
+// SetSecondaryRegistrationCountry sets the SecondaryRegistrationCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CompanyRegistrationDetails) SetSecondaryRegistrationCountry(secondaryRegistrationCountry []CountryCode) {
+	c.SecondaryRegistrationCountry = secondaryRegistrationCountry
+	c.require(companyRegistrationDetailsFieldSecondaryRegistrationCountry)
+}
+
 // SetTaxResidenceCountry sets the TaxResidenceCountry field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CompanyRegistrationDetails) SetTaxResidenceCountry(taxResidenceCountry *CountryCode) {
 	c.TaxResidenceCountry = taxResidenceCountry
 	c.require(companyRegistrationDetailsFieldTaxResidenceCountry)
+}
+
+// SetSecondaryTaxIdentifications sets the SecondaryTaxIdentifications field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CompanyRegistrationDetails) SetSecondaryTaxIdentifications(secondaryTaxIdentifications []*TaxIdentification) {
+	c.SecondaryTaxIdentifications = secondaryTaxIdentifications
+	c.require(companyRegistrationDetailsFieldSecondaryTaxIdentifications)
 }
 
 // SetTaxIdentifier sets the TaxIdentifier field and marks it as non-optional;
@@ -21260,6 +21294,9 @@ const (
 	SourceOfFundsRealEstateSale      SourceOfFunds = "Real Estate Sale"
 	SourceOfFundsRealEstateRental    SourceOfFunds = "Real Estate Rental"
 	SourceOfFundsCompanyExit         SourceOfFunds = "Company Exit"
+	SourceOfFundsLoan                SourceOfFunds = "Loan"
+	SourceOfFundsOther               SourceOfFunds = "Other"
+	SourceOfFundsDividends           SourceOfFunds = "Dividends"
 )
 
 func NewSourceOfFundsFromString(s string) (SourceOfFunds, error) {
@@ -21310,6 +21347,12 @@ func NewSourceOfFundsFromString(s string) (SourceOfFunds, error) {
 		return SourceOfFundsRealEstateRental, nil
 	case "Company Exit":
 		return SourceOfFundsCompanyExit, nil
+	case "Loan":
+		return SourceOfFundsLoan, nil
+	case "Other":
+		return SourceOfFundsOther, nil
+	case "Dividends":
+		return SourceOfFundsDividends, nil
 	}
 	var t SourceOfFunds
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -21425,6 +21468,125 @@ func (t *Tag) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Tag) String() string {
+	if t == nil {
+		return "<nil>"
+	}
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Tax identification information for a specific country
+var (
+	taxIdentificationFieldCountry         = big.NewInt(1 << 0)
+	taxIdentificationFieldTaxId           = big.NewInt(1 << 1)
+	taxIdentificationFieldDeclarationDate = big.NewInt(1 << 2)
+)
+
+type TaxIdentification struct {
+	Country CountryCode `json:"country" url:"country"`
+	// Tax identification number for the country
+	TaxId *string `json:"taxId,omitempty" url:"taxId,omitempty"`
+	// Date when the tax identification was declared or registered
+	DeclarationDate *string `json:"declarationDate,omitempty" url:"declarationDate,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TaxIdentification) GetCountry() CountryCode {
+	if t == nil {
+		return ""
+	}
+	return t.Country
+}
+
+func (t *TaxIdentification) GetTaxId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TaxId
+}
+
+func (t *TaxIdentification) GetDeclarationDate() *string {
+	if t == nil {
+		return nil
+	}
+	return t.DeclarationDate
+}
+
+func (t *TaxIdentification) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.extraProperties
+}
+
+func (t *TaxIdentification) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TaxIdentification) SetCountry(country CountryCode) {
+	t.Country = country
+	t.require(taxIdentificationFieldCountry)
+}
+
+// SetTaxId sets the TaxId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TaxIdentification) SetTaxId(taxId *string) {
+	t.TaxId = taxId
+	t.require(taxIdentificationFieldTaxId)
+}
+
+// SetDeclarationDate sets the DeclarationDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TaxIdentification) SetDeclarationDate(declarationDate *string) {
+	t.DeclarationDate = declarationDate
+	t.require(taxIdentificationFieldDeclarationDate)
+}
+
+func (t *TaxIdentification) UnmarshalJSON(data []byte) error {
+	type unmarshaler TaxIdentification
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TaxIdentification(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TaxIdentification) MarshalJSON() ([]byte, error) {
+	type embed TaxIdentification
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TaxIdentification) String() string {
 	if t == nil {
 		return "<nil>"
 	}
@@ -26232,16 +26394,17 @@ func (u *UserBase) String() string {
 
 // Model for consumer user personal details
 var (
-	userDetailsFieldName                  = big.NewInt(1 << 0)
-	userDetailsFieldDateOfBirth           = big.NewInt(1 << 1)
-	userDetailsFieldUserCategory          = big.NewInt(1 << 2)
-	userDetailsFieldCountryOfResidence    = big.NewInt(1 << 3)
-	userDetailsFieldCountryOfTaxResidence = big.NewInt(1 << 4)
-	userDetailsFieldCountryOfNationality  = big.NewInt(1 << 5)
-	userDetailsFieldGender                = big.NewInt(1 << 6)
-	userDetailsFieldMaritalStatus         = big.NewInt(1 << 7)
-	userDetailsFieldPlaceOfBirth          = big.NewInt(1 << 8)
-	userDetailsFieldAlias                 = big.NewInt(1 << 9)
+	userDetailsFieldName                          = big.NewInt(1 << 0)
+	userDetailsFieldDateOfBirth                   = big.NewInt(1 << 1)
+	userDetailsFieldUserCategory                  = big.NewInt(1 << 2)
+	userDetailsFieldCountryOfResidence            = big.NewInt(1 << 3)
+	userDetailsFieldCountryOfTaxResidence         = big.NewInt(1 << 4)
+	userDetailsFieldCountryOfNationality          = big.NewInt(1 << 5)
+	userDetailsFieldSecondaryCountryOfNationality = big.NewInt(1 << 6)
+	userDetailsFieldGender                        = big.NewInt(1 << 7)
+	userDetailsFieldMaritalStatus                 = big.NewInt(1 << 8)
+	userDetailsFieldPlaceOfBirth                  = big.NewInt(1 << 9)
+	userDetailsFieldAlias                         = big.NewInt(1 << 10)
 )
 
 type UserDetails struct {
@@ -26249,13 +26412,15 @@ type UserDetails struct {
 	// Date of birth of the user (YYYY-MM-DD)
 	DateOfBirth *string `json:"dateOfBirth,omitempty" url:"dateOfBirth,omitempty"`
 	// Internal category of the user
-	UserCategory          *string        `json:"userCategory,omitempty" url:"userCategory,omitempty"`
-	CountryOfResidence    *CountryCode   `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
-	CountryOfTaxResidence *CountryCode   `json:"countryOfTaxResidence,omitempty" url:"countryOfTaxResidence,omitempty"`
-	CountryOfNationality  *CountryCode   `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
-	Gender                *Gender        `json:"gender,omitempty" url:"gender,omitempty"`
-	MaritalStatus         *MaritalStatus `json:"maritalStatus,omitempty" url:"maritalStatus,omitempty"`
-	PlaceOfBirth          *PlaceOfBirth  `json:"placeOfBirth,omitempty" url:"placeOfBirth,omitempty"`
+	UserCategory          *string      `json:"userCategory,omitempty" url:"userCategory,omitempty"`
+	CountryOfResidence    *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
+	CountryOfTaxResidence *CountryCode `json:"countryOfTaxResidence,omitempty" url:"countryOfTaxResidence,omitempty"`
+	CountryOfNationality  *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	// Additional nationalities of the user
+	SecondaryCountryOfNationality []CountryCode  `json:"secondaryCountryOfNationality,omitempty" url:"secondaryCountryOfNationality,omitempty"`
+	Gender                        *Gender        `json:"gender,omitempty" url:"gender,omitempty"`
+	MaritalStatus                 *MaritalStatus `json:"maritalStatus,omitempty" url:"maritalStatus,omitempty"`
+	PlaceOfBirth                  *PlaceOfBirth  `json:"placeOfBirth,omitempty" url:"placeOfBirth,omitempty"`
 	// Alias names of the user
 	Alias []string `json:"alias,omitempty" url:"alias,omitempty"`
 
@@ -26306,6 +26471,13 @@ func (u *UserDetails) GetCountryOfNationality() *CountryCode {
 		return nil
 	}
 	return u.CountryOfNationality
+}
+
+func (u *UserDetails) GetSecondaryCountryOfNationality() []CountryCode {
+	if u == nil {
+		return nil
+	}
+	return u.SecondaryCountryOfNationality
 }
 
 func (u *UserDetails) GetGender() *Gender {
@@ -26390,6 +26562,13 @@ func (u *UserDetails) SetCountryOfTaxResidence(countryOfTaxResidence *CountryCod
 func (u *UserDetails) SetCountryOfNationality(countryOfNationality *CountryCode) {
 	u.CountryOfNationality = countryOfNationality
 	u.require(userDetailsFieldCountryOfNationality)
+}
+
+// SetSecondaryCountryOfNationality sets the SecondaryCountryOfNationality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserDetails) SetSecondaryCountryOfNationality(secondaryCountryOfNationality []CountryCode) {
+	u.SecondaryCountryOfNationality = secondaryCountryOfNationality
+	u.require(userDetailsFieldSecondaryCountryOfNationality)
 }
 
 // SetGender sets the Gender field and marks it as non-optional;
@@ -29844,6 +30023,8 @@ const (
 	WalletNetworkCelestia        WalletNetwork = "CELESTIA"
 	WalletNetworkBase            WalletNetwork = "BASE"
 	WalletNetworkSui             WalletNetwork = "SUI"
+	WalletNetworkTempo           WalletNetwork = "TEMPO"
+	WalletNetworkTempoTestnet    WalletNetwork = "TEMPO_TESTNET"
 )
 
 func NewWalletNetworkFromString(s string) (WalletNetwork, error) {
@@ -29906,6 +30087,10 @@ func NewWalletNetworkFromString(s string) (WalletNetwork, error) {
 		return WalletNetworkBase, nil
 	case "SUI":
 		return WalletNetworkSui, nil
+	case "TEMPO":
+		return WalletNetworkTempo, nil
+	case "TEMPO_TESTNET":
+		return WalletNetworkTempoTestnet, nil
 	}
 	var t WalletNetwork
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
