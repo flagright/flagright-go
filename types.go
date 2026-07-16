@@ -13115,19 +13115,20 @@ func (e *ExecutedLogicVars) String() string {
 
 // Model for list of executed rules
 var (
-	executedRulesResultFieldRuleId          = big.NewInt(1 << 0)
-	executedRulesResultFieldRuleInstanceId  = big.NewInt(1 << 1)
-	executedRulesResultFieldRuleName        = big.NewInt(1 << 2)
-	executedRulesResultFieldRuleDescription = big.NewInt(1 << 3)
-	executedRulesResultFieldRuleAction      = big.NewInt(1 << 4)
-	executedRulesResultFieldRuleHit         = big.NewInt(1 << 5)
-	executedRulesResultFieldVersionId       = big.NewInt(1 << 6)
-	executedRulesResultFieldExecutedAt      = big.NewInt(1 << 7)
-	executedRulesResultFieldRuleHitMeta     = big.NewInt(1 << 8)
-	executedRulesResultFieldVars            = big.NewInt(1 << 9)
-	executedRulesResultFieldLabels          = big.NewInt(1 << 10)
-	executedRulesResultFieldNature          = big.NewInt(1 << 11)
-	executedRulesResultFieldIsShadow        = big.NewInt(1 << 12)
+	executedRulesResultFieldRuleId            = big.NewInt(1 << 0)
+	executedRulesResultFieldRuleInstanceId    = big.NewInt(1 << 1)
+	executedRulesResultFieldRuleName          = big.NewInt(1 << 2)
+	executedRulesResultFieldRuleDescription   = big.NewInt(1 << 3)
+	executedRulesResultFieldRuleAction        = big.NewInt(1 << 4)
+	executedRulesResultFieldRuleHit           = big.NewInt(1 << 5)
+	executedRulesResultFieldVersionId         = big.NewInt(1 << 6)
+	executedRulesResultFieldExecutedAt        = big.NewInt(1 << 7)
+	executedRulesResultFieldExecutedRiskLevel = big.NewInt(1 << 8)
+	executedRulesResultFieldRuleHitMeta       = big.NewInt(1 << 9)
+	executedRulesResultFieldVars              = big.NewInt(1 << 10)
+	executedRulesResultFieldLabels            = big.NewInt(1 << 11)
+	executedRulesResultFieldNature            = big.NewInt(1 << 12)
+	executedRulesResultFieldIsShadow          = big.NewInt(1 << 13)
 )
 
 type ExecutedRulesResult struct {
@@ -13142,12 +13143,14 @@ type ExecutedRulesResult struct {
 	RuleHit         bool       `json:"ruleHit" url:"ruleHit"`
 	VersionId       *string    `json:"versionId,omitempty" url:"versionId,omitempty"`
 	// Timestamp when the rule was executed
-	ExecutedAt  *float64             `json:"executedAt,omitempty" url:"executedAt,omitempty"`
-	RuleHitMeta *RuleHitMeta         `json:"ruleHitMeta,omitempty" url:"ruleHitMeta,omitempty"`
-	Vars        []*ExecutedLogicVars `json:"vars,omitempty" url:"vars,omitempty"`
-	Labels      []RuleLabels         `json:"labels,omitempty" url:"labels,omitempty"`
-	Nature      *RuleNature          `json:"nature,omitempty" url:"nature,omitempty"`
-	IsShadow    *bool                `json:"isShadow,omitempty" url:"isShadow,omitempty"`
+	ExecutedAt *float64 `json:"executedAt,omitempty" url:"executedAt,omitempty"`
+	// Risk level used to select the rule logic, parameters, and action.
+	ExecutedRiskLevel *RiskLevel           `json:"executedRiskLevel,omitempty" url:"executedRiskLevel,omitempty"`
+	RuleHitMeta       *RuleHitMeta         `json:"ruleHitMeta,omitempty" url:"ruleHitMeta,omitempty"`
+	Vars              []*ExecutedLogicVars `json:"vars,omitempty" url:"vars,omitempty"`
+	Labels            []RuleLabels         `json:"labels,omitempty" url:"labels,omitempty"`
+	Nature            *RuleNature          `json:"nature,omitempty" url:"nature,omitempty"`
+	IsShadow          *bool                `json:"isShadow,omitempty" url:"isShadow,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -13210,6 +13213,13 @@ func (e *ExecutedRulesResult) GetExecutedAt() *float64 {
 		return nil
 	}
 	return e.ExecutedAt
+}
+
+func (e *ExecutedRulesResult) GetExecutedRiskLevel() *RiskLevel {
+	if e == nil {
+		return nil
+	}
+	return e.ExecutedRiskLevel
 }
 
 func (e *ExecutedRulesResult) GetRuleHitMeta() *RuleHitMeta {
@@ -13315,6 +13325,13 @@ func (e *ExecutedRulesResult) SetVersionId(versionId *string) {
 func (e *ExecutedRulesResult) SetExecutedAt(executedAt *float64) {
 	e.ExecutedAt = executedAt
 	e.require(executedRulesResultFieldExecutedAt)
+}
+
+// SetExecutedRiskLevel sets the ExecutedRiskLevel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExecutedRulesResult) SetExecutedRiskLevel(executedRiskLevel *RiskLevel) {
+	e.ExecutedRiskLevel = executedRiskLevel
+	e.require(executedRulesResultFieldExecutedRiskLevel)
 }
 
 // SetRuleHitMeta sets the RuleHitMeta field and marks it as non-optional;
@@ -14753,17 +14770,18 @@ func (g *GenericBankAccountDetails) String() string {
 
 // Model for list of hit rules
 var (
-	hitRulesDetailsFieldRuleId          = big.NewInt(1 << 0)
-	hitRulesDetailsFieldRuleInstanceId  = big.NewInt(1 << 1)
-	hitRulesDetailsFieldRuleName        = big.NewInt(1 << 2)
-	hitRulesDetailsFieldRuleDescription = big.NewInt(1 << 3)
-	hitRulesDetailsFieldVersionId       = big.NewInt(1 << 4)
-	hitRulesDetailsFieldExecutedAt      = big.NewInt(1 << 5)
-	hitRulesDetailsFieldRuleAction      = big.NewInt(1 << 6)
-	hitRulesDetailsFieldRuleHitMeta     = big.NewInt(1 << 7)
-	hitRulesDetailsFieldLabels          = big.NewInt(1 << 8)
-	hitRulesDetailsFieldNature          = big.NewInt(1 << 9)
-	hitRulesDetailsFieldIsShadow        = big.NewInt(1 << 10)
+	hitRulesDetailsFieldRuleId            = big.NewInt(1 << 0)
+	hitRulesDetailsFieldRuleInstanceId    = big.NewInt(1 << 1)
+	hitRulesDetailsFieldRuleName          = big.NewInt(1 << 2)
+	hitRulesDetailsFieldRuleDescription   = big.NewInt(1 << 3)
+	hitRulesDetailsFieldVersionId         = big.NewInt(1 << 4)
+	hitRulesDetailsFieldExecutedAt        = big.NewInt(1 << 5)
+	hitRulesDetailsFieldExecutedRiskLevel = big.NewInt(1 << 6)
+	hitRulesDetailsFieldRuleAction        = big.NewInt(1 << 7)
+	hitRulesDetailsFieldRuleHitMeta       = big.NewInt(1 << 8)
+	hitRulesDetailsFieldLabels            = big.NewInt(1 << 9)
+	hitRulesDetailsFieldNature            = big.NewInt(1 << 10)
+	hitRulesDetailsFieldIsShadow          = big.NewInt(1 << 11)
 )
 
 type HitRulesDetails struct {
@@ -14776,12 +14794,14 @@ type HitRulesDetails struct {
 	RuleDescription string  `json:"ruleDescription" url:"ruleDescription"`
 	VersionId       *string `json:"versionId,omitempty" url:"versionId,omitempty"`
 	// Timestamp when the rule was hit
-	ExecutedAt  *float64     `json:"executedAt,omitempty" url:"executedAt,omitempty"`
-	RuleAction  RuleAction   `json:"ruleAction" url:"ruleAction"`
-	RuleHitMeta *RuleHitMeta `json:"ruleHitMeta,omitempty" url:"ruleHitMeta,omitempty"`
-	Labels      []RuleLabels `json:"labels,omitempty" url:"labels,omitempty"`
-	Nature      *RuleNature  `json:"nature,omitempty" url:"nature,omitempty"`
-	IsShadow    *bool        `json:"isShadow,omitempty" url:"isShadow,omitempty"`
+	ExecutedAt *float64 `json:"executedAt,omitempty" url:"executedAt,omitempty"`
+	// Risk level used to select the rule logic, parameters, and action.
+	ExecutedRiskLevel *RiskLevel   `json:"executedRiskLevel,omitempty" url:"executedRiskLevel,omitempty"`
+	RuleAction        RuleAction   `json:"ruleAction" url:"ruleAction"`
+	RuleHitMeta       *RuleHitMeta `json:"ruleHitMeta,omitempty" url:"ruleHitMeta,omitempty"`
+	Labels            []RuleLabels `json:"labels,omitempty" url:"labels,omitempty"`
+	Nature            *RuleNature  `json:"nature,omitempty" url:"nature,omitempty"`
+	IsShadow          *bool        `json:"isShadow,omitempty" url:"isShadow,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -14830,6 +14850,13 @@ func (h *HitRulesDetails) GetExecutedAt() *float64 {
 		return nil
 	}
 	return h.ExecutedAt
+}
+
+func (h *HitRulesDetails) GetExecutedRiskLevel() *RiskLevel {
+	if h == nil {
+		return nil
+	}
+	return h.ExecutedRiskLevel
 }
 
 func (h *HitRulesDetails) GetRuleAction() RuleAction {
@@ -14921,6 +14948,13 @@ func (h *HitRulesDetails) SetVersionId(versionId *string) {
 func (h *HitRulesDetails) SetExecutedAt(executedAt *float64) {
 	h.ExecutedAt = executedAt
 	h.require(hitRulesDetailsFieldExecutedAt)
+}
+
+// SetExecutedRiskLevel sets the ExecutedRiskLevel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (h *HitRulesDetails) SetExecutedRiskLevel(executedRiskLevel *RiskLevel) {
+	h.ExecutedRiskLevel = executedRiskLevel
+	h.require(hitRulesDetailsFieldExecutedRiskLevel)
 }
 
 // SetRuleAction sets the RuleAction field and marks it as non-optional;
