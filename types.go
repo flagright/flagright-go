@@ -4879,7 +4879,8 @@ var (
 	businessUserEventFieldReason                        = big.NewInt(1 << 3)
 	businessUserEventFieldEventDescription              = big.NewInt(1 << 4)
 	businessUserEventFieldUpdatedBusinessUserAttributes = big.NewInt(1 << 5)
-	businessUserEventFieldExternalLinks                 = big.NewInt(1 << 6)
+	businessUserEventFieldNewUserId                     = big.NewInt(1 << 6)
+	businessUserEventFieldExternalLinks                 = big.NewInt(1 << 7)
 )
 
 type BusinessUserEvent struct {
@@ -4894,6 +4895,8 @@ type BusinessUserEvent struct {
 	// Event description
 	EventDescription              *string           `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedBusinessUserAttributes *BusinessOptional `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	// New userId for the existing user (keep in mind all of the future requests for this user will now reference this userId). Requires the `changeUserId` query param to come in affect.
+	NewUserId *string `json:"newUserId,omitempty" url:"newUserId,omitempty"`
 	// External links related to the business user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
@@ -4944,6 +4947,13 @@ func (b *BusinessUserEvent) GetUpdatedBusinessUserAttributes() *BusinessOptional
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BusinessUserEvent) GetNewUserId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.NewUserId
 }
 
 func (b *BusinessUserEvent) GetExternalLinks() []string {
@@ -5007,6 +5017,13 @@ func (b *BusinessUserEvent) SetEventDescription(eventDescription *string) {
 func (b *BusinessUserEvent) SetUpdatedBusinessUserAttributes(updatedBusinessUserAttributes *BusinessOptional) {
 	b.UpdatedBusinessUserAttributes = updatedBusinessUserAttributes
 	b.require(businessUserEventFieldUpdatedBusinessUserAttributes)
+}
+
+// SetNewUserId sets the NewUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEvent) SetNewUserId(newUserId *string) {
+	b.NewUserId = newUserId
+	b.require(businessUserEventFieldNewUserId)
 }
 
 // SetExternalLinks sets the ExternalLinks field and marks it as non-optional;
@@ -9295,7 +9312,8 @@ var (
 	consumerUserEventFieldReason                        = big.NewInt(1 << 3)
 	consumerUserEventFieldEventDescription              = big.NewInt(1 << 4)
 	consumerUserEventFieldUpdatedConsumerUserAttributes = big.NewInt(1 << 5)
-	consumerUserEventFieldExternalLinks                 = big.NewInt(1 << 6)
+	consumerUserEventFieldNewUserId                     = big.NewInt(1 << 6)
+	consumerUserEventFieldExternalLinks                 = big.NewInt(1 << 7)
 )
 
 type ConsumerUserEvent struct {
@@ -9310,6 +9328,8 @@ type ConsumerUserEvent struct {
 	// Event description
 	EventDescription              *string       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedConsumerUserAttributes *UserOptional `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
+	// New userId for the existing user (keep in mind all of the future requests for this user will now reference this userId). Requires the `changeUserId` queryparam to come in affect.
+	NewUserId *string `json:"newUserId,omitempty" url:"newUserId,omitempty"`
 	// External links related to the consumer user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 
@@ -9360,6 +9380,13 @@ func (c *ConsumerUserEvent) GetUpdatedConsumerUserAttributes() *UserOptional {
 		return nil
 	}
 	return c.UpdatedConsumerUserAttributes
+}
+
+func (c *ConsumerUserEvent) GetNewUserId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.NewUserId
 }
 
 func (c *ConsumerUserEvent) GetExternalLinks() []string {
@@ -9423,6 +9450,13 @@ func (c *ConsumerUserEvent) SetEventDescription(eventDescription *string) {
 func (c *ConsumerUserEvent) SetUpdatedConsumerUserAttributes(updatedConsumerUserAttributes *UserOptional) {
 	c.UpdatedConsumerUserAttributes = updatedConsumerUserAttributes
 	c.require(consumerUserEventFieldUpdatedConsumerUserAttributes)
+}
+
+// SetNewUserId sets the NewUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEvent) SetNewUserId(newUserId *string) {
+	c.NewUserId = newUserId
+	c.require(consumerUserEventFieldNewUserId)
 }
 
 // SetExternalLinks sets the ExternalLinks field and marks it as non-optional;

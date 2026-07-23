@@ -13,6 +13,7 @@ var (
 	businessUserEventsCreateRequestFieldAllowUserTypeConversion = big.NewInt(1 << 0)
 	businessUserEventsCreateRequestFieldLockKycRiskLevel        = big.NewInt(1 << 1)
 	businessUserEventsCreateRequestFieldLockCraRiskLevel        = big.NewInt(1 << 2)
+	businessUserEventsCreateRequestFieldChangeUserId            = big.NewInt(1 << 3)
 )
 
 type BusinessUserEventsCreateRequest struct {
@@ -21,8 +22,11 @@ type BusinessUserEventsCreateRequest struct {
 	// Boolean string whether Flagright should lock the KYC risk level for the user.
 	LockKycRiskLevel *BooleanString `json:"-" url:"lockKycRiskLevel,omitempty"`
 	// Boolean string whether Flagright should lock the CRA risk level for the user.
-	LockCraRiskLevel *BooleanString     `json:"-" url:"lockCraRiskLevel,omitempty"`
-	Body             *BusinessUserEvent `json:"-" url:"-"`
+	LockCraRiskLevel *BooleanString `json:"-" url:"lockCraRiskLevel,omitempty"`
+	// Boolean string whether Flagright should change userId of the user.
+	// (Note: Only allowed for users with no associated transactions).
+	ChangeUserId *BooleanString     `json:"-" url:"changeUserId,omitempty"`
+	Body         *BusinessUserEvent `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -56,6 +60,13 @@ func (b *BusinessUserEventsCreateRequest) SetLockCraRiskLevel(lockCraRiskLevel *
 	b.require(businessUserEventsCreateRequestFieldLockCraRiskLevel)
 }
 
+// SetChangeUserId sets the ChangeUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateRequest) SetChangeUserId(changeUserId *BooleanString) {
+	b.ChangeUserId = changeUserId
+	b.require(businessUserEventsCreateRequestFieldChangeUserId)
+}
+
 func (b *BusinessUserEventsCreateRequest) UnmarshalJSON(data []byte) error {
 	body := new(BusinessUserEvent)
 	if err := json.Unmarshal(data, &body); err != nil {
@@ -76,10 +87,11 @@ var (
 	businessUserEventWithRulesResultFieldReason                        = big.NewInt(1 << 3)
 	businessUserEventWithRulesResultFieldEventDescription              = big.NewInt(1 << 4)
 	businessUserEventWithRulesResultFieldUpdatedBusinessUserAttributes = big.NewInt(1 << 5)
-	businessUserEventWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 6)
-	businessUserEventWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 7)
-	businessUserEventWithRulesResultFieldHitRules                      = big.NewInt(1 << 8)
-	businessUserEventWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 9)
+	businessUserEventWithRulesResultFieldNewUserId                     = big.NewInt(1 << 6)
+	businessUserEventWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 7)
+	businessUserEventWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 8)
+	businessUserEventWithRulesResultFieldHitRules                      = big.NewInt(1 << 9)
+	businessUserEventWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 10)
 )
 
 type BusinessUserEventWithRulesResult struct {
@@ -94,6 +106,8 @@ type BusinessUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string           `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedBusinessUserAttributes *BusinessOptional `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	// New userId for the existing user (keep in mind all of the future requests for this user will now reference this userId). Requires the `changeUserId` query param to come in affect.
+	NewUserId *string `json:"newUserId,omitempty" url:"newUserId,omitempty"`
 	// External links related to the business user
 	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
@@ -147,6 +161,13 @@ func (b *BusinessUserEventWithRulesResult) GetUpdatedBusinessUserAttributes() *B
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BusinessUserEventWithRulesResult) GetNewUserId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.NewUserId
 }
 
 func (b *BusinessUserEventWithRulesResult) GetExternalLinks() []string {
@@ -233,6 +254,13 @@ func (b *BusinessUserEventWithRulesResult) SetUpdatedBusinessUserAttributes(upda
 	b.require(businessUserEventWithRulesResultFieldUpdatedBusinessUserAttributes)
 }
 
+// SetNewUserId sets the NewUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventWithRulesResult) SetNewUserId(newUserId *string) {
+	b.NewUserId = newUserId
+	b.require(businessUserEventWithRulesResultFieldNewUserId)
+}
+
 // SetExternalLinks sets the ExternalLinks field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (b *BusinessUserEventWithRulesResult) SetExternalLinks(externalLinks []string) {
@@ -289,6 +317,648 @@ func (b *BusinessUserEventWithRulesResult) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BusinessUserEventWithRulesResult) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+var (
+	businessUserEventsCreateResponseFieldUserId                        = big.NewInt(1 << 0)
+	businessUserEventsCreateResponseFieldCreatedTimestamp              = big.NewInt(1 << 1)
+	businessUserEventsCreateResponseFieldLegalEntity                   = big.NewInt(1 << 2)
+	businessUserEventsCreateResponseFieldActivatedTimestamp            = big.NewInt(1 << 3)
+	businessUserEventsCreateResponseFieldUserStateDetails              = big.NewInt(1 << 4)
+	businessUserEventsCreateResponseFieldKycStatusDetails              = big.NewInt(1 << 5)
+	businessUserEventsCreateResponseFieldEoddDate                      = big.NewInt(1 << 6)
+	businessUserEventsCreateResponseFieldCorporateEntities             = big.NewInt(1 << 7)
+	businessUserEventsCreateResponseFieldShareHolders                  = big.NewInt(1 << 8)
+	businessUserEventsCreateResponseFieldDirectors                     = big.NewInt(1 << 9)
+	businessUserEventsCreateResponseFieldAssociatedParties             = big.NewInt(1 << 10)
+	businessUserEventsCreateResponseFieldBusinessPartners              = big.NewInt(1 << 11)
+	businessUserEventsCreateResponseFieldTransactionLimits             = big.NewInt(1 << 12)
+	businessUserEventsCreateResponseFieldExpectedTransactionCountries  = big.NewInt(1 << 13)
+	businessUserEventsCreateResponseFieldExpectedTransactionCurrencies = big.NewInt(1 << 14)
+	businessUserEventsCreateResponseFieldRiskLevel                     = big.NewInt(1 << 15)
+	businessUserEventsCreateResponseFieldKycRiskLevel                  = big.NewInt(1 << 16)
+	businessUserEventsCreateResponseFieldAllowedPaymentMethods         = big.NewInt(1 << 17)
+	businessUserEventsCreateResponseFieldLinkedEntities                = big.NewInt(1 << 18)
+	businessUserEventsCreateResponseFieldAcquisitionChannel            = big.NewInt(1 << 19)
+	businessUserEventsCreateResponseFieldSavedPaymentDetails           = big.NewInt(1 << 20)
+	businessUserEventsCreateResponseFieldMccDetails                    = big.NewInt(1 << 21)
+	businessUserEventsCreateResponseFieldTags                          = big.NewInt(1 << 22)
+	businessUserEventsCreateResponseFieldAttachments                   = big.NewInt(1 << 23)
+	businessUserEventsCreateResponseFieldMetaData                      = big.NewInt(1 << 24)
+	businessUserEventsCreateResponseFieldJurisdiction                  = big.NewInt(1 << 25)
+	businessUserEventsCreateResponseFieldProductsEnabled               = big.NewInt(1 << 26)
+	businessUserEventsCreateResponseFieldPepStatus                     = big.NewInt(1 << 27)
+	businessUserEventsCreateResponseFieldSanctionsStatus               = big.NewInt(1 << 28)
+	businessUserEventsCreateResponseFieldAdverseMediaStatus            = big.NewInt(1 << 29)
+	businessUserEventsCreateResponseFieldExternalLinks                 = big.NewInt(1 << 30)
+	businessUserEventsCreateResponseFieldExecutedRules                 = big.NewInt(1 << 31)
+	businessUserEventsCreateResponseFieldHitRules                      = big.NewInt(1 << 32)
+	businessUserEventsCreateResponseFieldRiskScoreDetails              = big.NewInt(1 << 33)
+	businessUserEventsCreateResponseFieldMessage                       = big.NewInt(1 << 34)
+)
+
+type BusinessUserEventsCreateResponse struct {
+	// Unique user ID for the user
+	UserId string `json:"userId" url:"userId"`
+	// Timestamp when the user was created
+	CreatedTimestamp float64      `json:"createdTimestamp" url:"createdTimestamp"`
+	LegalEntity      *LegalEntity `json:"legalEntity" url:"legalEntity"`
+	// Timestamp when the user was activated
+	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
+	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
+	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	EoddDate           *float64          `json:"eoddDate,omitempty" url:"eoddDate,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities []*CorporateEntityDetails `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
+	// Shareholders (beneficiaries) of the company that hold at least 25% ownership. Can be another company or an individual
+	ShareHolders []*BusinessWithRulesResultShareHoldersItem `json:"shareHolders,omitempty" url:"shareHolders,omitempty"`
+	// Director(s) of the company. Must be at least one
+	Directors []*BusinessWithRulesResultDirectorsItem `json:"directors,omitempty" url:"directors,omitempty"`
+	// Parties associated with the company. Can be another company or an individual
+	AssociatedParties []*BusinessWithRulesResultAssociatedPartiesItem `json:"associatedParties,omitempty" url:"associatedParties,omitempty"`
+	// Business partners of the company
+	BusinessPartners              []*LegalEntity                                    `json:"businessPartners,omitempty" url:"businessPartners,omitempty"`
+	TransactionLimits             *TransactionLimits                                `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	ExpectedTransactionCountries  *ExpectedTransactionCountries                     `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
+	ExpectedTransactionCurrencies *ExpectedTransactionCurrencies                    `json:"expectedTransactionCurrencies,omitempty" url:"expectedTransactionCurrencies,omitempty"`
+	RiskLevel                     *RiskLevel                                        `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel                  *RiskLevel                                        `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AllowedPaymentMethods         []PaymentMethod                                   `json:"allowedPaymentMethods,omitempty" url:"allowedPaymentMethods,omitempty"`
+	LinkedEntities                *UserEntityLink                                   `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	AcquisitionChannel            *AcquisitionChannel                               `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	SavedPaymentDetails           []*BusinessWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	MccDetails                    *MccDetails                                       `json:"mccDetails,omitempty" url:"mccDetails,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
+	// User's attachments uploaded by business user
+	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	PepStatus       []*PepStatus       `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	// Whether the user is sanctioned
+	SanctionsStatus *bool `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	// Whether the user is in the adverse media list
+	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	// External links related to the business user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	Message          *string                `json:"message,omitempty" url:"message,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BusinessUserEventsCreateResponse) GetUserId() string {
+	if b == nil {
+		return ""
+	}
+	return b.UserId
+}
+
+func (b *BusinessUserEventsCreateResponse) GetCreatedTimestamp() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.CreatedTimestamp
+}
+
+func (b *BusinessUserEventsCreateResponse) GetLegalEntity() *LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.LegalEntity
+}
+
+func (b *BusinessUserEventsCreateResponse) GetActivatedTimestamp() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.ActivatedTimestamp
+}
+
+func (b *BusinessUserEventsCreateResponse) GetUserStateDetails() *UserStateDetails {
+	if b == nil {
+		return nil
+	}
+	return b.UserStateDetails
+}
+
+func (b *BusinessUserEventsCreateResponse) GetKycStatusDetails() *KycStatusDetails {
+	if b == nil {
+		return nil
+	}
+	return b.KycStatusDetails
+}
+
+func (b *BusinessUserEventsCreateResponse) GetEoddDate() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.EoddDate
+}
+
+func (b *BusinessUserEventsCreateResponse) GetCorporateEntities() []*CorporateEntityDetails {
+	if b == nil {
+		return nil
+	}
+	return b.CorporateEntities
+}
+
+func (b *BusinessUserEventsCreateResponse) GetShareHolders() []*BusinessWithRulesResultShareHoldersItem {
+	if b == nil {
+		return nil
+	}
+	return b.ShareHolders
+}
+
+func (b *BusinessUserEventsCreateResponse) GetDirectors() []*BusinessWithRulesResultDirectorsItem {
+	if b == nil {
+		return nil
+	}
+	return b.Directors
+}
+
+func (b *BusinessUserEventsCreateResponse) GetAssociatedParties() []*BusinessWithRulesResultAssociatedPartiesItem {
+	if b == nil {
+		return nil
+	}
+	return b.AssociatedParties
+}
+
+func (b *BusinessUserEventsCreateResponse) GetBusinessPartners() []*LegalEntity {
+	if b == nil {
+		return nil
+	}
+	return b.BusinessPartners
+}
+
+func (b *BusinessUserEventsCreateResponse) GetTransactionLimits() *TransactionLimits {
+	if b == nil {
+		return nil
+	}
+	return b.TransactionLimits
+}
+
+func (b *BusinessUserEventsCreateResponse) GetExpectedTransactionCountries() *ExpectedTransactionCountries {
+	if b == nil {
+		return nil
+	}
+	return b.ExpectedTransactionCountries
+}
+
+func (b *BusinessUserEventsCreateResponse) GetExpectedTransactionCurrencies() *ExpectedTransactionCurrencies {
+	if b == nil {
+		return nil
+	}
+	return b.ExpectedTransactionCurrencies
+}
+
+func (b *BusinessUserEventsCreateResponse) GetRiskLevel() *RiskLevel {
+	if b == nil {
+		return nil
+	}
+	return b.RiskLevel
+}
+
+func (b *BusinessUserEventsCreateResponse) GetKycRiskLevel() *RiskLevel {
+	if b == nil {
+		return nil
+	}
+	return b.KycRiskLevel
+}
+
+func (b *BusinessUserEventsCreateResponse) GetAllowedPaymentMethods() []PaymentMethod {
+	if b == nil {
+		return nil
+	}
+	return b.AllowedPaymentMethods
+}
+
+func (b *BusinessUserEventsCreateResponse) GetLinkedEntities() *UserEntityLink {
+	if b == nil {
+		return nil
+	}
+	return b.LinkedEntities
+}
+
+func (b *BusinessUserEventsCreateResponse) GetAcquisitionChannel() *AcquisitionChannel {
+	if b == nil {
+		return nil
+	}
+	return b.AcquisitionChannel
+}
+
+func (b *BusinessUserEventsCreateResponse) GetSavedPaymentDetails() []*BusinessWithRulesResultSavedPaymentDetailsItem {
+	if b == nil {
+		return nil
+	}
+	return b.SavedPaymentDetails
+}
+
+func (b *BusinessUserEventsCreateResponse) GetMccDetails() *MccDetails {
+	if b == nil {
+		return nil
+	}
+	return b.MccDetails
+}
+
+func (b *BusinessUserEventsCreateResponse) GetTags() []*UserTag {
+	if b == nil {
+		return nil
+	}
+	return b.Tags
+}
+
+func (b *BusinessUserEventsCreateResponse) GetAttachments() []*PersonAttachment {
+	if b == nil {
+		return nil
+	}
+	return b.Attachments
+}
+
+func (b *BusinessUserEventsCreateResponse) GetMetaData() *DeviceData {
+	if b == nil {
+		return nil
+	}
+	return b.MetaData
+}
+
+func (b *BusinessUserEventsCreateResponse) GetJurisdiction() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Jurisdiction
+}
+
+func (b *BusinessUserEventsCreateResponse) GetProductsEnabled() []*ProductsEnabled {
+	if b == nil {
+		return nil
+	}
+	return b.ProductsEnabled
+}
+
+func (b *BusinessUserEventsCreateResponse) GetPepStatus() []*PepStatus {
+	if b == nil {
+		return nil
+	}
+	return b.PepStatus
+}
+
+func (b *BusinessUserEventsCreateResponse) GetSanctionsStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.SanctionsStatus
+}
+
+func (b *BusinessUserEventsCreateResponse) GetAdverseMediaStatus() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.AdverseMediaStatus
+}
+
+func (b *BusinessUserEventsCreateResponse) GetExternalLinks() []string {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalLinks
+}
+
+func (b *BusinessUserEventsCreateResponse) GetExecutedRules() []*ExecutedRulesResult {
+	if b == nil {
+		return nil
+	}
+	return b.ExecutedRules
+}
+
+func (b *BusinessUserEventsCreateResponse) GetHitRules() []*HitRulesDetails {
+	if b == nil {
+		return nil
+	}
+	return b.HitRules
+}
+
+func (b *BusinessUserEventsCreateResponse) GetRiskScoreDetails() *UserRiskScoreDetails {
+	if b == nil {
+		return nil
+	}
+	return b.RiskScoreDetails
+}
+
+func (b *BusinessUserEventsCreateResponse) GetMessage() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Message
+}
+
+func (b *BusinessUserEventsCreateResponse) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BusinessUserEventsCreateResponse) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetUserId(userId string) {
+	b.UserId = userId
+	b.require(businessUserEventsCreateResponseFieldUserId)
+}
+
+// SetCreatedTimestamp sets the CreatedTimestamp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetCreatedTimestamp(createdTimestamp float64) {
+	b.CreatedTimestamp = createdTimestamp
+	b.require(businessUserEventsCreateResponseFieldCreatedTimestamp)
+}
+
+// SetLegalEntity sets the LegalEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetLegalEntity(legalEntity *LegalEntity) {
+	b.LegalEntity = legalEntity
+	b.require(businessUserEventsCreateResponseFieldLegalEntity)
+}
+
+// SetActivatedTimestamp sets the ActivatedTimestamp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetActivatedTimestamp(activatedTimestamp *float64) {
+	b.ActivatedTimestamp = activatedTimestamp
+	b.require(businessUserEventsCreateResponseFieldActivatedTimestamp)
+}
+
+// SetUserStateDetails sets the UserStateDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetUserStateDetails(userStateDetails *UserStateDetails) {
+	b.UserStateDetails = userStateDetails
+	b.require(businessUserEventsCreateResponseFieldUserStateDetails)
+}
+
+// SetKycStatusDetails sets the KycStatusDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetKycStatusDetails(kycStatusDetails *KycStatusDetails) {
+	b.KycStatusDetails = kycStatusDetails
+	b.require(businessUserEventsCreateResponseFieldKycStatusDetails)
+}
+
+// SetEoddDate sets the EoddDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetEoddDate(eoddDate *float64) {
+	b.EoddDate = eoddDate
+	b.require(businessUserEventsCreateResponseFieldEoddDate)
+}
+
+// SetCorporateEntities sets the CorporateEntities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetCorporateEntities(corporateEntities []*CorporateEntityDetails) {
+	b.CorporateEntities = corporateEntities
+	b.require(businessUserEventsCreateResponseFieldCorporateEntities)
+}
+
+// SetShareHolders sets the ShareHolders field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetShareHolders(shareHolders []*BusinessWithRulesResultShareHoldersItem) {
+	b.ShareHolders = shareHolders
+	b.require(businessUserEventsCreateResponseFieldShareHolders)
+}
+
+// SetDirectors sets the Directors field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetDirectors(directors []*BusinessWithRulesResultDirectorsItem) {
+	b.Directors = directors
+	b.require(businessUserEventsCreateResponseFieldDirectors)
+}
+
+// SetAssociatedParties sets the AssociatedParties field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetAssociatedParties(associatedParties []*BusinessWithRulesResultAssociatedPartiesItem) {
+	b.AssociatedParties = associatedParties
+	b.require(businessUserEventsCreateResponseFieldAssociatedParties)
+}
+
+// SetBusinessPartners sets the BusinessPartners field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetBusinessPartners(businessPartners []*LegalEntity) {
+	b.BusinessPartners = businessPartners
+	b.require(businessUserEventsCreateResponseFieldBusinessPartners)
+}
+
+// SetTransactionLimits sets the TransactionLimits field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetTransactionLimits(transactionLimits *TransactionLimits) {
+	b.TransactionLimits = transactionLimits
+	b.require(businessUserEventsCreateResponseFieldTransactionLimits)
+}
+
+// SetExpectedTransactionCountries sets the ExpectedTransactionCountries field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetExpectedTransactionCountries(expectedTransactionCountries *ExpectedTransactionCountries) {
+	b.ExpectedTransactionCountries = expectedTransactionCountries
+	b.require(businessUserEventsCreateResponseFieldExpectedTransactionCountries)
+}
+
+// SetExpectedTransactionCurrencies sets the ExpectedTransactionCurrencies field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetExpectedTransactionCurrencies(expectedTransactionCurrencies *ExpectedTransactionCurrencies) {
+	b.ExpectedTransactionCurrencies = expectedTransactionCurrencies
+	b.require(businessUserEventsCreateResponseFieldExpectedTransactionCurrencies)
+}
+
+// SetRiskLevel sets the RiskLevel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetRiskLevel(riskLevel *RiskLevel) {
+	b.RiskLevel = riskLevel
+	b.require(businessUserEventsCreateResponseFieldRiskLevel)
+}
+
+// SetKycRiskLevel sets the KycRiskLevel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetKycRiskLevel(kycRiskLevel *RiskLevel) {
+	b.KycRiskLevel = kycRiskLevel
+	b.require(businessUserEventsCreateResponseFieldKycRiskLevel)
+}
+
+// SetAllowedPaymentMethods sets the AllowedPaymentMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetAllowedPaymentMethods(allowedPaymentMethods []PaymentMethod) {
+	b.AllowedPaymentMethods = allowedPaymentMethods
+	b.require(businessUserEventsCreateResponseFieldAllowedPaymentMethods)
+}
+
+// SetLinkedEntities sets the LinkedEntities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetLinkedEntities(linkedEntities *UserEntityLink) {
+	b.LinkedEntities = linkedEntities
+	b.require(businessUserEventsCreateResponseFieldLinkedEntities)
+}
+
+// SetAcquisitionChannel sets the AcquisitionChannel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetAcquisitionChannel(acquisitionChannel *AcquisitionChannel) {
+	b.AcquisitionChannel = acquisitionChannel
+	b.require(businessUserEventsCreateResponseFieldAcquisitionChannel)
+}
+
+// SetSavedPaymentDetails sets the SavedPaymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetSavedPaymentDetails(savedPaymentDetails []*BusinessWithRulesResultSavedPaymentDetailsItem) {
+	b.SavedPaymentDetails = savedPaymentDetails
+	b.require(businessUserEventsCreateResponseFieldSavedPaymentDetails)
+}
+
+// SetMccDetails sets the MccDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetMccDetails(mccDetails *MccDetails) {
+	b.MccDetails = mccDetails
+	b.require(businessUserEventsCreateResponseFieldMccDetails)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetTags(tags []*UserTag) {
+	b.Tags = tags
+	b.require(businessUserEventsCreateResponseFieldTags)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetAttachments(attachments []*PersonAttachment) {
+	b.Attachments = attachments
+	b.require(businessUserEventsCreateResponseFieldAttachments)
+}
+
+// SetMetaData sets the MetaData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetMetaData(metaData *DeviceData) {
+	b.MetaData = metaData
+	b.require(businessUserEventsCreateResponseFieldMetaData)
+}
+
+// SetJurisdiction sets the Jurisdiction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetJurisdiction(jurisdiction *string) {
+	b.Jurisdiction = jurisdiction
+	b.require(businessUserEventsCreateResponseFieldJurisdiction)
+}
+
+// SetProductsEnabled sets the ProductsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetProductsEnabled(productsEnabled []*ProductsEnabled) {
+	b.ProductsEnabled = productsEnabled
+	b.require(businessUserEventsCreateResponseFieldProductsEnabled)
+}
+
+// SetPepStatus sets the PepStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetPepStatus(pepStatus []*PepStatus) {
+	b.PepStatus = pepStatus
+	b.require(businessUserEventsCreateResponseFieldPepStatus)
+}
+
+// SetSanctionsStatus sets the SanctionsStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetSanctionsStatus(sanctionsStatus *bool) {
+	b.SanctionsStatus = sanctionsStatus
+	b.require(businessUserEventsCreateResponseFieldSanctionsStatus)
+}
+
+// SetAdverseMediaStatus sets the AdverseMediaStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetAdverseMediaStatus(adverseMediaStatus *bool) {
+	b.AdverseMediaStatus = adverseMediaStatus
+	b.require(businessUserEventsCreateResponseFieldAdverseMediaStatus)
+}
+
+// SetExternalLinks sets the ExternalLinks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetExternalLinks(externalLinks []string) {
+	b.ExternalLinks = externalLinks
+	b.require(businessUserEventsCreateResponseFieldExternalLinks)
+}
+
+// SetExecutedRules sets the ExecutedRules field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetExecutedRules(executedRules []*ExecutedRulesResult) {
+	b.ExecutedRules = executedRules
+	b.require(businessUserEventsCreateResponseFieldExecutedRules)
+}
+
+// SetHitRules sets the HitRules field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetHitRules(hitRules []*HitRulesDetails) {
+	b.HitRules = hitRules
+	b.require(businessUserEventsCreateResponseFieldHitRules)
+}
+
+// SetRiskScoreDetails sets the RiskScoreDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetRiskScoreDetails(riskScoreDetails *UserRiskScoreDetails) {
+	b.RiskScoreDetails = riskScoreDetails
+	b.require(businessUserEventsCreateResponseFieldRiskScoreDetails)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetMessage(message *string) {
+	b.Message = message
+	b.require(businessUserEventsCreateResponseFieldMessage)
+}
+
+func (b *BusinessUserEventsCreateResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BusinessUserEventsCreateResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BusinessUserEventsCreateResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BusinessUserEventsCreateResponse) MarshalJSON() ([]byte, error) {
+	type embed BusinessUserEventsCreateResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BusinessUserEventsCreateResponse) String() string {
 	if b == nil {
 		return "<nil>"
 	}

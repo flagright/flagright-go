@@ -1768,7 +1768,7 @@ client.BusinessUsers.Get(
 </details>
 
 ## ConsumerUserEvents
-<details><summary><code>client.ConsumerUserEvents.Create(request) -> *flagrightgo.UserWithRulesResult</code></summary>
+<details><summary><code>client.ConsumerUserEvents.Create(request) -> *flagrightgo.ConsumerUserEventsCreateResponse</code></summary>
 <dl>
 <dd>
 
@@ -1817,6 +1817,7 @@ request := &flagrightgo.ConsumerUserEventsCreateRequest{
         AllowUserTypeConversion: flagrightgo.BooleanStringTrue.Ptr(),
         LockKycRiskLevel: flagrightgo.BooleanStringTrue.Ptr(),
         LockCraRiskLevel: flagrightgo.BooleanStringTrue.Ptr(),
+        ChangeUserId: flagrightgo.BooleanStringTrue.Ptr(),
         Body: &flagrightgo.ConsumerUserEvent{
             Timestamp: 1.1,
             UserId: "userId",
@@ -1858,6 +1859,17 @@ client.ConsumerUserEvents.Create(
 <dd>
 
 **lockCraRiskLevel:** `*flagrightgo.BooleanString` — Boolean string whether Flagright should lock the CRA risk level for the user.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**changeUserId:** `*flagrightgo.BooleanString` 
+
+Boolean string whether Flagright should change userId of the user.
+(Note: Only allowed for users with no associated transactions).
     
 </dd>
 </dl>
@@ -1937,7 +1949,7 @@ client.ConsumerUserEvents.Get(
 </details>
 
 ## BusinessUserEvents
-<details><summary><code>client.BusinessUserEvents.Create(request) -> *flagrightgo.BusinessWithRulesResult</code></summary>
+<details><summary><code>client.BusinessUserEvents.Create(request) -> *flagrightgo.BusinessUserEventsCreateResponse</code></summary>
 <dl>
 <dd>
 
@@ -1986,6 +1998,7 @@ request := &flagrightgo.BusinessUserEventsCreateRequest{
         AllowUserTypeConversion: flagrightgo.BooleanStringTrue.Ptr(),
         LockKycRiskLevel: flagrightgo.BooleanStringTrue.Ptr(),
         LockCraRiskLevel: flagrightgo.BooleanStringTrue.Ptr(),
+        ChangeUserId: flagrightgo.BooleanStringTrue.Ptr(),
         Body: &flagrightgo.BusinessUserEvent{
             Timestamp: 1.1,
             UserId: "userId",
@@ -2027,6 +2040,17 @@ client.BusinessUserEvents.Create(
 <dd>
 
 **lockCraRiskLevel:** `*flagrightgo.BooleanString` — Boolean string whether Flagright should lock the CRA risk level for the user.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**changeUserId:** `*flagrightgo.BooleanString` 
+
+Boolean string whether Flagright should change userId of the user.
+(Note: Only allowed for users with no associated transactions).
     
 </dd>
 </dl>

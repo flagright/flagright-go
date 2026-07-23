@@ -57,7 +57,7 @@ func (c *Client) Create(
 	ctx context.Context,
 	request *flagrightgo.BusinessUserEventsCreateRequest,
 	opts ...option.RequestOption,
-) (*flagrightgo.BusinessWithRulesResult, error) {
+) (*flagrightgo.BusinessUserEventsCreateResponse, error) {
 	response, err := c.WithRawResponse.Create(
 		ctx,
 		request,

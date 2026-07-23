@@ -36,7 +36,7 @@ func (r *RawClient) Create(
 	ctx context.Context,
 	request *flagrightgo.BusinessUserEventsCreateRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*flagrightgo.BusinessWithRulesResult], error) {
+) (*core.Response[*flagrightgo.BusinessUserEventsCreateResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -56,7 +56,7 @@ func (r *RawClient) Create(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *flagrightgo.BusinessWithRulesResult
+	var response *flagrightgo.BusinessUserEventsCreateResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -76,7 +76,7 @@ func (r *RawClient) Create(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*flagrightgo.BusinessWithRulesResult]{
+	return &core.Response[*flagrightgo.BusinessUserEventsCreateResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

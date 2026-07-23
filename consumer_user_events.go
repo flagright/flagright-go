@@ -13,6 +13,7 @@ var (
 	consumerUserEventsCreateRequestFieldAllowUserTypeConversion = big.NewInt(1 << 0)
 	consumerUserEventsCreateRequestFieldLockKycRiskLevel        = big.NewInt(1 << 1)
 	consumerUserEventsCreateRequestFieldLockCraRiskLevel        = big.NewInt(1 << 2)
+	consumerUserEventsCreateRequestFieldChangeUserId            = big.NewInt(1 << 3)
 )
 
 type ConsumerUserEventsCreateRequest struct {
@@ -21,8 +22,11 @@ type ConsumerUserEventsCreateRequest struct {
 	// Boolean string whether Flagright should lock the KYC risk level for the user.
 	LockKycRiskLevel *BooleanString `json:"-" url:"lockKycRiskLevel,omitempty"`
 	// Boolean string whether Flagright should lock the CRA risk level for the user.
-	LockCraRiskLevel *BooleanString     `json:"-" url:"lockCraRiskLevel,omitempty"`
-	Body             *ConsumerUserEvent `json:"-" url:"-"`
+	LockCraRiskLevel *BooleanString `json:"-" url:"lockCraRiskLevel,omitempty"`
+	// Boolean string whether Flagright should change userId of the user.
+	// (Note: Only allowed for users with no associated transactions).
+	ChangeUserId *BooleanString     `json:"-" url:"changeUserId,omitempty"`
+	Body         *ConsumerUserEvent `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -56,6 +60,13 @@ func (c *ConsumerUserEventsCreateRequest) SetLockCraRiskLevel(lockCraRiskLevel *
 	c.require(consumerUserEventsCreateRequestFieldLockCraRiskLevel)
 }
 
+// SetChangeUserId sets the ChangeUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateRequest) SetChangeUserId(changeUserId *BooleanString) {
+	c.ChangeUserId = changeUserId
+	c.require(consumerUserEventsCreateRequestFieldChangeUserId)
+}
+
 func (c *ConsumerUserEventsCreateRequest) UnmarshalJSON(data []byte) error {
 	body := new(ConsumerUserEvent)
 	if err := json.Unmarshal(data, &body); err != nil {
@@ -76,10 +87,11 @@ var (
 	consumerUserEventWithRulesResultFieldReason                        = big.NewInt(1 << 3)
 	consumerUserEventWithRulesResultFieldEventDescription              = big.NewInt(1 << 4)
 	consumerUserEventWithRulesResultFieldUpdatedConsumerUserAttributes = big.NewInt(1 << 5)
-	consumerUserEventWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 6)
-	consumerUserEventWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 7)
-	consumerUserEventWithRulesResultFieldHitRules                      = big.NewInt(1 << 8)
-	consumerUserEventWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 9)
+	consumerUserEventWithRulesResultFieldNewUserId                     = big.NewInt(1 << 6)
+	consumerUserEventWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 7)
+	consumerUserEventWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 8)
+	consumerUserEventWithRulesResultFieldHitRules                      = big.NewInt(1 << 9)
+	consumerUserEventWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 10)
 )
 
 type ConsumerUserEventWithRulesResult struct {
@@ -94,6 +106,8 @@ type ConsumerUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedConsumerUserAttributes *UserOptional `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
+	// New userId for the existing user (keep in mind all of the future requests for this user will now reference this userId). Requires the `changeUserId` queryparam to come in affect.
+	NewUserId *string `json:"newUserId,omitempty" url:"newUserId,omitempty"`
 	// External links related to the consumer user
 	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
@@ -147,6 +161,13 @@ func (c *ConsumerUserEventWithRulesResult) GetUpdatedConsumerUserAttributes() *U
 		return nil
 	}
 	return c.UpdatedConsumerUserAttributes
+}
+
+func (c *ConsumerUserEventWithRulesResult) GetNewUserId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.NewUserId
 }
 
 func (c *ConsumerUserEventWithRulesResult) GetExternalLinks() []string {
@@ -233,6 +254,13 @@ func (c *ConsumerUserEventWithRulesResult) SetUpdatedConsumerUserAttributes(upda
 	c.require(consumerUserEventWithRulesResultFieldUpdatedConsumerUserAttributes)
 }
 
+// SetNewUserId sets the NewUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventWithRulesResult) SetNewUserId(newUserId *string) {
+	c.NewUserId = newUserId
+	c.require(consumerUserEventWithRulesResultFieldNewUserId)
+}
+
 // SetExternalLinks sets the ExternalLinks field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *ConsumerUserEventWithRulesResult) SetExternalLinks(externalLinks []string) {
@@ -289,6 +317,691 @@ func (c *ConsumerUserEventWithRulesResult) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConsumerUserEventWithRulesResult) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	consumerUserEventsCreateResponseFieldUserId                        = big.NewInt(1 << 0)
+	consumerUserEventsCreateResponseFieldCreatedTimestamp              = big.NewInt(1 << 1)
+	consumerUserEventsCreateResponseFieldActivatedTimestamp            = big.NewInt(1 << 2)
+	consumerUserEventsCreateResponseFieldUserDetails                   = big.NewInt(1 << 3)
+	consumerUserEventsCreateResponseFieldUserStateDetails              = big.NewInt(1 << 4)
+	consumerUserEventsCreateResponseFieldKycStatusDetails              = big.NewInt(1 << 5)
+	consumerUserEventsCreateResponseFieldEoddDate                      = big.NewInt(1 << 6)
+	consumerUserEventsCreateResponseFieldEmploymentStatus              = big.NewInt(1 << 7)
+	consumerUserEventsCreateResponseFieldOccupation                    = big.NewInt(1 << 8)
+	consumerUserEventsCreateResponseFieldLegalDocuments                = big.NewInt(1 << 9)
+	consumerUserEventsCreateResponseFieldContactDetails                = big.NewInt(1 << 10)
+	consumerUserEventsCreateResponseFieldEmploymentDetails             = big.NewInt(1 << 11)
+	consumerUserEventsCreateResponseFieldTransactionLimits             = big.NewInt(1 << 12)
+	consumerUserEventsCreateResponseFieldExpectedIncome                = big.NewInt(1 << 13)
+	consumerUserEventsCreateResponseFieldExpectedTransactionCountries  = big.NewInt(1 << 14)
+	consumerUserEventsCreateResponseFieldExpectedTransactionCurrencies = big.NewInt(1 << 15)
+	consumerUserEventsCreateResponseFieldRiskLevel                     = big.NewInt(1 << 16)
+	consumerUserEventsCreateResponseFieldKycRiskLevel                  = big.NewInt(1 << 17)
+	consumerUserEventsCreateResponseFieldAcquisitionChannel            = big.NewInt(1 << 18)
+	consumerUserEventsCreateResponseFieldReasonForAccountOpening       = big.NewInt(1 << 19)
+	consumerUserEventsCreateResponseFieldSourceOfFunds                 = big.NewInt(1 << 20)
+	consumerUserEventsCreateResponseFieldUserSegment                   = big.NewInt(1 << 21)
+	consumerUserEventsCreateResponseFieldPepStatus                     = big.NewInt(1 << 22)
+	consumerUserEventsCreateResponseFieldSanctionsStatus               = big.NewInt(1 << 23)
+	consumerUserEventsCreateResponseFieldAdverseMediaStatus            = big.NewInt(1 << 24)
+	consumerUserEventsCreateResponseFieldCorporateEntities             = big.NewInt(1 << 25)
+	consumerUserEventsCreateResponseFieldLinkedEntities                = big.NewInt(1 << 26)
+	consumerUserEventsCreateResponseFieldSavedPaymentDetails           = big.NewInt(1 << 27)
+	consumerUserEventsCreateResponseFieldTags                          = big.NewInt(1 << 28)
+	consumerUserEventsCreateResponseFieldAttachments                   = big.NewInt(1 << 29)
+	consumerUserEventsCreateResponseFieldMetaData                      = big.NewInt(1 << 30)
+	consumerUserEventsCreateResponseFieldJurisdiction                  = big.NewInt(1 << 31)
+	consumerUserEventsCreateResponseFieldProductsEnabled               = big.NewInt(1 << 32)
+	consumerUserEventsCreateResponseFieldExternalLinks                 = big.NewInt(1 << 33)
+	consumerUserEventsCreateResponseFieldExecutedRules                 = big.NewInt(1 << 34)
+	consumerUserEventsCreateResponseFieldHitRules                      = big.NewInt(1 << 35)
+	consumerUserEventsCreateResponseFieldRiskScoreDetails              = big.NewInt(1 << 36)
+	consumerUserEventsCreateResponseFieldMessage                       = big.NewInt(1 << 37)
+)
+
+type ConsumerUserEventsCreateResponse struct {
+	// Unique user ID
+	UserId string `json:"userId" url:"userId"`
+	// Timestamp when userId is created
+	CreatedTimestamp float64 `json:"createdTimestamp" url:"createdTimestamp"`
+	// Timestamp when user was activated
+	ActivatedTimestamp *float64          `json:"activatedTimestamp,omitempty" url:"activatedTimestamp,omitempty"`
+	UserDetails        *UserDetails      `json:"userDetails,omitempty" url:"userDetails,omitempty"`
+	UserStateDetails   *UserStateDetails `json:"userStateDetails,omitempty" url:"userStateDetails,omitempty"`
+	KycStatusDetails   *KycStatusDetails `json:"kycStatusDetails,omitempty" url:"kycStatusDetails,omitempty"`
+	EoddDate           *float64          `json:"eoddDate,omitempty" url:"eoddDate,omitempty"`
+	EmploymentStatus   *EmploymentStatus `json:"employmentStatus,omitempty" url:"employmentStatus,omitempty"`
+	Occupation         *string           `json:"occupation,omitempty" url:"occupation,omitempty"`
+	// User's legal identity documents - See Document Model for details
+	LegalDocuments                []*LegalDocument               `json:"legalDocuments,omitempty" url:"legalDocuments,omitempty"`
+	ContactDetails                *ContactDetails                `json:"contactDetails,omitempty" url:"contactDetails,omitempty"`
+	EmploymentDetails             *EmploymentDetails             `json:"employmentDetails,omitempty" url:"employmentDetails,omitempty"`
+	TransactionLimits             *TransactionLimits             `json:"transactionLimits,omitempty" url:"transactionLimits,omitempty"`
+	ExpectedIncome                *ExpectedIncome                `json:"expectedIncome,omitempty" url:"expectedIncome,omitempty"`
+	ExpectedTransactionCountries  *ExpectedTransactionCountries  `json:"expectedTransactionCountries,omitempty" url:"expectedTransactionCountries,omitempty"`
+	ExpectedTransactionCurrencies *ExpectedTransactionCurrencies `json:"expectedTransactionCurrencies,omitempty" url:"expectedTransactionCurrencies,omitempty"`
+	RiskLevel                     *RiskLevel                     `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	KycRiskLevel                  *RiskLevel                     `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
+	AcquisitionChannel            *AcquisitionChannel            `json:"acquisitionChannel,omitempty" url:"acquisitionChannel,omitempty"`
+	ReasonForAccountOpening       []string                       `json:"reasonForAccountOpening,omitempty" url:"reasonForAccountOpening,omitempty"`
+	SourceOfFunds                 []SourceOfFunds                `json:"sourceOfFunds,omitempty" url:"sourceOfFunds,omitempty"`
+	UserSegment                   *ConsumerUserSegment           `json:"userSegment,omitempty" url:"userSegment,omitempty"`
+	PepStatus                     []*PepStatus                   `json:"pepStatus,omitempty" url:"pepStatus,omitempty"`
+	SanctionsStatus               *SanctionsStatus               `json:"sanctionsStatus,omitempty" url:"sanctionsStatus,omitempty"`
+	AdverseMediaStatus            *AdverseMediaStatus            `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
+	// Corporate entities of the user
+	CorporateEntities   []*CorporateEntityDetails                     `json:"corporateEntities,omitempty" url:"corporateEntities,omitempty"`
+	LinkedEntities      *UserEntityLink                               `json:"linkedEntities,omitempty" url:"linkedEntities,omitempty"`
+	SavedPaymentDetails []*UserWithRulesResultSavedPaymentDetailsItem `json:"savedPaymentDetails,omitempty" url:"savedPaymentDetails,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
+	// Uploaded user's attachment
+	Attachments []*PersonAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	MetaData    *DeviceData         `json:"metaData,omitempty" url:"metaData,omitempty"`
+	// Legal authority or region governing the transaction
+	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
+	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
+	// External links related to the consumer user
+	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
+	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
+	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
+	Message          *string                `json:"message,omitempty" url:"message,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetUserId() string {
+	if c == nil {
+		return ""
+	}
+	return c.UserId
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetCreatedTimestamp() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.CreatedTimestamp
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetActivatedTimestamp() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.ActivatedTimestamp
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetUserDetails() *UserDetails {
+	if c == nil {
+		return nil
+	}
+	return c.UserDetails
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetUserStateDetails() *UserStateDetails {
+	if c == nil {
+		return nil
+	}
+	return c.UserStateDetails
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetKycStatusDetails() *KycStatusDetails {
+	if c == nil {
+		return nil
+	}
+	return c.KycStatusDetails
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetEoddDate() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.EoddDate
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetEmploymentStatus() *EmploymentStatus {
+	if c == nil {
+		return nil
+	}
+	return c.EmploymentStatus
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetOccupation() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Occupation
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetLegalDocuments() []*LegalDocument {
+	if c == nil {
+		return nil
+	}
+	return c.LegalDocuments
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetContactDetails() *ContactDetails {
+	if c == nil {
+		return nil
+	}
+	return c.ContactDetails
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetEmploymentDetails() *EmploymentDetails {
+	if c == nil {
+		return nil
+	}
+	return c.EmploymentDetails
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetTransactionLimits() *TransactionLimits {
+	if c == nil {
+		return nil
+	}
+	return c.TransactionLimits
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetExpectedIncome() *ExpectedIncome {
+	if c == nil {
+		return nil
+	}
+	return c.ExpectedIncome
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetExpectedTransactionCountries() *ExpectedTransactionCountries {
+	if c == nil {
+		return nil
+	}
+	return c.ExpectedTransactionCountries
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetExpectedTransactionCurrencies() *ExpectedTransactionCurrencies {
+	if c == nil {
+		return nil
+	}
+	return c.ExpectedTransactionCurrencies
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetRiskLevel() *RiskLevel {
+	if c == nil {
+		return nil
+	}
+	return c.RiskLevel
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetKycRiskLevel() *RiskLevel {
+	if c == nil {
+		return nil
+	}
+	return c.KycRiskLevel
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetAcquisitionChannel() *AcquisitionChannel {
+	if c == nil {
+		return nil
+	}
+	return c.AcquisitionChannel
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetReasonForAccountOpening() []string {
+	if c == nil {
+		return nil
+	}
+	return c.ReasonForAccountOpening
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetSourceOfFunds() []SourceOfFunds {
+	if c == nil {
+		return nil
+	}
+	return c.SourceOfFunds
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetUserSegment() *ConsumerUserSegment {
+	if c == nil {
+		return nil
+	}
+	return c.UserSegment
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetPepStatus() []*PepStatus {
+	if c == nil {
+		return nil
+	}
+	return c.PepStatus
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetSanctionsStatus() *SanctionsStatus {
+	if c == nil {
+		return nil
+	}
+	return c.SanctionsStatus
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetAdverseMediaStatus() *AdverseMediaStatus {
+	if c == nil {
+		return nil
+	}
+	return c.AdverseMediaStatus
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetCorporateEntities() []*CorporateEntityDetails {
+	if c == nil {
+		return nil
+	}
+	return c.CorporateEntities
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetLinkedEntities() *UserEntityLink {
+	if c == nil {
+		return nil
+	}
+	return c.LinkedEntities
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetSavedPaymentDetails() []*UserWithRulesResultSavedPaymentDetailsItem {
+	if c == nil {
+		return nil
+	}
+	return c.SavedPaymentDetails
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetTags() []*UserTag {
+	if c == nil {
+		return nil
+	}
+	return c.Tags
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetAttachments() []*PersonAttachment {
+	if c == nil {
+		return nil
+	}
+	return c.Attachments
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetMetaData() *DeviceData {
+	if c == nil {
+		return nil
+	}
+	return c.MetaData
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetJurisdiction() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Jurisdiction
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetProductsEnabled() []*ProductsEnabled {
+	if c == nil {
+		return nil
+	}
+	return c.ProductsEnabled
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetExternalLinks() []string {
+	if c == nil {
+		return nil
+	}
+	return c.ExternalLinks
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetExecutedRules() []*ExecutedRulesResult {
+	if c == nil {
+		return nil
+	}
+	return c.ExecutedRules
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetHitRules() []*HitRulesDetails {
+	if c == nil {
+		return nil
+	}
+	return c.HitRules
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetRiskScoreDetails() *UserRiskScoreDetails {
+	if c == nil {
+		return nil
+	}
+	return c.RiskScoreDetails
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetMessage() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Message
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ConsumerUserEventsCreateResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetUserId(userId string) {
+	c.UserId = userId
+	c.require(consumerUserEventsCreateResponseFieldUserId)
+}
+
+// SetCreatedTimestamp sets the CreatedTimestamp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetCreatedTimestamp(createdTimestamp float64) {
+	c.CreatedTimestamp = createdTimestamp
+	c.require(consumerUserEventsCreateResponseFieldCreatedTimestamp)
+}
+
+// SetActivatedTimestamp sets the ActivatedTimestamp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetActivatedTimestamp(activatedTimestamp *float64) {
+	c.ActivatedTimestamp = activatedTimestamp
+	c.require(consumerUserEventsCreateResponseFieldActivatedTimestamp)
+}
+
+// SetUserDetails sets the UserDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetUserDetails(userDetails *UserDetails) {
+	c.UserDetails = userDetails
+	c.require(consumerUserEventsCreateResponseFieldUserDetails)
+}
+
+// SetUserStateDetails sets the UserStateDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetUserStateDetails(userStateDetails *UserStateDetails) {
+	c.UserStateDetails = userStateDetails
+	c.require(consumerUserEventsCreateResponseFieldUserStateDetails)
+}
+
+// SetKycStatusDetails sets the KycStatusDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetKycStatusDetails(kycStatusDetails *KycStatusDetails) {
+	c.KycStatusDetails = kycStatusDetails
+	c.require(consumerUserEventsCreateResponseFieldKycStatusDetails)
+}
+
+// SetEoddDate sets the EoddDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetEoddDate(eoddDate *float64) {
+	c.EoddDate = eoddDate
+	c.require(consumerUserEventsCreateResponseFieldEoddDate)
+}
+
+// SetEmploymentStatus sets the EmploymentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetEmploymentStatus(employmentStatus *EmploymentStatus) {
+	c.EmploymentStatus = employmentStatus
+	c.require(consumerUserEventsCreateResponseFieldEmploymentStatus)
+}
+
+// SetOccupation sets the Occupation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetOccupation(occupation *string) {
+	c.Occupation = occupation
+	c.require(consumerUserEventsCreateResponseFieldOccupation)
+}
+
+// SetLegalDocuments sets the LegalDocuments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetLegalDocuments(legalDocuments []*LegalDocument) {
+	c.LegalDocuments = legalDocuments
+	c.require(consumerUserEventsCreateResponseFieldLegalDocuments)
+}
+
+// SetContactDetails sets the ContactDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetContactDetails(contactDetails *ContactDetails) {
+	c.ContactDetails = contactDetails
+	c.require(consumerUserEventsCreateResponseFieldContactDetails)
+}
+
+// SetEmploymentDetails sets the EmploymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetEmploymentDetails(employmentDetails *EmploymentDetails) {
+	c.EmploymentDetails = employmentDetails
+	c.require(consumerUserEventsCreateResponseFieldEmploymentDetails)
+}
+
+// SetTransactionLimits sets the TransactionLimits field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetTransactionLimits(transactionLimits *TransactionLimits) {
+	c.TransactionLimits = transactionLimits
+	c.require(consumerUserEventsCreateResponseFieldTransactionLimits)
+}
+
+// SetExpectedIncome sets the ExpectedIncome field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetExpectedIncome(expectedIncome *ExpectedIncome) {
+	c.ExpectedIncome = expectedIncome
+	c.require(consumerUserEventsCreateResponseFieldExpectedIncome)
+}
+
+// SetExpectedTransactionCountries sets the ExpectedTransactionCountries field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetExpectedTransactionCountries(expectedTransactionCountries *ExpectedTransactionCountries) {
+	c.ExpectedTransactionCountries = expectedTransactionCountries
+	c.require(consumerUserEventsCreateResponseFieldExpectedTransactionCountries)
+}
+
+// SetExpectedTransactionCurrencies sets the ExpectedTransactionCurrencies field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetExpectedTransactionCurrencies(expectedTransactionCurrencies *ExpectedTransactionCurrencies) {
+	c.ExpectedTransactionCurrencies = expectedTransactionCurrencies
+	c.require(consumerUserEventsCreateResponseFieldExpectedTransactionCurrencies)
+}
+
+// SetRiskLevel sets the RiskLevel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetRiskLevel(riskLevel *RiskLevel) {
+	c.RiskLevel = riskLevel
+	c.require(consumerUserEventsCreateResponseFieldRiskLevel)
+}
+
+// SetKycRiskLevel sets the KycRiskLevel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetKycRiskLevel(kycRiskLevel *RiskLevel) {
+	c.KycRiskLevel = kycRiskLevel
+	c.require(consumerUserEventsCreateResponseFieldKycRiskLevel)
+}
+
+// SetAcquisitionChannel sets the AcquisitionChannel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetAcquisitionChannel(acquisitionChannel *AcquisitionChannel) {
+	c.AcquisitionChannel = acquisitionChannel
+	c.require(consumerUserEventsCreateResponseFieldAcquisitionChannel)
+}
+
+// SetReasonForAccountOpening sets the ReasonForAccountOpening field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetReasonForAccountOpening(reasonForAccountOpening []string) {
+	c.ReasonForAccountOpening = reasonForAccountOpening
+	c.require(consumerUserEventsCreateResponseFieldReasonForAccountOpening)
+}
+
+// SetSourceOfFunds sets the SourceOfFunds field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetSourceOfFunds(sourceOfFunds []SourceOfFunds) {
+	c.SourceOfFunds = sourceOfFunds
+	c.require(consumerUserEventsCreateResponseFieldSourceOfFunds)
+}
+
+// SetUserSegment sets the UserSegment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetUserSegment(userSegment *ConsumerUserSegment) {
+	c.UserSegment = userSegment
+	c.require(consumerUserEventsCreateResponseFieldUserSegment)
+}
+
+// SetPepStatus sets the PepStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetPepStatus(pepStatus []*PepStatus) {
+	c.PepStatus = pepStatus
+	c.require(consumerUserEventsCreateResponseFieldPepStatus)
+}
+
+// SetSanctionsStatus sets the SanctionsStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetSanctionsStatus(sanctionsStatus *SanctionsStatus) {
+	c.SanctionsStatus = sanctionsStatus
+	c.require(consumerUserEventsCreateResponseFieldSanctionsStatus)
+}
+
+// SetAdverseMediaStatus sets the AdverseMediaStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetAdverseMediaStatus(adverseMediaStatus *AdverseMediaStatus) {
+	c.AdverseMediaStatus = adverseMediaStatus
+	c.require(consumerUserEventsCreateResponseFieldAdverseMediaStatus)
+}
+
+// SetCorporateEntities sets the CorporateEntities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetCorporateEntities(corporateEntities []*CorporateEntityDetails) {
+	c.CorporateEntities = corporateEntities
+	c.require(consumerUserEventsCreateResponseFieldCorporateEntities)
+}
+
+// SetLinkedEntities sets the LinkedEntities field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetLinkedEntities(linkedEntities *UserEntityLink) {
+	c.LinkedEntities = linkedEntities
+	c.require(consumerUserEventsCreateResponseFieldLinkedEntities)
+}
+
+// SetSavedPaymentDetails sets the SavedPaymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetSavedPaymentDetails(savedPaymentDetails []*UserWithRulesResultSavedPaymentDetailsItem) {
+	c.SavedPaymentDetails = savedPaymentDetails
+	c.require(consumerUserEventsCreateResponseFieldSavedPaymentDetails)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetTags(tags []*UserTag) {
+	c.Tags = tags
+	c.require(consumerUserEventsCreateResponseFieldTags)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetAttachments(attachments []*PersonAttachment) {
+	c.Attachments = attachments
+	c.require(consumerUserEventsCreateResponseFieldAttachments)
+}
+
+// SetMetaData sets the MetaData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetMetaData(metaData *DeviceData) {
+	c.MetaData = metaData
+	c.require(consumerUserEventsCreateResponseFieldMetaData)
+}
+
+// SetJurisdiction sets the Jurisdiction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetJurisdiction(jurisdiction *string) {
+	c.Jurisdiction = jurisdiction
+	c.require(consumerUserEventsCreateResponseFieldJurisdiction)
+}
+
+// SetProductsEnabled sets the ProductsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetProductsEnabled(productsEnabled []*ProductsEnabled) {
+	c.ProductsEnabled = productsEnabled
+	c.require(consumerUserEventsCreateResponseFieldProductsEnabled)
+}
+
+// SetExternalLinks sets the ExternalLinks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetExternalLinks(externalLinks []string) {
+	c.ExternalLinks = externalLinks
+	c.require(consumerUserEventsCreateResponseFieldExternalLinks)
+}
+
+// SetExecutedRules sets the ExecutedRules field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetExecutedRules(executedRules []*ExecutedRulesResult) {
+	c.ExecutedRules = executedRules
+	c.require(consumerUserEventsCreateResponseFieldExecutedRules)
+}
+
+// SetHitRules sets the HitRules field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetHitRules(hitRules []*HitRulesDetails) {
+	c.HitRules = hitRules
+	c.require(consumerUserEventsCreateResponseFieldHitRules)
+}
+
+// SetRiskScoreDetails sets the RiskScoreDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetRiskScoreDetails(riskScoreDetails *UserRiskScoreDetails) {
+	c.RiskScoreDetails = riskScoreDetails
+	c.require(consumerUserEventsCreateResponseFieldRiskScoreDetails)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetMessage(message *string) {
+	c.Message = message
+	c.require(consumerUserEventsCreateResponseFieldMessage)
+}
+
+func (c *ConsumerUserEventsCreateResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConsumerUserEventsCreateResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ConsumerUserEventsCreateResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConsumerUserEventsCreateResponse) MarshalJSON() ([]byte, error) {
+	type embed ConsumerUserEventsCreateResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ConsumerUserEventsCreateResponse) String() string {
 	if c == nil {
 		return "<nil>"
 	}

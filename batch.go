@@ -587,9 +587,10 @@ var (
 	batchBusinessUserEventWithRulesResultFieldReason                        = big.NewInt(1 << 3)
 	batchBusinessUserEventWithRulesResultFieldEventDescription              = big.NewInt(1 << 4)
 	batchBusinessUserEventWithRulesResultFieldUpdatedBusinessUserAttributes = big.NewInt(1 << 5)
-	batchBusinessUserEventWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 6)
-	batchBusinessUserEventWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 7)
-	batchBusinessUserEventWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 8)
+	batchBusinessUserEventWithRulesResultFieldNewUserId                     = big.NewInt(1 << 6)
+	batchBusinessUserEventWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 7)
+	batchBusinessUserEventWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 8)
+	batchBusinessUserEventWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 9)
 )
 
 type BatchBusinessUserEventWithRulesResult struct {
@@ -604,6 +605,8 @@ type BatchBusinessUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string           `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedBusinessUserAttributes *BusinessOptional `json:"updatedBusinessUserAttributes,omitempty" url:"updatedBusinessUserAttributes,omitempty"`
+	// New userId for the existing user (keep in mind all of the future requests for this user will now reference this userId). Requires the `changeUserId` query param to come in affect.
+	NewUserId *string `json:"newUserId,omitempty" url:"newUserId,omitempty"`
 	// External links related to the business user
 	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
@@ -656,6 +659,13 @@ func (b *BatchBusinessUserEventWithRulesResult) GetUpdatedBusinessUserAttributes
 		return nil
 	}
 	return b.UpdatedBusinessUserAttributes
+}
+
+func (b *BatchBusinessUserEventWithRulesResult) GetNewUserId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.NewUserId
 }
 
 func (b *BatchBusinessUserEventWithRulesResult) GetExternalLinks() []string {
@@ -733,6 +743,13 @@ func (b *BatchBusinessUserEventWithRulesResult) SetEventDescription(eventDescrip
 func (b *BatchBusinessUserEventWithRulesResult) SetUpdatedBusinessUserAttributes(updatedBusinessUserAttributes *BusinessOptional) {
 	b.UpdatedBusinessUserAttributes = updatedBusinessUserAttributes
 	b.require(batchBusinessUserEventWithRulesResultFieldUpdatedBusinessUserAttributes)
+}
+
+// SetNewUserId sets the NewUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchBusinessUserEventWithRulesResult) SetNewUserId(newUserId *string) {
+	b.NewUserId = newUserId
+	b.require(batchBusinessUserEventWithRulesResultFieldNewUserId)
 }
 
 // SetExternalLinks sets the ExternalLinks field and marks it as non-optional;
@@ -2134,9 +2151,10 @@ var (
 	batchConsumerUserEventWithRulesResultFieldReason                        = big.NewInt(1 << 3)
 	batchConsumerUserEventWithRulesResultFieldEventDescription              = big.NewInt(1 << 4)
 	batchConsumerUserEventWithRulesResultFieldUpdatedConsumerUserAttributes = big.NewInt(1 << 5)
-	batchConsumerUserEventWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 6)
-	batchConsumerUserEventWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 7)
-	batchConsumerUserEventWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 8)
+	batchConsumerUserEventWithRulesResultFieldNewUserId                     = big.NewInt(1 << 6)
+	batchConsumerUserEventWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 7)
+	batchConsumerUserEventWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 8)
+	batchConsumerUserEventWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 9)
 )
 
 type BatchConsumerUserEventWithRulesResult struct {
@@ -2151,6 +2169,8 @@ type BatchConsumerUserEventWithRulesResult struct {
 	// Event description
 	EventDescription              *string       `json:"eventDescription,omitempty" url:"eventDescription,omitempty"`
 	UpdatedConsumerUserAttributes *UserOptional `json:"updatedConsumerUserAttributes,omitempty" url:"updatedConsumerUserAttributes,omitempty"`
+	// New userId for the existing user (keep in mind all of the future requests for this user will now reference this userId). Requires the `changeUserId` queryparam to come in affect.
+	NewUserId *string `json:"newUserId,omitempty" url:"newUserId,omitempty"`
 	// External links related to the consumer user
 	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
@@ -2203,6 +2223,13 @@ func (b *BatchConsumerUserEventWithRulesResult) GetUpdatedConsumerUserAttributes
 		return nil
 	}
 	return b.UpdatedConsumerUserAttributes
+}
+
+func (b *BatchConsumerUserEventWithRulesResult) GetNewUserId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.NewUserId
 }
 
 func (b *BatchConsumerUserEventWithRulesResult) GetExternalLinks() []string {
@@ -2280,6 +2307,13 @@ func (b *BatchConsumerUserEventWithRulesResult) SetEventDescription(eventDescrip
 func (b *BatchConsumerUserEventWithRulesResult) SetUpdatedConsumerUserAttributes(updatedConsumerUserAttributes *UserOptional) {
 	b.UpdatedConsumerUserAttributes = updatedConsumerUserAttributes
 	b.require(batchConsumerUserEventWithRulesResultFieldUpdatedConsumerUserAttributes)
+}
+
+// SetNewUserId sets the NewUserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchConsumerUserEventWithRulesResult) SetNewUserId(newUserId *string) {
+	b.NewUserId = newUserId
+	b.require(batchConsumerUserEventWithRulesResultFieldNewUserId)
 }
 
 // SetExternalLinks sets the ExternalLinks field and marks it as non-optional;

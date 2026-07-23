@@ -92,6 +92,7 @@ func TestBusinessUserEventsCreateWithWireMock(
 		AllowUserTypeConversion: flagrightgo.BooleanStringTrue.Ptr(),
 		LockKycRiskLevel:        flagrightgo.BooleanStringTrue.Ptr(),
 		LockCraRiskLevel:        flagrightgo.BooleanStringTrue.Ptr(),
+		ChangeUserId:            flagrightgo.BooleanStringTrue.Ptr(),
 		Body: &flagrightgo.BusinessUserEvent{
 			Timestamp: 1.1,
 			UserId:    "userId",
@@ -106,7 +107,7 @@ func TestBusinessUserEventsCreateWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBusinessUserEventsCreateWithWireMock", "POST", "/events/business/user", map[string]interface{}{"allowUserTypeConversion": "true", "lockKycRiskLevel": "true", "lockCraRiskLevel": "true"}, 1)
+	VerifyRequestCount(t, "TestBusinessUserEventsCreateWithWireMock", "POST", "/events/business/user", map[string]interface{}{"allowUserTypeConversion": "true", "lockKycRiskLevel": "true", "lockCraRiskLevel": "true", "changeUserId": "true"}, 1)
 }
 
 func TestBusinessUserEventsGetWithWireMock(
