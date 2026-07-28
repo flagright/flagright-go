@@ -529,20 +529,22 @@ var (
 	alertOpenedDetailsFieldRuleDescription = big.NewInt(1 << 4)
 	alertOpenedDetailsFieldRuleId          = big.NewInt(1 << 5)
 	alertOpenedDetailsFieldRuleInstanceId  = big.NewInt(1 << 6)
-	alertOpenedDetailsFieldCaseId          = big.NewInt(1 << 7)
-	alertOpenedDetailsFieldUserId          = big.NewInt(1 << 8)
+	alertOpenedDetailsFieldNature          = big.NewInt(1 << 7)
+	alertOpenedDetailsFieldCaseId          = big.NewInt(1 << 8)
+	alertOpenedDetailsFieldUserId          = big.NewInt(1 << 9)
 )
 
 type AlertOpenedDetails struct {
-	AlertId         *string  `json:"alertId,omitempty" url:"alertId,omitempty"`
-	Status          *string  `json:"status,omitempty" url:"status,omitempty"`
-	TransactionIds  []string `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
-	RuleName        *string  `json:"ruleName,omitempty" url:"ruleName,omitempty"`
-	RuleDescription *string  `json:"ruleDescription,omitempty" url:"ruleDescription,omitempty"`
-	RuleId          *string  `json:"ruleId,omitempty" url:"ruleId,omitempty"`
-	RuleInstanceId  *string  `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
-	CaseId          *string  `json:"caseId,omitempty" url:"caseId,omitempty"`
-	UserId          *string  `json:"userId,omitempty" url:"userId,omitempty"`
+	AlertId         *string     `json:"alertId,omitempty" url:"alertId,omitempty"`
+	Status          *string     `json:"status,omitempty" url:"status,omitempty"`
+	TransactionIds  []string    `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+	RuleName        *string     `json:"ruleName,omitempty" url:"ruleName,omitempty"`
+	RuleDescription *string     `json:"ruleDescription,omitempty" url:"ruleDescription,omitempty"`
+	RuleId          *string     `json:"ruleId,omitempty" url:"ruleId,omitempty"`
+	RuleInstanceId  *string     `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
+	Nature          *RuleNature `json:"nature,omitempty" url:"nature,omitempty"`
+	CaseId          *string     `json:"caseId,omitempty" url:"caseId,omitempty"`
+	UserId          *string     `json:"userId,omitempty" url:"userId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -598,6 +600,13 @@ func (a *AlertOpenedDetails) GetRuleInstanceId() *string {
 		return nil
 	}
 	return a.RuleInstanceId
+}
+
+func (a *AlertOpenedDetails) GetNature() *RuleNature {
+	if a == nil {
+		return nil
+	}
+	return a.Nature
 }
 
 func (a *AlertOpenedDetails) GetCaseId() *string {
@@ -677,6 +686,13 @@ func (a *AlertOpenedDetails) SetRuleInstanceId(ruleInstanceId *string) {
 	a.require(alertOpenedDetailsFieldRuleInstanceId)
 }
 
+// SetNature sets the Nature field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertOpenedDetails) SetNature(nature *RuleNature) {
+	a.Nature = nature
+	a.require(alertOpenedDetailsFieldNature)
+}
+
 // SetCaseId sets the CaseId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (a *AlertOpenedDetails) SetCaseId(caseId *string) {
@@ -745,20 +761,22 @@ var (
 	alertStatusDetailsFieldRuleDescription           = big.NewInt(1 << 8)
 	alertStatusDetailsFieldRuleId                    = big.NewInt(1 << 9)
 	alertStatusDetailsFieldRuleInstanceId            = big.NewInt(1 << 10)
+	alertStatusDetailsFieldNature                    = big.NewInt(1 << 11)
 )
 
 type AlertStatusDetails struct {
-	AlertId                   *string  `json:"alertId,omitempty" url:"alertId,omitempty"`
-	Status                    *string  `json:"status,omitempty" url:"status,omitempty"`
-	Reasons                   []string `json:"reasons,omitempty" url:"reasons,omitempty"`
-	ReasonDescriptionForOther *string  `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
-	Comment                   *string  `json:"comment,omitempty" url:"comment,omitempty"`
-	UserId                    *string  `json:"userId,omitempty" url:"userId,omitempty"`
-	TransactionIds            []string `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
-	RuleName                  *string  `json:"ruleName,omitempty" url:"ruleName,omitempty"`
-	RuleDescription           *string  `json:"ruleDescription,omitempty" url:"ruleDescription,omitempty"`
-	RuleId                    *string  `json:"ruleId,omitempty" url:"ruleId,omitempty"`
-	RuleInstanceId            *string  `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
+	AlertId                   *string     `json:"alertId,omitempty" url:"alertId,omitempty"`
+	Status                    *string     `json:"status,omitempty" url:"status,omitempty"`
+	Reasons                   []string    `json:"reasons,omitempty" url:"reasons,omitempty"`
+	ReasonDescriptionForOther *string     `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
+	Comment                   *string     `json:"comment,omitempty" url:"comment,omitempty"`
+	UserId                    *string     `json:"userId,omitempty" url:"userId,omitempty"`
+	TransactionIds            []string    `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+	RuleName                  *string     `json:"ruleName,omitempty" url:"ruleName,omitempty"`
+	RuleDescription           *string     `json:"ruleDescription,omitempty" url:"ruleDescription,omitempty"`
+	RuleId                    *string     `json:"ruleId,omitempty" url:"ruleId,omitempty"`
+	RuleInstanceId            *string     `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
+	Nature                    *RuleNature `json:"nature,omitempty" url:"nature,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -842,6 +860,13 @@ func (a *AlertStatusDetails) GetRuleInstanceId() *string {
 		return nil
 	}
 	return a.RuleInstanceId
+}
+
+func (a *AlertStatusDetails) GetNature() *RuleNature {
+	if a == nil {
+		return nil
+	}
+	return a.Nature
 }
 
 func (a *AlertStatusDetails) GetExtraProperties() map[string]interface{} {
@@ -933,6 +958,13 @@ func (a *AlertStatusDetails) SetRuleId(ruleId *string) {
 func (a *AlertStatusDetails) SetRuleInstanceId(ruleInstanceId *string) {
 	a.RuleInstanceId = ruleInstanceId
 	a.require(alertStatusDetailsFieldRuleInstanceId)
+}
+
+// SetNature sets the Nature field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertStatusDetails) SetNature(nature *RuleNature) {
+	a.Nature = nature
+	a.require(alertStatusDetailsFieldNature)
 }
 
 func (a *AlertStatusDetails) UnmarshalJSON(data []byte) error {
@@ -19636,6 +19668,188 @@ func (r RiskExposureType) Ptr() *RiskExposureType {
 	return &r
 }
 
+// Per-factor risk score breakdown row from factor score details or component scores when available
+var (
+	riskFactorBreakdownFieldRiskFactorId        = big.NewInt(1 << 0)
+	riskFactorBreakdownFieldRiskFactorName      = big.NewInt(1 << 1)
+	riskFactorBreakdownFieldRiskFactorVersionId = big.NewInt(1 << 2)
+	riskFactorBreakdownFieldValue               = big.NewInt(1 << 3)
+	riskFactorBreakdownFieldRiskScore           = big.NewInt(1 << 4)
+	riskFactorBreakdownFieldRiskLevel           = big.NewInt(1 << 5)
+	riskFactorBreakdownFieldWeight              = big.NewInt(1 << 6)
+)
+
+type RiskFactorBreakdown struct {
+	RiskFactorId   *string `json:"riskFactorId,omitempty" url:"riskFactorId,omitempty"`
+	RiskFactorName *string `json:"riskFactorName,omitempty" url:"riskFactorName,omitempty"`
+	// Set for factor score detail rows
+	RiskFactorVersionId *string  `json:"riskFactorVersionId,omitempty" url:"riskFactorVersionId,omitempty"`
+	Value               *string  `json:"value,omitempty" url:"value,omitempty"`
+	RiskScore           *float64 `json:"riskScore,omitempty" url:"riskScore,omitempty"`
+	RiskLevel           *string  `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	Weight              *float64 `json:"weight,omitempty" url:"weight,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RiskFactorBreakdown) GetRiskFactorId() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RiskFactorId
+}
+
+func (r *RiskFactorBreakdown) GetRiskFactorName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RiskFactorName
+}
+
+func (r *RiskFactorBreakdown) GetRiskFactorVersionId() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RiskFactorVersionId
+}
+
+func (r *RiskFactorBreakdown) GetValue() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Value
+}
+
+func (r *RiskFactorBreakdown) GetRiskScore() *float64 {
+	if r == nil {
+		return nil
+	}
+	return r.RiskScore
+}
+
+func (r *RiskFactorBreakdown) GetRiskLevel() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RiskLevel
+}
+
+func (r *RiskFactorBreakdown) GetWeight() *float64 {
+	if r == nil {
+		return nil
+	}
+	return r.Weight
+}
+
+func (r *RiskFactorBreakdown) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *RiskFactorBreakdown) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetRiskFactorId sets the RiskFactorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RiskFactorBreakdown) SetRiskFactorId(riskFactorId *string) {
+	r.RiskFactorId = riskFactorId
+	r.require(riskFactorBreakdownFieldRiskFactorId)
+}
+
+// SetRiskFactorName sets the RiskFactorName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RiskFactorBreakdown) SetRiskFactorName(riskFactorName *string) {
+	r.RiskFactorName = riskFactorName
+	r.require(riskFactorBreakdownFieldRiskFactorName)
+}
+
+// SetRiskFactorVersionId sets the RiskFactorVersionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RiskFactorBreakdown) SetRiskFactorVersionId(riskFactorVersionId *string) {
+	r.RiskFactorVersionId = riskFactorVersionId
+	r.require(riskFactorBreakdownFieldRiskFactorVersionId)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RiskFactorBreakdown) SetValue(value *string) {
+	r.Value = value
+	r.require(riskFactorBreakdownFieldValue)
+}
+
+// SetRiskScore sets the RiskScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RiskFactorBreakdown) SetRiskScore(riskScore *float64) {
+	r.RiskScore = riskScore
+	r.require(riskFactorBreakdownFieldRiskScore)
+}
+
+// SetRiskLevel sets the RiskLevel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RiskFactorBreakdown) SetRiskLevel(riskLevel *string) {
+	r.RiskLevel = riskLevel
+	r.require(riskFactorBreakdownFieldRiskLevel)
+}
+
+// SetWeight sets the Weight field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RiskFactorBreakdown) SetWeight(weight *float64) {
+	r.Weight = weight
+	r.require(riskFactorBreakdownFieldWeight)
+}
+
+func (r *RiskFactorBreakdown) UnmarshalJSON(data []byte) error {
+	type unmarshaler RiskFactorBreakdown
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RiskFactorBreakdown(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RiskFactorBreakdown) MarshalJSON() ([]byte, error) {
+	type embed RiskFactorBreakdown
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RiskFactorBreakdown) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
 type RiskLevel string
 
 const (
@@ -24178,6 +24392,11 @@ var (
 	transactionRiskScoringResultFieldDestinationUserCraRiskScore = big.NewInt(1 << 3)
 	transactionRiskScoringResultFieldOriginUserCraRiskLevel      = big.NewInt(1 << 4)
 	transactionRiskScoringResultFieldDestinationUserCraRiskLevel = big.NewInt(1 << 5)
+	transactionRiskScoringResultFieldTrsRiskFactors              = big.NewInt(1 << 6)
+	transactionRiskScoringResultFieldOriginUserAvgTrsScore       = big.NewInt(1 << 7)
+	transactionRiskScoringResultFieldDestinationUserAvgTrsScore  = big.NewInt(1 << 8)
+	transactionRiskScoringResultFieldKrsWeight                   = big.NewInt(1 << 9)
+	transactionRiskScoringResultFieldAvgTrsWeight                = big.NewInt(1 << 10)
 )
 
 type TransactionRiskScoringResult struct {
@@ -24190,6 +24409,16 @@ type TransactionRiskScoringResult struct {
 	DestinationUserCraRiskScore *float64   `json:"destinationUserCraRiskScore,omitempty" url:"destinationUserCraRiskScore,omitempty"`
 	OriginUserCraRiskLevel      *RiskLevel `json:"originUserCraRiskLevel,omitempty" url:"originUserCraRiskLevel,omitempty"`
 	DestinationUserCraRiskLevel *RiskLevel `json:"destinationUserCraRiskLevel,omitempty" url:"destinationUserCraRiskLevel,omitempty"`
+	// Per-factor TRS breakdown; omitted unless the RISK_SCORE_BREAKDOWN feature is enabled
+	TrsRiskFactors []*RiskFactorBreakdown `json:"trsRiskFactors,omitempty" url:"trsRiskFactors,omitempty"`
+	// Origin user's average TRS after this transaction; omitted unless the RISK_SCORE_BREAKDOWN feature is enabled
+	OriginUserAvgTrsScore *float64 `json:"originUserAvgTrsScore,omitempty" url:"originUserAvgTrsScore,omitempty"`
+	// Destination user's average TRS after this transaction; omitted unless the RISK_SCORE_BREAKDOWN feature is enabled
+	DestinationUserAvgTrsScore *float64 `json:"destinationUserAvgTrsScore,omitempty" url:"destinationUserAvgTrsScore,omitempty"`
+	// KRS weight in the CRA formula when using custom weighting; omitted unless the RISK_SCORE_BREAKDOWN feature is enabled
+	KrsWeight *float64 `json:"krsWeight,omitempty" url:"krsWeight,omitempty"`
+	// Average TRS weight in the CRA formula when using custom weighting; omitted unless the RISK_SCORE_BREAKDOWN feature is enabled
+	AvgTrsWeight *float64 `json:"avgTrsWeight,omitempty" url:"avgTrsWeight,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -24238,6 +24467,41 @@ func (t *TransactionRiskScoringResult) GetDestinationUserCraRiskLevel() *RiskLev
 		return nil
 	}
 	return t.DestinationUserCraRiskLevel
+}
+
+func (t *TransactionRiskScoringResult) GetTrsRiskFactors() []*RiskFactorBreakdown {
+	if t == nil {
+		return nil
+	}
+	return t.TrsRiskFactors
+}
+
+func (t *TransactionRiskScoringResult) GetOriginUserAvgTrsScore() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.OriginUserAvgTrsScore
+}
+
+func (t *TransactionRiskScoringResult) GetDestinationUserAvgTrsScore() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.DestinationUserAvgTrsScore
+}
+
+func (t *TransactionRiskScoringResult) GetKrsWeight() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.KrsWeight
+}
+
+func (t *TransactionRiskScoringResult) GetAvgTrsWeight() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.AvgTrsWeight
 }
 
 func (t *TransactionRiskScoringResult) GetExtraProperties() map[string]interface{} {
@@ -24294,6 +24558,41 @@ func (t *TransactionRiskScoringResult) SetOriginUserCraRiskLevel(originUserCraRi
 func (t *TransactionRiskScoringResult) SetDestinationUserCraRiskLevel(destinationUserCraRiskLevel *RiskLevel) {
 	t.DestinationUserCraRiskLevel = destinationUserCraRiskLevel
 	t.require(transactionRiskScoringResultFieldDestinationUserCraRiskLevel)
+}
+
+// SetTrsRiskFactors sets the TrsRiskFactors field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionRiskScoringResult) SetTrsRiskFactors(trsRiskFactors []*RiskFactorBreakdown) {
+	t.TrsRiskFactors = trsRiskFactors
+	t.require(transactionRiskScoringResultFieldTrsRiskFactors)
+}
+
+// SetOriginUserAvgTrsScore sets the OriginUserAvgTrsScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionRiskScoringResult) SetOriginUserAvgTrsScore(originUserAvgTrsScore *float64) {
+	t.OriginUserAvgTrsScore = originUserAvgTrsScore
+	t.require(transactionRiskScoringResultFieldOriginUserAvgTrsScore)
+}
+
+// SetDestinationUserAvgTrsScore sets the DestinationUserAvgTrsScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionRiskScoringResult) SetDestinationUserAvgTrsScore(destinationUserAvgTrsScore *float64) {
+	t.DestinationUserAvgTrsScore = destinationUserAvgTrsScore
+	t.require(transactionRiskScoringResultFieldDestinationUserAvgTrsScore)
+}
+
+// SetKrsWeight sets the KrsWeight field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionRiskScoringResult) SetKrsWeight(krsWeight *float64) {
+	t.KrsWeight = krsWeight
+	t.require(transactionRiskScoringResultFieldKrsWeight)
+}
+
+// SetAvgTrsWeight sets the AvgTrsWeight field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionRiskScoringResult) SetAvgTrsWeight(avgTrsWeight *float64) {
+	t.AvgTrsWeight = avgTrsWeight
+	t.require(transactionRiskScoringResultFieldAvgTrsWeight)
 }
 
 func (t *TransactionRiskScoringResult) UnmarshalJSON(data []byte) error {
@@ -27737,10 +28036,14 @@ func (u UserRegistrationStatus) Ptr() *UserRegistrationStatus {
 }
 
 var (
-	userRiskScoreDetailsFieldKycRiskScore = big.NewInt(1 << 0)
-	userRiskScoreDetailsFieldCraRiskScore = big.NewInt(1 << 1)
-	userRiskScoreDetailsFieldKycRiskLevel = big.NewInt(1 << 2)
-	userRiskScoreDetailsFieldCraRiskLevel = big.NewInt(1 << 3)
+	userRiskScoreDetailsFieldKycRiskScore   = big.NewInt(1 << 0)
+	userRiskScoreDetailsFieldCraRiskScore   = big.NewInt(1 << 1)
+	userRiskScoreDetailsFieldKycRiskLevel   = big.NewInt(1 << 2)
+	userRiskScoreDetailsFieldCraRiskLevel   = big.NewInt(1 << 3)
+	userRiskScoreDetailsFieldKycRiskFactors = big.NewInt(1 << 4)
+	userRiskScoreDetailsFieldAvgTrsScore    = big.NewInt(1 << 5)
+	userRiskScoreDetailsFieldKrsWeight      = big.NewInt(1 << 6)
+	userRiskScoreDetailsFieldAvgTrsWeight   = big.NewInt(1 << 7)
 )
 
 type UserRiskScoreDetails struct {
@@ -27748,6 +28051,14 @@ type UserRiskScoreDetails struct {
 	CraRiskScore *float64   `json:"craRiskScore,omitempty" url:"craRiskScore,omitempty"`
 	KycRiskLevel *RiskLevel `json:"kycRiskLevel,omitempty" url:"kycRiskLevel,omitempty"`
 	CraRiskLevel *RiskLevel `json:"craRiskLevel,omitempty" url:"craRiskLevel,omitempty"`
+	// Per-factor KRS breakdown; omitted unless the RISK_SCORE_BREAKDOWN feature is enabled
+	KycRiskFactors []*RiskFactorBreakdown `json:"kycRiskFactors,omitempty" url:"kycRiskFactors,omitempty"`
+	// User average transaction risk score; omitted unless the RISK_SCORE_BREAKDOWN feature is enabled
+	AvgTrsScore *float64 `json:"avgTrsScore,omitempty" url:"avgTrsScore,omitempty"`
+	// KRS weight in the CRA formula when using custom weighting; omitted unless the RISK_SCORE_BREAKDOWN feature is enabled
+	KrsWeight *float64 `json:"krsWeight,omitempty" url:"krsWeight,omitempty"`
+	// Average TRS weight in the CRA formula when using custom weighting; omitted unless the RISK_SCORE_BREAKDOWN feature is enabled
+	AvgTrsWeight *float64 `json:"avgTrsWeight,omitempty" url:"avgTrsWeight,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -27782,6 +28093,34 @@ func (u *UserRiskScoreDetails) GetCraRiskLevel() *RiskLevel {
 		return nil
 	}
 	return u.CraRiskLevel
+}
+
+func (u *UserRiskScoreDetails) GetKycRiskFactors() []*RiskFactorBreakdown {
+	if u == nil {
+		return nil
+	}
+	return u.KycRiskFactors
+}
+
+func (u *UserRiskScoreDetails) GetAvgTrsScore() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.AvgTrsScore
+}
+
+func (u *UserRiskScoreDetails) GetKrsWeight() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.KrsWeight
+}
+
+func (u *UserRiskScoreDetails) GetAvgTrsWeight() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.AvgTrsWeight
 }
 
 func (u *UserRiskScoreDetails) GetExtraProperties() map[string]interface{} {
@@ -27824,6 +28163,34 @@ func (u *UserRiskScoreDetails) SetKycRiskLevel(kycRiskLevel *RiskLevel) {
 func (u *UserRiskScoreDetails) SetCraRiskLevel(craRiskLevel *RiskLevel) {
 	u.CraRiskLevel = craRiskLevel
 	u.require(userRiskScoreDetailsFieldCraRiskLevel)
+}
+
+// SetKycRiskFactors sets the KycRiskFactors field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserRiskScoreDetails) SetKycRiskFactors(kycRiskFactors []*RiskFactorBreakdown) {
+	u.KycRiskFactors = kycRiskFactors
+	u.require(userRiskScoreDetailsFieldKycRiskFactors)
+}
+
+// SetAvgTrsScore sets the AvgTrsScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserRiskScoreDetails) SetAvgTrsScore(avgTrsScore *float64) {
+	u.AvgTrsScore = avgTrsScore
+	u.require(userRiskScoreDetailsFieldAvgTrsScore)
+}
+
+// SetKrsWeight sets the KrsWeight field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserRiskScoreDetails) SetKrsWeight(krsWeight *float64) {
+	u.KrsWeight = krsWeight
+	u.require(userRiskScoreDetailsFieldKrsWeight)
+}
+
+// SetAvgTrsWeight sets the AvgTrsWeight field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserRiskScoreDetails) SetAvgTrsWeight(avgTrsWeight *float64) {
+	u.AvgTrsWeight = avgTrsWeight
+	u.require(userRiskScoreDetailsFieldAvgTrsWeight)
 }
 
 func (u *UserRiskScoreDetails) UnmarshalJSON(data []byte) error {
