@@ -2623,6 +2623,31 @@ func (b BooleanString) Ptr() *BooleanString {
 	return &b
 }
 
+type BotDetectionResult string
+
+const (
+	BotDetectionResultBad         BotDetectionResult = "bad"
+	BotDetectionResultGood        BotDetectionResult = "good"
+	BotDetectionResultNotDetected BotDetectionResult = "not_detected"
+)
+
+func NewBotDetectionResultFromString(s string) (BotDetectionResult, error) {
+	switch s {
+	case "bad":
+		return BotDetectionResultBad, nil
+	case "good":
+		return BotDetectionResultGood, nil
+	case "not_detected":
+		return BotDetectionResultNotDetected, nil
+	}
+	var t BotDetectionResult
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BotDetectionResult) Ptr() *BotDetectionResult {
+	return &b
+}
+
 var (
 	businessFieldUserId                        = big.NewInt(1 << 0)
 	businessFieldCreatedTimestamp              = big.NewInt(1 << 1)
@@ -12618,18 +12643,66 @@ func (d *Date) String() string {
 
 // Model for device data
 var (
-	deviceDataFieldBatteryLevel     = big.NewInt(1 << 0)
-	deviceDataFieldDeviceLatitude   = big.NewInt(1 << 1)
-	deviceDataFieldDeviceLongitude  = big.NewInt(1 << 2)
-	deviceDataFieldIpAddress        = big.NewInt(1 << 3)
-	deviceDataFieldIpCountry        = big.NewInt(1 << 4)
-	deviceDataFieldDeviceIdentifier = big.NewInt(1 << 5)
-	deviceDataFieldVpnUsed          = big.NewInt(1 << 6)
-	deviceDataFieldOperatingSystem  = big.NewInt(1 << 7)
-	deviceDataFieldDeviceMaker      = big.NewInt(1 << 8)
-	deviceDataFieldDeviceModel      = big.NewInt(1 << 9)
-	deviceDataFieldDeviceYear       = big.NewInt(1 << 10)
-	deviceDataFieldAppVersion       = big.NewInt(1 << 11)
+	deviceDataFieldBatteryLevel                   = big.NewInt(1 << 0)
+	deviceDataFieldDeviceLatitude                 = big.NewInt(1 << 1)
+	deviceDataFieldDeviceLongitude                = big.NewInt(1 << 2)
+	deviceDataFieldIpAddress                      = big.NewInt(1 << 3)
+	deviceDataFieldIpCountry                      = big.NewInt(1 << 4)
+	deviceDataFieldDeviceIdentifier               = big.NewInt(1 << 5)
+	deviceDataFieldVpnUsed                        = big.NewInt(1 << 6)
+	deviceDataFieldOperatingSystem                = big.NewInt(1 << 7)
+	deviceDataFieldDeviceMaker                    = big.NewInt(1 << 8)
+	deviceDataFieldDeviceModel                    = big.NewInt(1 << 9)
+	deviceDataFieldDeviceYear                     = big.NewInt(1 << 10)
+	deviceDataFieldAppVersion                     = big.NewInt(1 << 11)
+	deviceDataFieldDeviceIntelligenceSealedResult = big.NewInt(1 << 12)
+	deviceDataFieldTor                            = big.NewInt(1 << 13)
+	deviceDataFieldConfidence                     = big.NewInt(1 << 14)
+	deviceDataFieldIncognito                      = big.NewInt(1 << 15)
+	deviceDataFieldProxy                          = big.NewInt(1 << 16)
+	deviceDataFieldTampering                      = big.NewInt(1 << 17)
+	deviceDataFieldBotDetection                   = big.NewInt(1 << 18)
+	deviceDataFieldPrivacySettings                = big.NewInt(1 << 19)
+	deviceDataFieldSuspectScore                   = big.NewInt(1 << 20)
+	deviceDataFieldVelocity5MEvents               = big.NewInt(1 << 21)
+	deviceDataFieldVelocity5MIps                  = big.NewInt(1 << 22)
+	deviceDataFieldVelocity5MCountries            = big.NewInt(1 << 23)
+	deviceDataFieldVelocity1HEvents               = big.NewInt(1 << 24)
+	deviceDataFieldVelocity1HIps                  = big.NewInt(1 << 25)
+	deviceDataFieldVelocity1HCountries            = big.NewInt(1 << 26)
+	deviceDataFieldVelocity24HEvents              = big.NewInt(1 << 27)
+	deviceDataFieldVelocity24HIps                 = big.NewInt(1 << 28)
+	deviceDataFieldVelocity24HCountries           = big.NewInt(1 << 29)
+	deviceDataFieldRequestId                      = big.NewInt(1 << 30)
+	deviceDataFieldOsVersion                      = big.NewInt(1 << 31)
+	deviceDataFieldBrowser                        = big.NewInt(1 << 32)
+	deviceDataFieldBrowserVersion                 = big.NewInt(1 << 33)
+	deviceDataFieldRooted                         = big.NewInt(1 << 34)
+	deviceDataFieldJailbroken                     = big.NewInt(1 << 35)
+	deviceDataFieldFrida                          = big.NewInt(1 << 36)
+	deviceDataFieldClonedApp                      = big.NewInt(1 << 37)
+	deviceDataFieldEmulator                       = big.NewInt(1 << 38)
+	deviceDataFieldSimulator                      = big.NewInt(1 << 39)
+	deviceDataFieldDeveloperTools                 = big.NewInt(1 << 40)
+	deviceDataFieldMitmAttack                     = big.NewInt(1 << 41)
+	deviceDataFieldIpAttackSource                 = big.NewInt(1 << 42)
+	deviceDataFieldIpEmailSpam                    = big.NewInt(1 << 43)
+	deviceDataFieldReplayed                       = big.NewInt(1 << 44)
+	deviceDataFieldVirtualMachine                 = big.NewInt(1 << 45)
+	deviceDataFieldVirtualMachineConfidenceScore  = big.NewInt(1 << 46)
+	deviceDataFieldLocationSpoofing               = big.NewInt(1 << 47)
+	deviceDataFieldFactoryResetTimestamp          = big.NewInt(1 << 48)
+	deviceDataFieldHighActivityDevice             = big.NewInt(1 << 49)
+	deviceDataFieldRareDevice                     = big.NewInt(1 << 50)
+	deviceDataFieldRareDevicePercentileBucket     = big.NewInt(1 << 51)
+	deviceDataFieldVpnConfidence                  = big.NewInt(1 << 52)
+	deviceDataFieldVpnOriginCountry               = big.NewInt(1 << 53)
+	deviceDataFieldVpnOriginTimezone              = big.NewInt(1 << 54)
+	deviceDataFieldBotType                        = big.NewInt(1 << 55)
+	deviceDataFieldProxyConfidence                = big.NewInt(1 << 56)
+	deviceDataFieldProxyConfidenceScore           = big.NewInt(1 << 57)
+	deviceDataFieldTamperingConfidence            = big.NewInt(1 << 58)
+	deviceDataFieldTamperingConfidenceScore       = big.NewInt(1 << 59)
 )
 
 type DeviceData struct {
@@ -12639,12 +12712,12 @@ type DeviceData struct {
 	DeviceLatitude *float64 `json:"deviceLatitude,omitempty" url:"deviceLatitude,omitempty"`
 	// Device longitude at a give timestamp for an event or transaction
 	DeviceLongitude *float64 `json:"deviceLongitude,omitempty" url:"deviceLongitude,omitempty"`
-	// IP address of the device at a given timestamp for an event or transaction
+	// IP address of the device at a given timestamp for an event or transaction. Overwritten with a verified value when `deviceIntelligenceSealedResult` is provided and decrypts successfully
 	IpAddress *string      `json:"ipAddress,omitempty" url:"ipAddress,omitempty"`
 	IpCountry *CountryCode `json:"ipCountry,omitempty" url:"ipCountry,omitempty"`
-	// Device identifier number
+	// Device identifier number. Overwritten with a verified value when `deviceIntelligenceSealedResult` is provided and decrypts successfully
 	DeviceIdentifier *string `json:"deviceIdentifier,omitempty" url:"deviceIdentifier,omitempty"`
-	// Whether VPN was used at a given timestamp for an event or transaction
+	// Whether VPN was used at a given timestamp for an event or transaction. Overwritten when `deviceIntelligenceSealedResult` is provided and decrypts successfully, with the configured provider's own aggregate VPN detection verdict
 	VpnUsed *bool `json:"vpnUsed,omitempty" url:"vpnUsed,omitempty"`
 	// Operating system of the device at a given timestamp for an event or transaction
 	OperatingSystem *string `json:"operatingSystem,omitempty" url:"operatingSystem,omitempty"`
@@ -12656,6 +12729,101 @@ type DeviceData struct {
 	DeviceYear *string `json:"deviceYear,omitempty" url:"deviceYear,omitempty"`
 	// The version of the app your user is using on their device at a given timestamp for an event or transaction
 	AppVersion *string `json:"appVersion,omitempty" url:"appVersion,omitempty"`
+	// Base64-encoded encrypted sealed result blob from your configured device intelligence provider. When provided, Flagright decrypts it server-side and populates the device intelligence fields below (and `deviceIdentifier`, `ipAddress`, `ipCountry`, `vpnUsed` above) with the resulting verified signals; any value passed directly in those fields is ignored when this field is present
+	DeviceIntelligenceSealedResult *string `json:"deviceIntelligenceSealedResult,omitempty" url:"deviceIntelligenceSealedResult,omitempty"`
+	// Whether the request originated from a known TOR exit node
+	Tor *bool `json:"tor,omitempty" url:"tor,omitempty"`
+	// Confidence score (0 to 1) that the device identity is correctly identified
+	Confidence *float64 `json:"confidence,omitempty" url:"confidence,omitempty"`
+	// Whether the browser was in incognito/private mode
+	Incognito *bool `json:"incognito,omitempty" url:"incognito,omitempty"`
+	// Whether the request originated from a known public or residential proxy
+	Proxy *bool `json:"proxy,omitempty" url:"proxy,omitempty"`
+	// Whether browser tampering (e.g. anti-detect browser) was detected
+	Tampering    *bool               `json:"tampering,omitempty" url:"tampering,omitempty"`
+	BotDetection *BotDetectionResult `json:"botDetection,omitempty" url:"botDetection,omitempty"`
+	// Whether privacy-focused browser settings were detected
+	PrivacySettings *bool `json:"privacySettings,omitempty" url:"privacySettings,omitempty"`
+	// Weighted risk score (0 and up, no fixed upper bound)
+	SuspectScore *int `json:"suspectScore,omitempty" url:"suspectScore,omitempty"`
+	// Number of events from this device in the last 5 minutes
+	Velocity5MEvents *int `json:"velocity5mEvents,omitempty" url:"velocity5mEvents,omitempty"`
+	// Number of distinct IPs used by this device in the last 5 minutes
+	Velocity5MIps *int `json:"velocity5mIps,omitempty" url:"velocity5mIps,omitempty"`
+	// Number of distinct countries used by this device in the last 5 minutes
+	Velocity5MCountries *int `json:"velocity5mCountries,omitempty" url:"velocity5mCountries,omitempty"`
+	// Number of events from this device in the last 1 hour
+	Velocity1HEvents *int `json:"velocity1hEvents,omitempty" url:"velocity1hEvents,omitempty"`
+	// Number of distinct IPs used by this device in the last 1 hour
+	Velocity1HIps *int `json:"velocity1hIps,omitempty" url:"velocity1hIps,omitempty"`
+	// Number of distinct countries used by this device in the last 1 hour
+	Velocity1HCountries *int `json:"velocity1hCountries,omitempty" url:"velocity1hCountries,omitempty"`
+	// Number of events from this device in the last 24 hours
+	Velocity24HEvents *int `json:"velocity24hEvents,omitempty" url:"velocity24hEvents,omitempty"`
+	// Number of distinct IPs used by this device in the last 24 hours
+	Velocity24HIps *int `json:"velocity24hIps,omitempty" url:"velocity24hIps,omitempty"`
+	// Number of distinct countries used by this device in the last 24 hours
+	Velocity24HCountries *int `json:"velocity24hCountries,omitempty" url:"velocity24hCountries,omitempty"`
+	// Device intelligence provider's request identifier for the event, ties back to the provider's event for audit purposes
+	RequestId *string `json:"requestId,omitempty" url:"requestId,omitempty"`
+	// Operating system version of the device (e.g. "10.15.7")
+	OsVersion *string `json:"osVersion,omitempty" url:"osVersion,omitempty"`
+	// Browser name (e.g. "Chrome", "Safari")
+	Browser *string `json:"browser,omitempty" url:"browser,omitempty"`
+	// Browser version (e.g. "148.0.0")
+	BrowserVersion *string `json:"browserVersion,omitempty" url:"browserVersion,omitempty"`
+	// Android-specific rooted device detection (root management apps). False when checked and clean; unset if not evaluated
+	Rooted *bool `json:"rooted,omitempty" url:"rooted,omitempty"`
+	// iOS-specific jailbreak detection. False when checked and clean; unset if not evaluated
+	Jailbroken *bool `json:"jailbroken,omitempty" url:"jailbroken,omitempty"`
+	// Frida instrumentation framework detection. False when checked and clean; unset if not evaluated
+	Frida *bool `json:"frida,omitempty" url:"frida,omitempty"`
+	// Android-specific cloned application detection. False when checked and clean; unset if not evaluated
+	ClonedApp *bool `json:"clonedApp,omitempty" url:"clonedApp,omitempty"`
+	// Android-specific emulator detection. False when checked and clean; unset if not evaluated
+	Emulator *bool `json:"emulator,omitempty" url:"emulator,omitempty"`
+	// iOS-specific simulator detection. False when checked and clean; unset if not evaluated
+	Simulator *bool `json:"simulator,omitempty" url:"simulator,omitempty"`
+	// Whether the browser DevTools (or mobile Developer Tools) were open
+	DeveloperTools *bool `json:"developerTools,omitempty" url:"developerTools,omitempty"`
+	// Android-specific man-in-the-middle attack detection
+	MitmAttack *bool `json:"mitmAttack,omitempty" url:"mitmAttack,omitempty"`
+	// Whether the IP address was part of a known network attack (SSH/HTTPS)
+	IpAttackSource *bool `json:"ipAttackSource,omitempty" url:"ipAttackSource,omitempty"`
+	// Whether the IP address was part of a known email spam attack (SMTP)
+	IpEmailSpam *bool `json:"ipEmailSpam,omitempty" url:"ipEmailSpam,omitempty"`
+	// Whether the device intelligence provider determined this identification payload was replayed rather than freshly captured
+	Replayed *bool `json:"replayed,omitempty" url:"replayed,omitempty"`
+	// Whether the request came from a browser running inside a virtual machine (e.g. VMWare)
+	VirtualMachine *bool `json:"virtualMachine,omitempty" url:"virtualMachine,omitempty"`
+	// Confidence score (0 to 1) for the virtualMachine detection result
+	VirtualMachineConfidenceScore *float64 `json:"virtualMachineConfidenceScore,omitempty" url:"virtualMachineConfidenceScore,omitempty"`
+	// Mobile-specific GPS location spoofing detection
+	LocationSpoofing *bool `json:"locationSpoofing,omitempty" url:"locationSpoofing,omitempty"`
+	// Unix epoch time of the most recent factory reset detected on a mobile device; 0 if not detected or not a mobile device
+	FactoryResetTimestamp *int `json:"factoryResetTimestamp,omitempty" url:"factoryResetTimestamp,omitempty"`
+	// Whether the request came from a device with unusually high identification activity
+	HighActivityDevice *bool `json:"highActivityDevice,omitempty" url:"highActivityDevice,omitempty"`
+	// Whether the device is considered rare based on its combination of hardware and software attributes
+	RareDevice *bool `json:"rareDevice,omitempty" url:"rareDevice,omitempty"`
+	// Rarity percentile bucket of the device (e.g. "<p95", "p99.9+", "not_seen")
+	RareDevicePercentileBucket *string `json:"rareDevicePercentileBucket,omitempty" url:"rareDevicePercentileBucket,omitempty"`
+	// Confidence level of the VPN detection result (e.g. "low", "medium", "high")
+	VpnConfidence *string `json:"vpnConfidence,omitempty" url:"vpnConfidence,omitempty"`
+	// Country the request appears to originate from per VPN detection (ISO 3166 format, or "unknown")
+	VpnOriginCountry *string `json:"vpnOriginCountry,omitempty" url:"vpnOriginCountry,omitempty"`
+	// Local timezone used by the VPN detection's timezone-mismatch method
+	VpnOriginTimezone *string `json:"vpnOriginTimezone,omitempty" url:"vpnOriginTimezone,omitempty"`
+	// Additional classification of the bot type, if botDetection found one
+	BotType *string `json:"botType,omitempty" url:"botType,omitempty"`
+	// Confidence level of the proxy detection result (e.g. "low", "medium", "high")
+	ProxyConfidence *string `json:"proxyConfidence,omitempty" url:"proxyConfidence,omitempty"`
+	// Confidence score (0 to 1) for the proxy detection result
+	ProxyConfidenceScore *float64 `json:"proxyConfidenceScore,omitempty" url:"proxyConfidenceScore,omitempty"`
+	// Confidence level of the tampering detection result (e.g. "low", "medium", "high")
+	TamperingConfidence *string `json:"tamperingConfidence,omitempty" url:"tamperingConfidence,omitempty"`
+	// Confidence score (0 to 1) for the tampering detection result
+	TamperingConfidenceScore *float64 `json:"tamperingConfidenceScore,omitempty" url:"tamperingConfidenceScore,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -12746,6 +12914,342 @@ func (d *DeviceData) GetAppVersion() *string {
 		return nil
 	}
 	return d.AppVersion
+}
+
+func (d *DeviceData) GetDeviceIntelligenceSealedResult() *string {
+	if d == nil {
+		return nil
+	}
+	return d.DeviceIntelligenceSealedResult
+}
+
+func (d *DeviceData) GetTor() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Tor
+}
+
+func (d *DeviceData) GetConfidence() *float64 {
+	if d == nil {
+		return nil
+	}
+	return d.Confidence
+}
+
+func (d *DeviceData) GetIncognito() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Incognito
+}
+
+func (d *DeviceData) GetProxy() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Proxy
+}
+
+func (d *DeviceData) GetTampering() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Tampering
+}
+
+func (d *DeviceData) GetBotDetection() *BotDetectionResult {
+	if d == nil {
+		return nil
+	}
+	return d.BotDetection
+}
+
+func (d *DeviceData) GetPrivacySettings() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.PrivacySettings
+}
+
+func (d *DeviceData) GetSuspectScore() *int {
+	if d == nil {
+		return nil
+	}
+	return d.SuspectScore
+}
+
+func (d *DeviceData) GetVelocity5MEvents() *int {
+	if d == nil {
+		return nil
+	}
+	return d.Velocity5MEvents
+}
+
+func (d *DeviceData) GetVelocity5MIps() *int {
+	if d == nil {
+		return nil
+	}
+	return d.Velocity5MIps
+}
+
+func (d *DeviceData) GetVelocity5MCountries() *int {
+	if d == nil {
+		return nil
+	}
+	return d.Velocity5MCountries
+}
+
+func (d *DeviceData) GetVelocity1HEvents() *int {
+	if d == nil {
+		return nil
+	}
+	return d.Velocity1HEvents
+}
+
+func (d *DeviceData) GetVelocity1HIps() *int {
+	if d == nil {
+		return nil
+	}
+	return d.Velocity1HIps
+}
+
+func (d *DeviceData) GetVelocity1HCountries() *int {
+	if d == nil {
+		return nil
+	}
+	return d.Velocity1HCountries
+}
+
+func (d *DeviceData) GetVelocity24HEvents() *int {
+	if d == nil {
+		return nil
+	}
+	return d.Velocity24HEvents
+}
+
+func (d *DeviceData) GetVelocity24HIps() *int {
+	if d == nil {
+		return nil
+	}
+	return d.Velocity24HIps
+}
+
+func (d *DeviceData) GetVelocity24HCountries() *int {
+	if d == nil {
+		return nil
+	}
+	return d.Velocity24HCountries
+}
+
+func (d *DeviceData) GetRequestId() *string {
+	if d == nil {
+		return nil
+	}
+	return d.RequestId
+}
+
+func (d *DeviceData) GetOsVersion() *string {
+	if d == nil {
+		return nil
+	}
+	return d.OsVersion
+}
+
+func (d *DeviceData) GetBrowser() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Browser
+}
+
+func (d *DeviceData) GetBrowserVersion() *string {
+	if d == nil {
+		return nil
+	}
+	return d.BrowserVersion
+}
+
+func (d *DeviceData) GetRooted() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Rooted
+}
+
+func (d *DeviceData) GetJailbroken() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Jailbroken
+}
+
+func (d *DeviceData) GetFrida() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Frida
+}
+
+func (d *DeviceData) GetClonedApp() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.ClonedApp
+}
+
+func (d *DeviceData) GetEmulator() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Emulator
+}
+
+func (d *DeviceData) GetSimulator() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Simulator
+}
+
+func (d *DeviceData) GetDeveloperTools() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.DeveloperTools
+}
+
+func (d *DeviceData) GetMitmAttack() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.MitmAttack
+}
+
+func (d *DeviceData) GetIpAttackSource() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.IpAttackSource
+}
+
+func (d *DeviceData) GetIpEmailSpam() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.IpEmailSpam
+}
+
+func (d *DeviceData) GetReplayed() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Replayed
+}
+
+func (d *DeviceData) GetVirtualMachine() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.VirtualMachine
+}
+
+func (d *DeviceData) GetVirtualMachineConfidenceScore() *float64 {
+	if d == nil {
+		return nil
+	}
+	return d.VirtualMachineConfidenceScore
+}
+
+func (d *DeviceData) GetLocationSpoofing() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.LocationSpoofing
+}
+
+func (d *DeviceData) GetFactoryResetTimestamp() *int {
+	if d == nil {
+		return nil
+	}
+	return d.FactoryResetTimestamp
+}
+
+func (d *DeviceData) GetHighActivityDevice() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.HighActivityDevice
+}
+
+func (d *DeviceData) GetRareDevice() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.RareDevice
+}
+
+func (d *DeviceData) GetRareDevicePercentileBucket() *string {
+	if d == nil {
+		return nil
+	}
+	return d.RareDevicePercentileBucket
+}
+
+func (d *DeviceData) GetVpnConfidence() *string {
+	if d == nil {
+		return nil
+	}
+	return d.VpnConfidence
+}
+
+func (d *DeviceData) GetVpnOriginCountry() *string {
+	if d == nil {
+		return nil
+	}
+	return d.VpnOriginCountry
+}
+
+func (d *DeviceData) GetVpnOriginTimezone() *string {
+	if d == nil {
+		return nil
+	}
+	return d.VpnOriginTimezone
+}
+
+func (d *DeviceData) GetBotType() *string {
+	if d == nil {
+		return nil
+	}
+	return d.BotType
+}
+
+func (d *DeviceData) GetProxyConfidence() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ProxyConfidence
+}
+
+func (d *DeviceData) GetProxyConfidenceScore() *float64 {
+	if d == nil {
+		return nil
+	}
+	return d.ProxyConfidenceScore
+}
+
+func (d *DeviceData) GetTamperingConfidence() *string {
+	if d == nil {
+		return nil
+	}
+	return d.TamperingConfidence
+}
+
+func (d *DeviceData) GetTamperingConfidenceScore() *float64 {
+	if d == nil {
+		return nil
+	}
+	return d.TamperingConfidenceScore
 }
 
 func (d *DeviceData) GetExtraProperties() map[string]interface{} {
@@ -12844,6 +13348,342 @@ func (d *DeviceData) SetDeviceYear(deviceYear *string) {
 func (d *DeviceData) SetAppVersion(appVersion *string) {
 	d.AppVersion = appVersion
 	d.require(deviceDataFieldAppVersion)
+}
+
+// SetDeviceIntelligenceSealedResult sets the DeviceIntelligenceSealedResult field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetDeviceIntelligenceSealedResult(deviceIntelligenceSealedResult *string) {
+	d.DeviceIntelligenceSealedResult = deviceIntelligenceSealedResult
+	d.require(deviceDataFieldDeviceIntelligenceSealedResult)
+}
+
+// SetTor sets the Tor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetTor(tor *bool) {
+	d.Tor = tor
+	d.require(deviceDataFieldTor)
+}
+
+// SetConfidence sets the Confidence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetConfidence(confidence *float64) {
+	d.Confidence = confidence
+	d.require(deviceDataFieldConfidence)
+}
+
+// SetIncognito sets the Incognito field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetIncognito(incognito *bool) {
+	d.Incognito = incognito
+	d.require(deviceDataFieldIncognito)
+}
+
+// SetProxy sets the Proxy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetProxy(proxy *bool) {
+	d.Proxy = proxy
+	d.require(deviceDataFieldProxy)
+}
+
+// SetTampering sets the Tampering field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetTampering(tampering *bool) {
+	d.Tampering = tampering
+	d.require(deviceDataFieldTampering)
+}
+
+// SetBotDetection sets the BotDetection field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetBotDetection(botDetection *BotDetectionResult) {
+	d.BotDetection = botDetection
+	d.require(deviceDataFieldBotDetection)
+}
+
+// SetPrivacySettings sets the PrivacySettings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetPrivacySettings(privacySettings *bool) {
+	d.PrivacySettings = privacySettings
+	d.require(deviceDataFieldPrivacySettings)
+}
+
+// SetSuspectScore sets the SuspectScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetSuspectScore(suspectScore *int) {
+	d.SuspectScore = suspectScore
+	d.require(deviceDataFieldSuspectScore)
+}
+
+// SetVelocity5MEvents sets the Velocity5MEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVelocity5MEvents(velocity5MEvents *int) {
+	d.Velocity5MEvents = velocity5MEvents
+	d.require(deviceDataFieldVelocity5MEvents)
+}
+
+// SetVelocity5MIps sets the Velocity5MIps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVelocity5MIps(velocity5MIps *int) {
+	d.Velocity5MIps = velocity5MIps
+	d.require(deviceDataFieldVelocity5MIps)
+}
+
+// SetVelocity5MCountries sets the Velocity5MCountries field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVelocity5MCountries(velocity5MCountries *int) {
+	d.Velocity5MCountries = velocity5MCountries
+	d.require(deviceDataFieldVelocity5MCountries)
+}
+
+// SetVelocity1HEvents sets the Velocity1HEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVelocity1HEvents(velocity1HEvents *int) {
+	d.Velocity1HEvents = velocity1HEvents
+	d.require(deviceDataFieldVelocity1HEvents)
+}
+
+// SetVelocity1HIps sets the Velocity1HIps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVelocity1HIps(velocity1HIps *int) {
+	d.Velocity1HIps = velocity1HIps
+	d.require(deviceDataFieldVelocity1HIps)
+}
+
+// SetVelocity1HCountries sets the Velocity1HCountries field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVelocity1HCountries(velocity1HCountries *int) {
+	d.Velocity1HCountries = velocity1HCountries
+	d.require(deviceDataFieldVelocity1HCountries)
+}
+
+// SetVelocity24HEvents sets the Velocity24HEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVelocity24HEvents(velocity24HEvents *int) {
+	d.Velocity24HEvents = velocity24HEvents
+	d.require(deviceDataFieldVelocity24HEvents)
+}
+
+// SetVelocity24HIps sets the Velocity24HIps field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVelocity24HIps(velocity24HIps *int) {
+	d.Velocity24HIps = velocity24HIps
+	d.require(deviceDataFieldVelocity24HIps)
+}
+
+// SetVelocity24HCountries sets the Velocity24HCountries field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVelocity24HCountries(velocity24HCountries *int) {
+	d.Velocity24HCountries = velocity24HCountries
+	d.require(deviceDataFieldVelocity24HCountries)
+}
+
+// SetRequestId sets the RequestId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetRequestId(requestId *string) {
+	d.RequestId = requestId
+	d.require(deviceDataFieldRequestId)
+}
+
+// SetOsVersion sets the OsVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetOsVersion(osVersion *string) {
+	d.OsVersion = osVersion
+	d.require(deviceDataFieldOsVersion)
+}
+
+// SetBrowser sets the Browser field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetBrowser(browser *string) {
+	d.Browser = browser
+	d.require(deviceDataFieldBrowser)
+}
+
+// SetBrowserVersion sets the BrowserVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetBrowserVersion(browserVersion *string) {
+	d.BrowserVersion = browserVersion
+	d.require(deviceDataFieldBrowserVersion)
+}
+
+// SetRooted sets the Rooted field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetRooted(rooted *bool) {
+	d.Rooted = rooted
+	d.require(deviceDataFieldRooted)
+}
+
+// SetJailbroken sets the Jailbroken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetJailbroken(jailbroken *bool) {
+	d.Jailbroken = jailbroken
+	d.require(deviceDataFieldJailbroken)
+}
+
+// SetFrida sets the Frida field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetFrida(frida *bool) {
+	d.Frida = frida
+	d.require(deviceDataFieldFrida)
+}
+
+// SetClonedApp sets the ClonedApp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetClonedApp(clonedApp *bool) {
+	d.ClonedApp = clonedApp
+	d.require(deviceDataFieldClonedApp)
+}
+
+// SetEmulator sets the Emulator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetEmulator(emulator *bool) {
+	d.Emulator = emulator
+	d.require(deviceDataFieldEmulator)
+}
+
+// SetSimulator sets the Simulator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetSimulator(simulator *bool) {
+	d.Simulator = simulator
+	d.require(deviceDataFieldSimulator)
+}
+
+// SetDeveloperTools sets the DeveloperTools field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetDeveloperTools(developerTools *bool) {
+	d.DeveloperTools = developerTools
+	d.require(deviceDataFieldDeveloperTools)
+}
+
+// SetMitmAttack sets the MitmAttack field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetMitmAttack(mitmAttack *bool) {
+	d.MitmAttack = mitmAttack
+	d.require(deviceDataFieldMitmAttack)
+}
+
+// SetIpAttackSource sets the IpAttackSource field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetIpAttackSource(ipAttackSource *bool) {
+	d.IpAttackSource = ipAttackSource
+	d.require(deviceDataFieldIpAttackSource)
+}
+
+// SetIpEmailSpam sets the IpEmailSpam field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetIpEmailSpam(ipEmailSpam *bool) {
+	d.IpEmailSpam = ipEmailSpam
+	d.require(deviceDataFieldIpEmailSpam)
+}
+
+// SetReplayed sets the Replayed field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetReplayed(replayed *bool) {
+	d.Replayed = replayed
+	d.require(deviceDataFieldReplayed)
+}
+
+// SetVirtualMachine sets the VirtualMachine field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVirtualMachine(virtualMachine *bool) {
+	d.VirtualMachine = virtualMachine
+	d.require(deviceDataFieldVirtualMachine)
+}
+
+// SetVirtualMachineConfidenceScore sets the VirtualMachineConfidenceScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVirtualMachineConfidenceScore(virtualMachineConfidenceScore *float64) {
+	d.VirtualMachineConfidenceScore = virtualMachineConfidenceScore
+	d.require(deviceDataFieldVirtualMachineConfidenceScore)
+}
+
+// SetLocationSpoofing sets the LocationSpoofing field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetLocationSpoofing(locationSpoofing *bool) {
+	d.LocationSpoofing = locationSpoofing
+	d.require(deviceDataFieldLocationSpoofing)
+}
+
+// SetFactoryResetTimestamp sets the FactoryResetTimestamp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetFactoryResetTimestamp(factoryResetTimestamp *int) {
+	d.FactoryResetTimestamp = factoryResetTimestamp
+	d.require(deviceDataFieldFactoryResetTimestamp)
+}
+
+// SetHighActivityDevice sets the HighActivityDevice field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetHighActivityDevice(highActivityDevice *bool) {
+	d.HighActivityDevice = highActivityDevice
+	d.require(deviceDataFieldHighActivityDevice)
+}
+
+// SetRareDevice sets the RareDevice field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetRareDevice(rareDevice *bool) {
+	d.RareDevice = rareDevice
+	d.require(deviceDataFieldRareDevice)
+}
+
+// SetRareDevicePercentileBucket sets the RareDevicePercentileBucket field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetRareDevicePercentileBucket(rareDevicePercentileBucket *string) {
+	d.RareDevicePercentileBucket = rareDevicePercentileBucket
+	d.require(deviceDataFieldRareDevicePercentileBucket)
+}
+
+// SetVpnConfidence sets the VpnConfidence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVpnConfidence(vpnConfidence *string) {
+	d.VpnConfidence = vpnConfidence
+	d.require(deviceDataFieldVpnConfidence)
+}
+
+// SetVpnOriginCountry sets the VpnOriginCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVpnOriginCountry(vpnOriginCountry *string) {
+	d.VpnOriginCountry = vpnOriginCountry
+	d.require(deviceDataFieldVpnOriginCountry)
+}
+
+// SetVpnOriginTimezone sets the VpnOriginTimezone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetVpnOriginTimezone(vpnOriginTimezone *string) {
+	d.VpnOriginTimezone = vpnOriginTimezone
+	d.require(deviceDataFieldVpnOriginTimezone)
+}
+
+// SetBotType sets the BotType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetBotType(botType *string) {
+	d.BotType = botType
+	d.require(deviceDataFieldBotType)
+}
+
+// SetProxyConfidence sets the ProxyConfidence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetProxyConfidence(proxyConfidence *string) {
+	d.ProxyConfidence = proxyConfidence
+	d.require(deviceDataFieldProxyConfidence)
+}
+
+// SetProxyConfidenceScore sets the ProxyConfidenceScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetProxyConfidenceScore(proxyConfidenceScore *float64) {
+	d.ProxyConfidenceScore = proxyConfidenceScore
+	d.require(deviceDataFieldProxyConfidenceScore)
+}
+
+// SetTamperingConfidence sets the TamperingConfidence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetTamperingConfidence(tamperingConfidence *string) {
+	d.TamperingConfidence = tamperingConfidence
+	d.require(deviceDataFieldTamperingConfidence)
+}
+
+// SetTamperingConfidenceScore sets the TamperingConfidenceScore field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetTamperingConfidenceScore(tamperingConfidenceScore *float64) {
+	d.TamperingConfidenceScore = tamperingConfidenceScore
+	d.require(deviceDataFieldTamperingConfidenceScore)
 }
 
 func (d *DeviceData) UnmarshalJSON(data []byte) error {
@@ -26761,17 +27601,18 @@ func (u *UserBase) String() string {
 
 // Model for consumer user personal details
 var (
-	userDetailsFieldName                          = big.NewInt(1 << 0)
-	userDetailsFieldDateOfBirth                   = big.NewInt(1 << 1)
-	userDetailsFieldUserCategory                  = big.NewInt(1 << 2)
-	userDetailsFieldCountryOfResidence            = big.NewInt(1 << 3)
-	userDetailsFieldCountryOfTaxResidence         = big.NewInt(1 << 4)
-	userDetailsFieldCountryOfNationality          = big.NewInt(1 << 5)
-	userDetailsFieldSecondaryCountryOfNationality = big.NewInt(1 << 6)
-	userDetailsFieldGender                        = big.NewInt(1 << 7)
-	userDetailsFieldMaritalStatus                 = big.NewInt(1 << 8)
-	userDetailsFieldPlaceOfBirth                  = big.NewInt(1 << 9)
-	userDetailsFieldAlias                         = big.NewInt(1 << 10)
+	userDetailsFieldName                           = big.NewInt(1 << 0)
+	userDetailsFieldDateOfBirth                    = big.NewInt(1 << 1)
+	userDetailsFieldUserCategory                   = big.NewInt(1 << 2)
+	userDetailsFieldCountryOfResidence             = big.NewInt(1 << 3)
+	userDetailsFieldCountryOfTaxResidence          = big.NewInt(1 << 4)
+	userDetailsFieldSecondaryCountryOfTaxResidence = big.NewInt(1 << 5)
+	userDetailsFieldCountryOfNationality           = big.NewInt(1 << 6)
+	userDetailsFieldSecondaryCountryOfNationality  = big.NewInt(1 << 7)
+	userDetailsFieldGender                         = big.NewInt(1 << 8)
+	userDetailsFieldMaritalStatus                  = big.NewInt(1 << 9)
+	userDetailsFieldPlaceOfBirth                   = big.NewInt(1 << 10)
+	userDetailsFieldAlias                          = big.NewInt(1 << 11)
 )
 
 type UserDetails struct {
@@ -26782,7 +27623,9 @@ type UserDetails struct {
 	UserCategory          *string      `json:"userCategory,omitempty" url:"userCategory,omitempty"`
 	CountryOfResidence    *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
 	CountryOfTaxResidence *CountryCode `json:"countryOfTaxResidence,omitempty" url:"countryOfTaxResidence,omitempty"`
-	CountryOfNationality  *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
+	// Additional tax residence countries of the user
+	SecondaryCountryOfTaxResidence []CountryCode `json:"secondaryCountryOfTaxResidence,omitempty" url:"secondaryCountryOfTaxResidence,omitempty"`
+	CountryOfNationality           *CountryCode  `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
 	// Additional nationalities of the user
 	SecondaryCountryOfNationality []CountryCode  `json:"secondaryCountryOfNationality,omitempty" url:"secondaryCountryOfNationality,omitempty"`
 	Gender                        *Gender        `json:"gender,omitempty" url:"gender,omitempty"`
@@ -26831,6 +27674,13 @@ func (u *UserDetails) GetCountryOfTaxResidence() *CountryCode {
 		return nil
 	}
 	return u.CountryOfTaxResidence
+}
+
+func (u *UserDetails) GetSecondaryCountryOfTaxResidence() []CountryCode {
+	if u == nil {
+		return nil
+	}
+	return u.SecondaryCountryOfTaxResidence
 }
 
 func (u *UserDetails) GetCountryOfNationality() *CountryCode {
@@ -26922,6 +27772,13 @@ func (u *UserDetails) SetCountryOfResidence(countryOfResidence *CountryCode) {
 func (u *UserDetails) SetCountryOfTaxResidence(countryOfTaxResidence *CountryCode) {
 	u.CountryOfTaxResidence = countryOfTaxResidence
 	u.require(userDetailsFieldCountryOfTaxResidence)
+}
+
+// SetSecondaryCountryOfTaxResidence sets the SecondaryCountryOfTaxResidence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserDetails) SetSecondaryCountryOfTaxResidence(secondaryCountryOfTaxResidence []CountryCode) {
+	u.SecondaryCountryOfTaxResidence = secondaryCountryOfTaxResidence
+	u.require(userDetailsFieldSecondaryCountryOfTaxResidence)
 }
 
 // SetCountryOfNationality sets the CountryOfNationality field and marks it as non-optional;
@@ -30539,6 +31396,106 @@ func (w WalletNetwork) Ptr() *WalletNetwork {
 type WalletPaymentMethod = string
 
 var (
+	webhookAdverseMediaStatusDetailsFieldUserId             = big.NewInt(1 << 0)
+	webhookAdverseMediaStatusDetailsFieldAdverseMediaStatus = big.NewInt(1 << 1)
+)
+
+type WebhookAdverseMediaStatusDetails struct {
+	UserId             string             `json:"userId" url:"userId"`
+	AdverseMediaStatus AdverseMediaStatus `json:"adverseMediaStatus" url:"adverseMediaStatus"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookAdverseMediaStatusDetails) GetUserId() string {
+	if w == nil {
+		return ""
+	}
+	return w.UserId
+}
+
+func (w *WebhookAdverseMediaStatusDetails) GetAdverseMediaStatus() AdverseMediaStatus {
+	if w == nil {
+		return false
+	}
+	return w.AdverseMediaStatus
+}
+
+func (w *WebhookAdverseMediaStatusDetails) GetExtraProperties() map[string]interface{} {
+	if w == nil {
+		return nil
+	}
+	return w.extraProperties
+}
+
+func (w *WebhookAdverseMediaStatusDetails) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookAdverseMediaStatusDetails) SetUserId(userId string) {
+	w.UserId = userId
+	w.require(webhookAdverseMediaStatusDetailsFieldUserId)
+}
+
+// SetAdverseMediaStatus sets the AdverseMediaStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookAdverseMediaStatusDetails) SetAdverseMediaStatus(adverseMediaStatus AdverseMediaStatus) {
+	w.AdverseMediaStatus = adverseMediaStatus
+	w.require(webhookAdverseMediaStatusDetailsFieldAdverseMediaStatus)
+}
+
+func (w *WebhookAdverseMediaStatusDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookAdverseMediaStatusDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WebhookAdverseMediaStatusDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WebhookAdverseMediaStatusDetails) MarshalJSON() ([]byte, error) {
+	type embed WebhookAdverseMediaStatusDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*w),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (w *WebhookAdverseMediaStatusDetails) String() string {
+	if w == nil {
+		return "<nil>"
+	}
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+var (
 	webhookEventFieldId               = big.NewInt(1 << 0)
 	webhookEventFieldTriggeredBy      = big.NewInt(1 << 1)
 	webhookEventFieldCreatedTimestamp = big.NewInt(1 << 2)
@@ -30866,16 +31823,19 @@ func (w WebhookEventBaseTriggeredBy) Ptr() *WebhookEventBaseTriggeredBy {
 }
 
 type WebhookEventData struct {
-	UserStateDetails           *UserStateDetails
-	CaseStatusDetails          *CaseStatusDetails
-	CaseOpenedDetails          *CaseOpenedDetails
-	AlertStatusDetails         *AlertStatusDetails
-	AlertOpenedDetails         *AlertOpenedDetails
-	TransactionStatusDetails   *TransactionStatusDetails
-	KycStatusDetails           *KycStatusDetails
-	UserTagsUpdate             *UserTagsUpdate
-	CraRiskLevelUpdatedDetails *CraRiskLevelUpdatedDetails
-	BatchCompletedDetails      *BatchCompletedDetails
+	UserStateDetails                 *UserStateDetails
+	CaseStatusDetails                *CaseStatusDetails
+	CaseOpenedDetails                *CaseOpenedDetails
+	AlertStatusDetails               *AlertStatusDetails
+	AlertOpenedDetails               *AlertOpenedDetails
+	TransactionStatusDetails         *TransactionStatusDetails
+	KycStatusDetails                 *KycStatusDetails
+	UserTagsUpdate                   *UserTagsUpdate
+	CraRiskLevelUpdatedDetails       *CraRiskLevelUpdatedDetails
+	BatchCompletedDetails            *BatchCompletedDetails
+	WebhookPepStatusDetails          *WebhookPepStatusDetails
+	WebhookSanctionsStatusDetails    *WebhookSanctionsStatusDetails
+	WebhookAdverseMediaStatusDetails *WebhookAdverseMediaStatusDetails
 
 	typ string
 }
@@ -30950,6 +31910,27 @@ func (w *WebhookEventData) GetBatchCompletedDetails() *BatchCompletedDetails {
 	return w.BatchCompletedDetails
 }
 
+func (w *WebhookEventData) GetWebhookPepStatusDetails() *WebhookPepStatusDetails {
+	if w == nil {
+		return nil
+	}
+	return w.WebhookPepStatusDetails
+}
+
+func (w *WebhookEventData) GetWebhookSanctionsStatusDetails() *WebhookSanctionsStatusDetails {
+	if w == nil {
+		return nil
+	}
+	return w.WebhookSanctionsStatusDetails
+}
+
+func (w *WebhookEventData) GetWebhookAdverseMediaStatusDetails() *WebhookAdverseMediaStatusDetails {
+	if w == nil {
+		return nil
+	}
+	return w.WebhookAdverseMediaStatusDetails
+}
+
 func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 	valueUserStateDetails := new(UserStateDetails)
 	if err := json.Unmarshal(data, &valueUserStateDetails); err == nil {
@@ -31011,6 +31992,24 @@ func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 		w.BatchCompletedDetails = valueBatchCompletedDetails
 		return nil
 	}
+	valueWebhookPepStatusDetails := new(WebhookPepStatusDetails)
+	if err := json.Unmarshal(data, &valueWebhookPepStatusDetails); err == nil {
+		w.typ = "WebhookPepStatusDetails"
+		w.WebhookPepStatusDetails = valueWebhookPepStatusDetails
+		return nil
+	}
+	valueWebhookSanctionsStatusDetails := new(WebhookSanctionsStatusDetails)
+	if err := json.Unmarshal(data, &valueWebhookSanctionsStatusDetails); err == nil {
+		w.typ = "WebhookSanctionsStatusDetails"
+		w.WebhookSanctionsStatusDetails = valueWebhookSanctionsStatusDetails
+		return nil
+	}
+	valueWebhookAdverseMediaStatusDetails := new(WebhookAdverseMediaStatusDetails)
+	if err := json.Unmarshal(data, &valueWebhookAdverseMediaStatusDetails); err == nil {
+		w.typ = "WebhookAdverseMediaStatusDetails"
+		w.WebhookAdverseMediaStatusDetails = valueWebhookAdverseMediaStatusDetails
+		return nil
+	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, w)
 }
 
@@ -31045,6 +32044,15 @@ func (w WebhookEventData) MarshalJSON() ([]byte, error) {
 	if w.typ == "BatchCompletedDetails" || w.BatchCompletedDetails != nil {
 		return json.Marshal(w.BatchCompletedDetails)
 	}
+	if w.typ == "WebhookPepStatusDetails" || w.WebhookPepStatusDetails != nil {
+		return json.Marshal(w.WebhookPepStatusDetails)
+	}
+	if w.typ == "WebhookSanctionsStatusDetails" || w.WebhookSanctionsStatusDetails != nil {
+		return json.Marshal(w.WebhookSanctionsStatusDetails)
+	}
+	if w.typ == "WebhookAdverseMediaStatusDetails" || w.WebhookAdverseMediaStatusDetails != nil {
+		return json.Marshal(w.WebhookAdverseMediaStatusDetails)
+	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", w)
 }
 
@@ -31059,6 +32067,9 @@ type WebhookEventDataVisitor interface {
 	VisitUserTagsUpdate(*UserTagsUpdate) error
 	VisitCraRiskLevelUpdatedDetails(*CraRiskLevelUpdatedDetails) error
 	VisitBatchCompletedDetails(*BatchCompletedDetails) error
+	VisitWebhookPepStatusDetails(*WebhookPepStatusDetails) error
+	VisitWebhookSanctionsStatusDetails(*WebhookSanctionsStatusDetails) error
+	VisitWebhookAdverseMediaStatusDetails(*WebhookAdverseMediaStatusDetails) error
 }
 
 func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
@@ -31091,6 +32102,15 @@ func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
 	}
 	if w.typ == "BatchCompletedDetails" || w.BatchCompletedDetails != nil {
 		return visitor.VisitBatchCompletedDetails(w.BatchCompletedDetails)
+	}
+	if w.typ == "WebhookPepStatusDetails" || w.WebhookPepStatusDetails != nil {
+		return visitor.VisitWebhookPepStatusDetails(w.WebhookPepStatusDetails)
+	}
+	if w.typ == "WebhookSanctionsStatusDetails" || w.WebhookSanctionsStatusDetails != nil {
+		return visitor.VisitWebhookSanctionsStatusDetails(w.WebhookSanctionsStatusDetails)
+	}
+	if w.typ == "WebhookAdverseMediaStatusDetails" || w.WebhookAdverseMediaStatusDetails != nil {
+		return visitor.VisitWebhookAdverseMediaStatusDetails(w.WebhookAdverseMediaStatusDetails)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", w)
 }
@@ -31293,6 +32313,206 @@ func (w *WebhookKycStatusDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WebhookKycStatusDetails) String() string {
+	if w == nil {
+		return "<nil>"
+	}
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+var (
+	webhookPepStatusDetailsFieldUserId    = big.NewInt(1 << 0)
+	webhookPepStatusDetailsFieldPepStatus = big.NewInt(1 << 1)
+)
+
+type WebhookPepStatusDetails struct {
+	UserId    string       `json:"userId" url:"userId"`
+	PepStatus []*PepStatus `json:"pepStatus" url:"pepStatus"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookPepStatusDetails) GetUserId() string {
+	if w == nil {
+		return ""
+	}
+	return w.UserId
+}
+
+func (w *WebhookPepStatusDetails) GetPepStatus() []*PepStatus {
+	if w == nil {
+		return nil
+	}
+	return w.PepStatus
+}
+
+func (w *WebhookPepStatusDetails) GetExtraProperties() map[string]interface{} {
+	if w == nil {
+		return nil
+	}
+	return w.extraProperties
+}
+
+func (w *WebhookPepStatusDetails) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookPepStatusDetails) SetUserId(userId string) {
+	w.UserId = userId
+	w.require(webhookPepStatusDetailsFieldUserId)
+}
+
+// SetPepStatus sets the PepStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookPepStatusDetails) SetPepStatus(pepStatus []*PepStatus) {
+	w.PepStatus = pepStatus
+	w.require(webhookPepStatusDetailsFieldPepStatus)
+}
+
+func (w *WebhookPepStatusDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookPepStatusDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WebhookPepStatusDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WebhookPepStatusDetails) MarshalJSON() ([]byte, error) {
+	type embed WebhookPepStatusDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*w),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (w *WebhookPepStatusDetails) String() string {
+	if w == nil {
+		return "<nil>"
+	}
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+var (
+	webhookSanctionsStatusDetailsFieldUserId          = big.NewInt(1 << 0)
+	webhookSanctionsStatusDetailsFieldSanctionsStatus = big.NewInt(1 << 1)
+)
+
+type WebhookSanctionsStatusDetails struct {
+	UserId          string          `json:"userId" url:"userId"`
+	SanctionsStatus SanctionsStatus `json:"sanctionsStatus" url:"sanctionsStatus"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebhookSanctionsStatusDetails) GetUserId() string {
+	if w == nil {
+		return ""
+	}
+	return w.UserId
+}
+
+func (w *WebhookSanctionsStatusDetails) GetSanctionsStatus() SanctionsStatus {
+	if w == nil {
+		return false
+	}
+	return w.SanctionsStatus
+}
+
+func (w *WebhookSanctionsStatusDetails) GetExtraProperties() map[string]interface{} {
+	if w == nil {
+		return nil
+	}
+	return w.extraProperties
+}
+
+func (w *WebhookSanctionsStatusDetails) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookSanctionsStatusDetails) SetUserId(userId string) {
+	w.UserId = userId
+	w.require(webhookSanctionsStatusDetailsFieldUserId)
+}
+
+// SetSanctionsStatus sets the SanctionsStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookSanctionsStatusDetails) SetSanctionsStatus(sanctionsStatus SanctionsStatus) {
+	w.SanctionsStatus = sanctionsStatus
+	w.require(webhookSanctionsStatusDetailsFieldSanctionsStatus)
+}
+
+func (w *WebhookSanctionsStatusDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebhookSanctionsStatusDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WebhookSanctionsStatusDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WebhookSanctionsStatusDetails) MarshalJSON() ([]byte, error) {
+	type embed WebhookSanctionsStatusDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*w),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (w *WebhookSanctionsStatusDetails) String() string {
 	if w == nil {
 		return "<nil>"
 	}
