@@ -7847,16 +7847,18 @@ func (c CaseManagementEventCaseStatusReason) Ptr() *CaseManagementEventCaseStatu
 
 var (
 	caseOpenedDetailsFieldCaseId         = big.NewInt(1 << 0)
-	caseOpenedDetailsFieldStatus         = big.NewInt(1 << 1)
-	caseOpenedDetailsFieldUserId         = big.NewInt(1 << 2)
-	caseOpenedDetailsFieldTransactionIds = big.NewInt(1 << 3)
+	caseOpenedDetailsFieldCaseObject     = big.NewInt(1 << 1)
+	caseOpenedDetailsFieldStatus         = big.NewInt(1 << 2)
+	caseOpenedDetailsFieldUserId         = big.NewInt(1 << 3)
+	caseOpenedDetailsFieldTransactionIds = big.NewInt(1 << 4)
 )
 
 type CaseOpenedDetails struct {
-	CaseId         *string  `json:"caseId,omitempty" url:"caseId,omitempty"`
-	Status         *string  `json:"status,omitempty" url:"status,omitempty"`
-	UserId         *string  `json:"userId,omitempty" url:"userId,omitempty"`
-	TransactionIds []string `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+	CaseId         *string        `json:"caseId,omitempty" url:"caseId,omitempty"`
+	CaseObject     map[string]any `json:"caseObject,omitempty" url:"caseObject,omitempty"`
+	Status         *string        `json:"status,omitempty" url:"status,omitempty"`
+	UserId         *string        `json:"userId,omitempty" url:"userId,omitempty"`
+	TransactionIds []string       `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7870,6 +7872,13 @@ func (c *CaseOpenedDetails) GetCaseId() *string {
 		return nil
 	}
 	return c.CaseId
+}
+
+func (c *CaseOpenedDetails) GetCaseObject() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.CaseObject
 }
 
 func (c *CaseOpenedDetails) GetStatus() *string {
@@ -7912,6 +7921,13 @@ func (c *CaseOpenedDetails) require(field *big.Int) {
 func (c *CaseOpenedDetails) SetCaseId(caseId *string) {
 	c.CaseId = caseId
 	c.require(caseOpenedDetailsFieldCaseId)
+}
+
+// SetCaseObject sets the CaseObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseOpenedDetails) SetCaseObject(caseObject map[string]any) {
+	c.CaseObject = caseObject
+	c.require(caseOpenedDetailsFieldCaseObject)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
@@ -9245,7 +9261,8 @@ func (c *CompanyRegistrationDetails) String() string {
 var (
 	consumerNameFieldFirstName  = big.NewInt(1 << 0)
 	consumerNameFieldMiddleName = big.NewInt(1 << 1)
-	consumerNameFieldLastName   = big.NewInt(1 << 2)
+	consumerNameFieldFatherName = big.NewInt(1 << 2)
+	consumerNameFieldLastName   = big.NewInt(1 << 3)
 )
 
 type ConsumerName struct {
@@ -9253,6 +9270,8 @@ type ConsumerName struct {
 	FirstName string `json:"firstName" url:"firstName"`
 	// Middle name of the user
 	MiddleName *string `json:"middleName,omitempty" url:"middleName,omitempty"`
+	// Name of the father of the user
+	FatherName *string `json:"fatherName,omitempty" url:"fatherName,omitempty"`
 	// Last name of the user
 	LastName *string `json:"lastName,omitempty" url:"lastName,omitempty"`
 
@@ -9275,6 +9294,13 @@ func (c *ConsumerName) GetMiddleName() *string {
 		return nil
 	}
 	return c.MiddleName
+}
+
+func (c *ConsumerName) GetFatherName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.FatherName
 }
 
 func (c *ConsumerName) GetLastName() *string {
@@ -9310,6 +9336,13 @@ func (c *ConsumerName) SetFirstName(firstName string) {
 func (c *ConsumerName) SetMiddleName(middleName *string) {
 	c.MiddleName = middleName
 	c.require(consumerNameFieldMiddleName)
+}
+
+// SetFatherName sets the FatherName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerName) SetFatherName(fatherName *string) {
+	c.FatherName = fatherName
+	c.require(consumerNameFieldFatherName)
 }
 
 // SetLastName sets the LastName field and marks it as non-optional;
