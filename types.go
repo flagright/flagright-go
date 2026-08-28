@@ -522,29 +522,35 @@ func (a *Address) String() string {
 type AdverseMediaStatus = bool
 
 var (
-	alertOpenedDetailsFieldAlertId         = big.NewInt(1 << 0)
-	alertOpenedDetailsFieldStatus          = big.NewInt(1 << 1)
-	alertOpenedDetailsFieldTransactionIds  = big.NewInt(1 << 2)
-	alertOpenedDetailsFieldRuleName        = big.NewInt(1 << 3)
-	alertOpenedDetailsFieldRuleDescription = big.NewInt(1 << 4)
-	alertOpenedDetailsFieldRuleId          = big.NewInt(1 << 5)
-	alertOpenedDetailsFieldRuleInstanceId  = big.NewInt(1 << 6)
-	alertOpenedDetailsFieldNature          = big.NewInt(1 << 7)
-	alertOpenedDetailsFieldCaseId          = big.NewInt(1 << 8)
-	alertOpenedDetailsFieldUserId          = big.NewInt(1 << 9)
+	alertOpenedDetailsFieldAlertId                   = big.NewInt(1 << 0)
+	alertOpenedDetailsFieldStatus                    = big.NewInt(1 << 1)
+	alertOpenedDetailsFieldTransactionIds            = big.NewInt(1 << 2)
+	alertOpenedDetailsFieldReasons                   = big.NewInt(1 << 3)
+	alertOpenedDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 4)
+	alertOpenedDetailsFieldComment                   = big.NewInt(1 << 5)
+	alertOpenedDetailsFieldRuleName                  = big.NewInt(1 << 6)
+	alertOpenedDetailsFieldRuleDescription           = big.NewInt(1 << 7)
+	alertOpenedDetailsFieldRuleId                    = big.NewInt(1 << 8)
+	alertOpenedDetailsFieldRuleInstanceId            = big.NewInt(1 << 9)
+	alertOpenedDetailsFieldNature                    = big.NewInt(1 << 10)
+	alertOpenedDetailsFieldCaseId                    = big.NewInt(1 << 11)
+	alertOpenedDetailsFieldUserId                    = big.NewInt(1 << 12)
 )
 
 type AlertOpenedDetails struct {
-	AlertId         *string     `json:"alertId,omitempty" url:"alertId,omitempty"`
-	Status          *string     `json:"status,omitempty" url:"status,omitempty"`
-	TransactionIds  []string    `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
-	RuleName        *string     `json:"ruleName,omitempty" url:"ruleName,omitempty"`
-	RuleDescription *string     `json:"ruleDescription,omitempty" url:"ruleDescription,omitempty"`
-	RuleId          *string     `json:"ruleId,omitempty" url:"ruleId,omitempty"`
-	RuleInstanceId  *string     `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
-	Nature          *RuleNature `json:"nature,omitempty" url:"nature,omitempty"`
-	CaseId          *string     `json:"caseId,omitempty" url:"caseId,omitempty"`
-	UserId          *string     `json:"userId,omitempty" url:"userId,omitempty"`
+	AlertId                   *string     `json:"alertId,omitempty" url:"alertId,omitempty"`
+	Status                    *string     `json:"status,omitempty" url:"status,omitempty"`
+	TransactionIds            []string    `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+	Reasons                   []string    `json:"reasons,omitempty" url:"reasons,omitempty"`
+	ReasonDescriptionForOther *string     `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
+	Comment                   *string     `json:"comment,omitempty" url:"comment,omitempty"`
+	RuleName                  *string     `json:"ruleName,omitempty" url:"ruleName,omitempty"`
+	RuleDescription           *string     `json:"ruleDescription,omitempty" url:"ruleDescription,omitempty"`
+	RuleId                    *string     `json:"ruleId,omitempty" url:"ruleId,omitempty"`
+	RuleInstanceId            *string     `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
+	Nature                    *RuleNature `json:"nature,omitempty" url:"nature,omitempty"`
+	CaseId                    *string     `json:"caseId,omitempty" url:"caseId,omitempty"`
+	UserId                    *string     `json:"userId,omitempty" url:"userId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -572,6 +578,27 @@ func (a *AlertOpenedDetails) GetTransactionIds() []string {
 		return nil
 	}
 	return a.TransactionIds
+}
+
+func (a *AlertOpenedDetails) GetReasons() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Reasons
+}
+
+func (a *AlertOpenedDetails) GetReasonDescriptionForOther() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ReasonDescriptionForOther
+}
+
+func (a *AlertOpenedDetails) GetComment() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Comment
 }
 
 func (a *AlertOpenedDetails) GetRuleName() *string {
@@ -656,6 +683,27 @@ func (a *AlertOpenedDetails) SetStatus(status *string) {
 func (a *AlertOpenedDetails) SetTransactionIds(transactionIds []string) {
 	a.TransactionIds = transactionIds
 	a.require(alertOpenedDetailsFieldTransactionIds)
+}
+
+// SetReasons sets the Reasons field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertOpenedDetails) SetReasons(reasons []string) {
+	a.Reasons = reasons
+	a.require(alertOpenedDetailsFieldReasons)
+}
+
+// SetReasonDescriptionForOther sets the ReasonDescriptionForOther field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertOpenedDetails) SetReasonDescriptionForOther(reasonDescriptionForOther *string) {
+	a.ReasonDescriptionForOther = reasonDescriptionForOther
+	a.require(alertOpenedDetailsFieldReasonDescriptionForOther)
+}
+
+// SetComment sets the Comment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertOpenedDetails) SetComment(comment *string) {
+	a.Comment = comment
+	a.require(alertOpenedDetailsFieldComment)
 }
 
 // SetRuleName sets the RuleName field and marks it as non-optional;
@@ -756,12 +804,13 @@ var (
 	alertStatusDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 3)
 	alertStatusDetailsFieldComment                   = big.NewInt(1 << 4)
 	alertStatusDetailsFieldUserId                    = big.NewInt(1 << 5)
-	alertStatusDetailsFieldTransactionIds            = big.NewInt(1 << 6)
-	alertStatusDetailsFieldRuleName                  = big.NewInt(1 << 7)
-	alertStatusDetailsFieldRuleDescription           = big.NewInt(1 << 8)
-	alertStatusDetailsFieldRuleId                    = big.NewInt(1 << 9)
-	alertStatusDetailsFieldRuleInstanceId            = big.NewInt(1 << 10)
-	alertStatusDetailsFieldNature                    = big.NewInt(1 << 11)
+	alertStatusDetailsFieldCaseId                    = big.NewInt(1 << 6)
+	alertStatusDetailsFieldTransactionIds            = big.NewInt(1 << 7)
+	alertStatusDetailsFieldRuleName                  = big.NewInt(1 << 8)
+	alertStatusDetailsFieldRuleDescription           = big.NewInt(1 << 9)
+	alertStatusDetailsFieldRuleId                    = big.NewInt(1 << 10)
+	alertStatusDetailsFieldRuleInstanceId            = big.NewInt(1 << 11)
+	alertStatusDetailsFieldNature                    = big.NewInt(1 << 12)
 )
 
 type AlertStatusDetails struct {
@@ -771,6 +820,7 @@ type AlertStatusDetails struct {
 	ReasonDescriptionForOther *string     `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
 	Comment                   *string     `json:"comment,omitempty" url:"comment,omitempty"`
 	UserId                    *string     `json:"userId,omitempty" url:"userId,omitempty"`
+	CaseId                    *string     `json:"caseId,omitempty" url:"caseId,omitempty"`
 	TransactionIds            []string    `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
 	RuleName                  *string     `json:"ruleName,omitempty" url:"ruleName,omitempty"`
 	RuleDescription           *string     `json:"ruleDescription,omitempty" url:"ruleDescription,omitempty"`
@@ -825,6 +875,13 @@ func (a *AlertStatusDetails) GetUserId() *string {
 		return nil
 	}
 	return a.UserId
+}
+
+func (a *AlertStatusDetails) GetCaseId() *string {
+	if a == nil {
+		return nil
+	}
+	return a.CaseId
 }
 
 func (a *AlertStatusDetails) GetTransactionIds() []string {
@@ -923,6 +980,13 @@ func (a *AlertStatusDetails) SetComment(comment *string) {
 func (a *AlertStatusDetails) SetUserId(userId *string) {
 	a.UserId = userId
 	a.require(alertStatusDetailsFieldUserId)
+}
+
+// SetCaseId sets the CaseId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertStatusDetails) SetCaseId(caseId *string) {
+	a.CaseId = caseId
+	a.require(alertStatusDetailsFieldCaseId)
 }
 
 // SetTransactionIds sets the TransactionIds field and marks it as non-optional;
@@ -7846,19 +7910,25 @@ func (c CaseManagementEventCaseStatusReason) Ptr() *CaseManagementEventCaseStatu
 }
 
 var (
-	caseOpenedDetailsFieldCaseId         = big.NewInt(1 << 0)
-	caseOpenedDetailsFieldCaseObject     = big.NewInt(1 << 1)
-	caseOpenedDetailsFieldStatus         = big.NewInt(1 << 2)
-	caseOpenedDetailsFieldUserId         = big.NewInt(1 << 3)
-	caseOpenedDetailsFieldTransactionIds = big.NewInt(1 << 4)
+	caseOpenedDetailsFieldCaseId                    = big.NewInt(1 << 0)
+	caseOpenedDetailsFieldCaseObject                = big.NewInt(1 << 1)
+	caseOpenedDetailsFieldStatus                    = big.NewInt(1 << 2)
+	caseOpenedDetailsFieldUserId                    = big.NewInt(1 << 3)
+	caseOpenedDetailsFieldTransactionIds            = big.NewInt(1 << 4)
+	caseOpenedDetailsFieldReasons                   = big.NewInt(1 << 5)
+	caseOpenedDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 6)
+	caseOpenedDetailsFieldComment                   = big.NewInt(1 << 7)
 )
 
 type CaseOpenedDetails struct {
-	CaseId         *string        `json:"caseId,omitempty" url:"caseId,omitempty"`
-	CaseObject     map[string]any `json:"caseObject,omitempty" url:"caseObject,omitempty"`
-	Status         *string        `json:"status,omitempty" url:"status,omitempty"`
-	UserId         *string        `json:"userId,omitempty" url:"userId,omitempty"`
-	TransactionIds []string       `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+	CaseId                    *string        `json:"caseId,omitempty" url:"caseId,omitempty"`
+	CaseObject                map[string]any `json:"caseObject,omitempty" url:"caseObject,omitempty"`
+	Status                    *string        `json:"status,omitempty" url:"status,omitempty"`
+	UserId                    *string        `json:"userId,omitempty" url:"userId,omitempty"`
+	TransactionIds            []string       `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+	Reasons                   []string       `json:"reasons,omitempty" url:"reasons,omitempty"`
+	ReasonDescriptionForOther *string        `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
+	Comment                   *string        `json:"comment,omitempty" url:"comment,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7900,6 +7970,27 @@ func (c *CaseOpenedDetails) GetTransactionIds() []string {
 		return nil
 	}
 	return c.TransactionIds
+}
+
+func (c *CaseOpenedDetails) GetReasons() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Reasons
+}
+
+func (c *CaseOpenedDetails) GetReasonDescriptionForOther() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ReasonDescriptionForOther
+}
+
+func (c *CaseOpenedDetails) GetComment() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Comment
 }
 
 func (c *CaseOpenedDetails) GetExtraProperties() map[string]interface{} {
@@ -7949,6 +8040,27 @@ func (c *CaseOpenedDetails) SetUserId(userId *string) {
 func (c *CaseOpenedDetails) SetTransactionIds(transactionIds []string) {
 	c.TransactionIds = transactionIds
 	c.require(caseOpenedDetailsFieldTransactionIds)
+}
+
+// SetReasons sets the Reasons field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseOpenedDetails) SetReasons(reasons []string) {
+	c.Reasons = reasons
+	c.require(caseOpenedDetailsFieldReasons)
+}
+
+// SetReasonDescriptionForOther sets the ReasonDescriptionForOther field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseOpenedDetails) SetReasonDescriptionForOther(reasonDescriptionForOther *string) {
+	c.ReasonDescriptionForOther = reasonDescriptionForOther
+	c.require(caseOpenedDetailsFieldReasonDescriptionForOther)
+}
+
+// SetComment sets the Comment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseOpenedDetails) SetComment(comment *string) {
+	c.Comment = comment
+	c.require(caseOpenedDetailsFieldComment)
 }
 
 func (c *CaseOpenedDetails) UnmarshalJSON(data []byte) error {
