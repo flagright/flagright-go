@@ -12848,6 +12848,7 @@ var (
 	deviceDataFieldProxyConfidenceScore           = big.NewInt(1 << 57)
 	deviceDataFieldTamperingConfidence            = big.NewInt(1 << 58)
 	deviceDataFieldTamperingConfidenceScore       = big.NewInt(1 << 59)
+	deviceDataFieldTags                           = big.NewInt(1 << 60)
 )
 
 type DeviceData struct {
@@ -12969,6 +12970,8 @@ type DeviceData struct {
 	TamperingConfidence *string `json:"tamperingConfidence,omitempty" url:"tamperingConfidence,omitempty"`
 	// Confidence score (0 to 1) for the tampering detection result
 	TamperingConfidenceScore *float64 `json:"tamperingConfidenceScore,omitempty" url:"tamperingConfidenceScore,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -13395,6 +13398,13 @@ func (d *DeviceData) GetTamperingConfidenceScore() *float64 {
 		return nil
 	}
 	return d.TamperingConfidenceScore
+}
+
+func (d *DeviceData) GetTags() []*Tag {
+	if d == nil {
+		return nil
+	}
+	return d.Tags
 }
 
 func (d *DeviceData) GetExtraProperties() map[string]interface{} {
@@ -13829,6 +13839,13 @@ func (d *DeviceData) SetTamperingConfidence(tamperingConfidence *string) {
 func (d *DeviceData) SetTamperingConfidenceScore(tamperingConfidenceScore *float64) {
 	d.TamperingConfidenceScore = tamperingConfidenceScore
 	d.require(deviceDataFieldTamperingConfidenceScore)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceData) SetTags(tags []*Tag) {
+	d.Tags = tags
+	d.require(deviceDataFieldTags)
 }
 
 func (d *DeviceData) UnmarshalJSON(data []byte) error {
@@ -24953,11 +24970,14 @@ func (t *TransactionLimitsPaymentMethodLimits) String() string {
 // Additional metadata for transactions including risk analysis and counterparty information
 var (
 	transactionMetadataFieldBlockchainRisk = big.NewInt(1 << 0)
+	transactionMetadataFieldTags           = big.NewInt(1 << 1)
 )
 
 type TransactionMetadata struct {
 	// List of blockchain risk analyses from different providers
 	BlockchainRisk []*BlockchainRisk `json:"blockchainRisk,omitempty" url:"blockchainRisk,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -24971,6 +24991,13 @@ func (t *TransactionMetadata) GetBlockchainRisk() []*BlockchainRisk {
 		return nil
 	}
 	return t.BlockchainRisk
+}
+
+func (t *TransactionMetadata) GetTags() []*Tag {
+	if t == nil {
+		return nil
+	}
+	return t.Tags
 }
 
 func (t *TransactionMetadata) GetExtraProperties() map[string]interface{} {
@@ -24992,6 +25019,13 @@ func (t *TransactionMetadata) require(field *big.Int) {
 func (t *TransactionMetadata) SetBlockchainRisk(blockchainRisk []*BlockchainRisk) {
 	t.BlockchainRisk = blockchainRisk
 	t.require(transactionMetadataFieldBlockchainRisk)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionMetadata) SetTags(tags []*Tag) {
+	t.Tags = tags
+	t.require(transactionMetadataFieldTags)
 }
 
 func (t *TransactionMetadata) UnmarshalJSON(data []byte) error {
