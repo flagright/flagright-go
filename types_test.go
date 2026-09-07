@@ -19984,6 +19984,14 @@ func TestSettersCaseOpenedDetails(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetCaseType", func(t *testing.T) {
+		obj := &CaseOpenedDetails{}
+		var fernTestValueCaseType *CaseType
+		obj.SetCaseType(fernTestValueCaseType)
+		assert.Equal(t, fernTestValueCaseType, obj.CaseType)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetCaseObject", func(t *testing.T) {
 		obj := &CaseOpenedDetails{}
 		var fernTestValueCaseObject map[string]any
@@ -20040,6 +20048,22 @@ func TestSettersCaseOpenedDetails(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetCaseGroupId", func(t *testing.T) {
+		obj := &CaseOpenedDetails{}
+		var fernTestValueCaseGroupId *string
+		obj.SetCaseGroupId(fernTestValueCaseGroupId)
+		assert.Equal(t, fernTestValueCaseGroupId, obj.CaseGroupId)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetCaseGroupName", func(t *testing.T) {
+		obj := &CaseOpenedDetails{}
+		var fernTestValueCaseGroupName *string
+		obj.SetCaseGroupName(fernTestValueCaseGroupName)
+		assert.Equal(t, fernTestValueCaseGroupName, obj.CaseGroupName)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersCaseOpenedDetails(t *testing.T) {
@@ -20074,6 +20098,39 @@ func TestGettersCaseOpenedDetails(t *testing.T) {
 			}
 		}()
 		_ = obj.GetCaseId() // Should return zero value
+	})
+
+	t.Run("GetCaseType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseOpenedDetails{}
+		var expected *CaseType
+		obj.CaseType = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCaseType(), "getter should return the property value")
+	})
+
+	t.Run("GetCaseType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseOpenedDetails{}
+		obj.CaseType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCaseType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCaseType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *CaseOpenedDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCaseType() // Should return zero value
 	})
 
 	t.Run("GetCaseObject", func(t *testing.T) {
@@ -20307,6 +20364,72 @@ func TestGettersCaseOpenedDetails(t *testing.T) {
 		_ = obj.GetComment() // Should return zero value
 	})
 
+	t.Run("GetCaseGroupId", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseOpenedDetails{}
+		var expected *string
+		obj.CaseGroupId = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCaseGroupId(), "getter should return the property value")
+	})
+
+	t.Run("GetCaseGroupId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseOpenedDetails{}
+		obj.CaseGroupId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCaseGroupId(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCaseGroupId_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *CaseOpenedDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCaseGroupId() // Should return zero value
+	})
+
+	t.Run("GetCaseGroupName", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseOpenedDetails{}
+		var expected *string
+		obj.CaseGroupName = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCaseGroupName(), "getter should return the property value")
+	})
+
+	t.Run("GetCaseGroupName_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseOpenedDetails{}
+		obj.CaseGroupName = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCaseGroupName(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCaseGroupName_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *CaseOpenedDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCaseGroupName() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitCaseOpenedDetails(t *testing.T) {
@@ -20318,6 +20441,37 @@ func TestSettersMarkExplicitCaseOpenedDetails(t *testing.T) {
 
 		// Act
 		obj.SetCaseId(fernTestValueCaseId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetCaseType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseOpenedDetails{}
+		var fernTestValueCaseType *CaseType
+
+		// Act
+		obj.SetCaseType(fernTestValueCaseType)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -20558,6 +20712,68 @@ func TestSettersMarkExplicitCaseOpenedDetails(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetCaseGroupId_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseOpenedDetails{}
+		var fernTestValueCaseGroupId *string
+
+		// Act
+		obj.SetCaseGroupId(fernTestValueCaseGroupId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetCaseGroupName_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseOpenedDetails{}
+		var fernTestValueCaseGroupName *string
+
+		// Act
+		obj.SetCaseGroupName(fernTestValueCaseGroupName)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 }
 
 func TestSettersCaseStatusDetails(t *testing.T) {
@@ -20566,6 +20782,14 @@ func TestSettersCaseStatusDetails(t *testing.T) {
 		var fernTestValueCaseId *string
 		obj.SetCaseId(fernTestValueCaseId)
 		assert.Equal(t, fernTestValueCaseId, obj.CaseId)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetCaseType", func(t *testing.T) {
+		obj := &CaseStatusDetails{}
+		var fernTestValueCaseType *CaseType
+		obj.SetCaseType(fernTestValueCaseType)
+		assert.Equal(t, fernTestValueCaseType, obj.CaseType)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -20617,6 +20841,22 @@ func TestSettersCaseStatusDetails(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetCaseGroupId", func(t *testing.T) {
+		obj := &CaseStatusDetails{}
+		var fernTestValueCaseGroupId *string
+		obj.SetCaseGroupId(fernTestValueCaseGroupId)
+		assert.Equal(t, fernTestValueCaseGroupId, obj.CaseGroupId)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetCaseGroupName", func(t *testing.T) {
+		obj := &CaseStatusDetails{}
+		var fernTestValueCaseGroupName *string
+		obj.SetCaseGroupName(fernTestValueCaseGroupName)
+		assert.Equal(t, fernTestValueCaseGroupName, obj.CaseGroupName)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersCaseStatusDetails(t *testing.T) {
@@ -20651,6 +20891,39 @@ func TestGettersCaseStatusDetails(t *testing.T) {
 			}
 		}()
 		_ = obj.GetCaseId() // Should return zero value
+	})
+
+	t.Run("GetCaseType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseStatusDetails{}
+		var expected *CaseType
+		obj.CaseType = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCaseType(), "getter should return the property value")
+	})
+
+	t.Run("GetCaseType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseStatusDetails{}
+		obj.CaseType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCaseType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCaseType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *CaseStatusDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCaseType() // Should return zero value
 	})
 
 	t.Run("GetStatus", func(t *testing.T) {
@@ -20851,6 +21124,72 @@ func TestGettersCaseStatusDetails(t *testing.T) {
 		_ = obj.GetTransactionIds() // Should return zero value
 	})
 
+	t.Run("GetCaseGroupId", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseStatusDetails{}
+		var expected *string
+		obj.CaseGroupId = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCaseGroupId(), "getter should return the property value")
+	})
+
+	t.Run("GetCaseGroupId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseStatusDetails{}
+		obj.CaseGroupId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCaseGroupId(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCaseGroupId_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *CaseStatusDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCaseGroupId() // Should return zero value
+	})
+
+	t.Run("GetCaseGroupName", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseStatusDetails{}
+		var expected *string
+		obj.CaseGroupName = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCaseGroupName(), "getter should return the property value")
+	})
+
+	t.Run("GetCaseGroupName_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseStatusDetails{}
+		obj.CaseGroupName = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCaseGroupName(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCaseGroupName_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *CaseStatusDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCaseGroupName() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitCaseStatusDetails(t *testing.T) {
@@ -20862,6 +21201,37 @@ func TestSettersMarkExplicitCaseStatusDetails(t *testing.T) {
 
 		// Act
 		obj.SetCaseId(fernTestValueCaseId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetCaseType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseStatusDetails{}
+		var fernTestValueCaseType *CaseType
+
+		// Act
+		obj.SetCaseType(fernTestValueCaseType)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -21048,6 +21418,68 @@ func TestSettersMarkExplicitCaseStatusDetails(t *testing.T) {
 
 		// Act
 		obj.SetTransactionIds(fernTestValueTransactionIds)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetCaseGroupId_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseStatusDetails{}
+		var fernTestValueCaseGroupId *string
+
+		// Act
+		obj.SetCaseGroupId(fernTestValueCaseGroupId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetCaseGroupName_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaseStatusDetails{}
+		var fernTestValueCaseGroupName *string
+
+		// Act
+		obj.SetCaseGroupName(fernTestValueCaseGroupName)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -81389,6 +81821,42 @@ func TestEnumCaseManagementEventCaseStatusReason(t *testing.T) {
 
 	t.Run("Ptr", func(t *testing.T) {
 		val, err := NewCaseManagementEventCaseStatusReasonFromString("FALSE_POSITIVE")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumCaseType(t *testing.T) {
+	t.Run("NewFromString_MANUAL", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseTypeFromString("MANUAL")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseType("MANUAL"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_SYSTEM", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseTypeFromString("SYSTEM")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseType("SYSTEM"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_EXTERNAL", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseTypeFromString("EXTERNAL")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseType("EXTERNAL"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewCaseTypeFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewCaseTypeFromString("MANUAL")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)

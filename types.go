@@ -7911,17 +7911,21 @@ func (c CaseManagementEventCaseStatusReason) Ptr() *CaseManagementEventCaseStatu
 
 var (
 	caseOpenedDetailsFieldCaseId                    = big.NewInt(1 << 0)
-	caseOpenedDetailsFieldCaseObject                = big.NewInt(1 << 1)
-	caseOpenedDetailsFieldStatus                    = big.NewInt(1 << 2)
-	caseOpenedDetailsFieldUserId                    = big.NewInt(1 << 3)
-	caseOpenedDetailsFieldTransactionIds            = big.NewInt(1 << 4)
-	caseOpenedDetailsFieldReasons                   = big.NewInt(1 << 5)
-	caseOpenedDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 6)
-	caseOpenedDetailsFieldComment                   = big.NewInt(1 << 7)
+	caseOpenedDetailsFieldCaseType                  = big.NewInt(1 << 1)
+	caseOpenedDetailsFieldCaseObject                = big.NewInt(1 << 2)
+	caseOpenedDetailsFieldStatus                    = big.NewInt(1 << 3)
+	caseOpenedDetailsFieldUserId                    = big.NewInt(1 << 4)
+	caseOpenedDetailsFieldTransactionIds            = big.NewInt(1 << 5)
+	caseOpenedDetailsFieldReasons                   = big.NewInt(1 << 6)
+	caseOpenedDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 7)
+	caseOpenedDetailsFieldComment                   = big.NewInt(1 << 8)
+	caseOpenedDetailsFieldCaseGroupId               = big.NewInt(1 << 9)
+	caseOpenedDetailsFieldCaseGroupName             = big.NewInt(1 << 10)
 )
 
 type CaseOpenedDetails struct {
 	CaseId                    *string        `json:"caseId,omitempty" url:"caseId,omitempty"`
+	CaseType                  *CaseType      `json:"caseType,omitempty" url:"caseType,omitempty"`
 	CaseObject                map[string]any `json:"caseObject,omitempty" url:"caseObject,omitempty"`
 	Status                    *string        `json:"status,omitempty" url:"status,omitempty"`
 	UserId                    *string        `json:"userId,omitempty" url:"userId,omitempty"`
@@ -7929,6 +7933,10 @@ type CaseOpenedDetails struct {
 	Reasons                   []string       `json:"reasons,omitempty" url:"reasons,omitempty"`
 	ReasonDescriptionForOther *string        `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
 	Comment                   *string        `json:"comment,omitempty" url:"comment,omitempty"`
+	// Id of the case group this case belongs to. Absent when the case is not mapped to a case group.
+	CaseGroupId *string `json:"caseGroupId,omitempty" url:"caseGroupId,omitempty"`
+	// Display name of the case group.
+	CaseGroupName *string `json:"caseGroupName,omitempty" url:"caseGroupName,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7942,6 +7950,13 @@ func (c *CaseOpenedDetails) GetCaseId() *string {
 		return nil
 	}
 	return c.CaseId
+}
+
+func (c *CaseOpenedDetails) GetCaseType() *CaseType {
+	if c == nil {
+		return nil
+	}
+	return c.CaseType
 }
 
 func (c *CaseOpenedDetails) GetCaseObject() map[string]any {
@@ -7993,6 +8008,20 @@ func (c *CaseOpenedDetails) GetComment() *string {
 	return c.Comment
 }
 
+func (c *CaseOpenedDetails) GetCaseGroupId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CaseGroupId
+}
+
+func (c *CaseOpenedDetails) GetCaseGroupName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CaseGroupName
+}
+
 func (c *CaseOpenedDetails) GetExtraProperties() map[string]interface{} {
 	if c == nil {
 		return nil
@@ -8012,6 +8041,13 @@ func (c *CaseOpenedDetails) require(field *big.Int) {
 func (c *CaseOpenedDetails) SetCaseId(caseId *string) {
 	c.CaseId = caseId
 	c.require(caseOpenedDetailsFieldCaseId)
+}
+
+// SetCaseType sets the CaseType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseOpenedDetails) SetCaseType(caseType *CaseType) {
+	c.CaseType = caseType
+	c.require(caseOpenedDetailsFieldCaseType)
 }
 
 // SetCaseObject sets the CaseObject field and marks it as non-optional;
@@ -8063,6 +8099,20 @@ func (c *CaseOpenedDetails) SetComment(comment *string) {
 	c.require(caseOpenedDetailsFieldComment)
 }
 
+// SetCaseGroupId sets the CaseGroupId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseOpenedDetails) SetCaseGroupId(caseGroupId *string) {
+	c.CaseGroupId = caseGroupId
+	c.require(caseOpenedDetailsFieldCaseGroupId)
+}
+
+// SetCaseGroupName sets the CaseGroupName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseOpenedDetails) SetCaseGroupName(caseGroupName *string) {
+	c.CaseGroupName = caseGroupName
+	c.require(caseOpenedDetailsFieldCaseGroupName)
+}
+
 func (c *CaseOpenedDetails) UnmarshalJSON(data []byte) error {
 	type unmarshaler CaseOpenedDetails
 	var value unmarshaler
@@ -8107,22 +8157,30 @@ func (c *CaseOpenedDetails) String() string {
 
 var (
 	caseStatusDetailsFieldCaseId                    = big.NewInt(1 << 0)
-	caseStatusDetailsFieldStatus                    = big.NewInt(1 << 1)
-	caseStatusDetailsFieldReasons                   = big.NewInt(1 << 2)
-	caseStatusDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 3)
-	caseStatusDetailsFieldComment                   = big.NewInt(1 << 4)
-	caseStatusDetailsFieldUserId                    = big.NewInt(1 << 5)
-	caseStatusDetailsFieldTransactionIds            = big.NewInt(1 << 6)
+	caseStatusDetailsFieldCaseType                  = big.NewInt(1 << 1)
+	caseStatusDetailsFieldStatus                    = big.NewInt(1 << 2)
+	caseStatusDetailsFieldReasons                   = big.NewInt(1 << 3)
+	caseStatusDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 4)
+	caseStatusDetailsFieldComment                   = big.NewInt(1 << 5)
+	caseStatusDetailsFieldUserId                    = big.NewInt(1 << 6)
+	caseStatusDetailsFieldTransactionIds            = big.NewInt(1 << 7)
+	caseStatusDetailsFieldCaseGroupId               = big.NewInt(1 << 8)
+	caseStatusDetailsFieldCaseGroupName             = big.NewInt(1 << 9)
 )
 
 type CaseStatusDetails struct {
-	CaseId                    *string  `json:"caseId,omitempty" url:"caseId,omitempty"`
-	Status                    *string  `json:"status,omitempty" url:"status,omitempty"`
-	Reasons                   []string `json:"reasons,omitempty" url:"reasons,omitempty"`
-	ReasonDescriptionForOther *string  `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
-	Comment                   *string  `json:"comment,omitempty" url:"comment,omitempty"`
-	UserId                    *string  `json:"userId,omitempty" url:"userId,omitempty"`
-	TransactionIds            []string `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+	CaseId                    *string   `json:"caseId,omitempty" url:"caseId,omitempty"`
+	CaseType                  *CaseType `json:"caseType,omitempty" url:"caseType,omitempty"`
+	Status                    *string   `json:"status,omitempty" url:"status,omitempty"`
+	Reasons                   []string  `json:"reasons,omitempty" url:"reasons,omitempty"`
+	ReasonDescriptionForOther *string   `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
+	Comment                   *string   `json:"comment,omitempty" url:"comment,omitempty"`
+	UserId                    *string   `json:"userId,omitempty" url:"userId,omitempty"`
+	TransactionIds            []string  `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
+	// Id of the case group this case belongs to. Absent when the case is not mapped to a case group.
+	CaseGroupId *string `json:"caseGroupId,omitempty" url:"caseGroupId,omitempty"`
+	// Display name of the case group.
+	CaseGroupName *string `json:"caseGroupName,omitempty" url:"caseGroupName,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8136,6 +8194,13 @@ func (c *CaseStatusDetails) GetCaseId() *string {
 		return nil
 	}
 	return c.CaseId
+}
+
+func (c *CaseStatusDetails) GetCaseType() *CaseType {
+	if c == nil {
+		return nil
+	}
+	return c.CaseType
 }
 
 func (c *CaseStatusDetails) GetStatus() *string {
@@ -8180,6 +8245,20 @@ func (c *CaseStatusDetails) GetTransactionIds() []string {
 	return c.TransactionIds
 }
 
+func (c *CaseStatusDetails) GetCaseGroupId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CaseGroupId
+}
+
+func (c *CaseStatusDetails) GetCaseGroupName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CaseGroupName
+}
+
 func (c *CaseStatusDetails) GetExtraProperties() map[string]interface{} {
 	if c == nil {
 		return nil
@@ -8199,6 +8278,13 @@ func (c *CaseStatusDetails) require(field *big.Int) {
 func (c *CaseStatusDetails) SetCaseId(caseId *string) {
 	c.CaseId = caseId
 	c.require(caseStatusDetailsFieldCaseId)
+}
+
+// SetCaseType sets the CaseType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseStatusDetails) SetCaseType(caseType *CaseType) {
+	c.CaseType = caseType
+	c.require(caseStatusDetailsFieldCaseType)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
@@ -8243,6 +8329,20 @@ func (c *CaseStatusDetails) SetTransactionIds(transactionIds []string) {
 	c.require(caseStatusDetailsFieldTransactionIds)
 }
 
+// SetCaseGroupId sets the CaseGroupId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseStatusDetails) SetCaseGroupId(caseGroupId *string) {
+	c.CaseGroupId = caseGroupId
+	c.require(caseStatusDetailsFieldCaseGroupId)
+}
+
+// SetCaseGroupName sets the CaseGroupName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseStatusDetails) SetCaseGroupName(caseGroupName *string) {
+	c.CaseGroupName = caseGroupName
+	c.require(caseStatusDetailsFieldCaseGroupName)
+}
+
 func (c *CaseStatusDetails) UnmarshalJSON(data []byte) error {
 	type unmarshaler CaseStatusDetails
 	var value unmarshaler
@@ -8283,6 +8383,31 @@ func (c *CaseStatusDetails) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type CaseType string
+
+const (
+	CaseTypeManual   CaseType = "MANUAL"
+	CaseTypeSystem   CaseType = "SYSTEM"
+	CaseTypeExternal CaseType = "EXTERNAL"
+)
+
+func NewCaseTypeFromString(s string) (CaseType, error) {
+	switch s {
+	case "MANUAL":
+		return CaseTypeManual, nil
+	case "SYSTEM":
+		return CaseTypeSystem, nil
+	case "EXTERNAL":
+		return CaseTypeExternal, nil
+	}
+	var t CaseType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CaseType) Ptr() *CaseType {
+	return &c
 }
 
 var (
