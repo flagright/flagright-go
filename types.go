@@ -535,6 +535,7 @@ var (
 	alertOpenedDetailsFieldNature                    = big.NewInt(1 << 10)
 	alertOpenedDetailsFieldCaseId                    = big.NewInt(1 << 11)
 	alertOpenedDetailsFieldUserId                    = big.NewInt(1 << 12)
+	alertOpenedDetailsFieldAlertTags                 = big.NewInt(1 << 13)
 )
 
 type AlertOpenedDetails struct {
@@ -551,6 +552,8 @@ type AlertOpenedDetails struct {
 	Nature                    *RuleNature `json:"nature,omitempty" url:"nature,omitempty"`
 	CaseId                    *string     `json:"caseId,omitempty" url:"caseId,omitempty"`
 	UserId                    *string     `json:"userId,omitempty" url:"userId,omitempty"`
+	// Tags attached to the alert.
+	AlertTags []*Tag `json:"alertTags,omitempty" url:"alertTags,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -648,6 +651,13 @@ func (a *AlertOpenedDetails) GetUserId() *string {
 		return nil
 	}
 	return a.UserId
+}
+
+func (a *AlertOpenedDetails) GetAlertTags() []*Tag {
+	if a == nil {
+		return nil
+	}
+	return a.AlertTags
 }
 
 func (a *AlertOpenedDetails) GetExtraProperties() map[string]interface{} {
@@ -755,6 +765,13 @@ func (a *AlertOpenedDetails) SetUserId(userId *string) {
 	a.require(alertOpenedDetailsFieldUserId)
 }
 
+// SetAlertTags sets the AlertTags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertOpenedDetails) SetAlertTags(alertTags []*Tag) {
+	a.AlertTags = alertTags
+	a.require(alertOpenedDetailsFieldAlertTags)
+}
+
 func (a *AlertOpenedDetails) UnmarshalJSON(data []byte) error {
 	type unmarshaler AlertOpenedDetails
 	var value unmarshaler
@@ -811,6 +828,7 @@ var (
 	alertStatusDetailsFieldRuleId                    = big.NewInt(1 << 10)
 	alertStatusDetailsFieldRuleInstanceId            = big.NewInt(1 << 11)
 	alertStatusDetailsFieldNature                    = big.NewInt(1 << 12)
+	alertStatusDetailsFieldAlertTags                 = big.NewInt(1 << 13)
 )
 
 type AlertStatusDetails struct {
@@ -827,6 +845,8 @@ type AlertStatusDetails struct {
 	RuleId                    *string     `json:"ruleId,omitempty" url:"ruleId,omitempty"`
 	RuleInstanceId            *string     `json:"ruleInstanceId,omitempty" url:"ruleInstanceId,omitempty"`
 	Nature                    *RuleNature `json:"nature,omitempty" url:"nature,omitempty"`
+	// Tags attached to the alert.
+	AlertTags []*Tag `json:"alertTags,omitempty" url:"alertTags,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -924,6 +944,13 @@ func (a *AlertStatusDetails) GetNature() *RuleNature {
 		return nil
 	}
 	return a.Nature
+}
+
+func (a *AlertStatusDetails) GetAlertTags() []*Tag {
+	if a == nil {
+		return nil
+	}
+	return a.AlertTags
 }
 
 func (a *AlertStatusDetails) GetExtraProperties() map[string]interface{} {
@@ -1029,6 +1056,13 @@ func (a *AlertStatusDetails) SetRuleInstanceId(ruleInstanceId *string) {
 func (a *AlertStatusDetails) SetNature(nature *RuleNature) {
 	a.Nature = nature
 	a.require(alertStatusDetailsFieldNature)
+}
+
+// SetAlertTags sets the AlertTags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertStatusDetails) SetAlertTags(alertTags []*Tag) {
+	a.AlertTags = alertTags
+	a.require(alertStatusDetailsFieldAlertTags)
 }
 
 func (a *AlertStatusDetails) UnmarshalJSON(data []byte) error {
@@ -7921,6 +7955,7 @@ var (
 	caseOpenedDetailsFieldComment                   = big.NewInt(1 << 8)
 	caseOpenedDetailsFieldCaseGroupId               = big.NewInt(1 << 9)
 	caseOpenedDetailsFieldCaseGroupName             = big.NewInt(1 << 10)
+	caseOpenedDetailsFieldCaseTags                  = big.NewInt(1 << 11)
 )
 
 type CaseOpenedDetails struct {
@@ -7937,6 +7972,8 @@ type CaseOpenedDetails struct {
 	CaseGroupId *string `json:"caseGroupId,omitempty" url:"caseGroupId,omitempty"`
 	// Display name of the case group.
 	CaseGroupName *string `json:"caseGroupName,omitempty" url:"caseGroupName,omitempty"`
+	// Tags attached to the case.
+	CaseTags []*Tag `json:"caseTags,omitempty" url:"caseTags,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8020,6 +8057,13 @@ func (c *CaseOpenedDetails) GetCaseGroupName() *string {
 		return nil
 	}
 	return c.CaseGroupName
+}
+
+func (c *CaseOpenedDetails) GetCaseTags() []*Tag {
+	if c == nil {
+		return nil
+	}
+	return c.CaseTags
 }
 
 func (c *CaseOpenedDetails) GetExtraProperties() map[string]interface{} {
@@ -8113,6 +8157,13 @@ func (c *CaseOpenedDetails) SetCaseGroupName(caseGroupName *string) {
 	c.require(caseOpenedDetailsFieldCaseGroupName)
 }
 
+// SetCaseTags sets the CaseTags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseOpenedDetails) SetCaseTags(caseTags []*Tag) {
+	c.CaseTags = caseTags
+	c.require(caseOpenedDetailsFieldCaseTags)
+}
+
 func (c *CaseOpenedDetails) UnmarshalJSON(data []byte) error {
 	type unmarshaler CaseOpenedDetails
 	var value unmarshaler
@@ -8166,6 +8217,7 @@ var (
 	caseStatusDetailsFieldTransactionIds            = big.NewInt(1 << 7)
 	caseStatusDetailsFieldCaseGroupId               = big.NewInt(1 << 8)
 	caseStatusDetailsFieldCaseGroupName             = big.NewInt(1 << 9)
+	caseStatusDetailsFieldCaseTags                  = big.NewInt(1 << 10)
 )
 
 type CaseStatusDetails struct {
@@ -8181,6 +8233,8 @@ type CaseStatusDetails struct {
 	CaseGroupId *string `json:"caseGroupId,omitempty" url:"caseGroupId,omitempty"`
 	// Display name of the case group.
 	CaseGroupName *string `json:"caseGroupName,omitempty" url:"caseGroupName,omitempty"`
+	// Tags attached to the case.
+	CaseTags []*Tag `json:"caseTags,omitempty" url:"caseTags,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8257,6 +8311,13 @@ func (c *CaseStatusDetails) GetCaseGroupName() *string {
 		return nil
 	}
 	return c.CaseGroupName
+}
+
+func (c *CaseStatusDetails) GetCaseTags() []*Tag {
+	if c == nil {
+		return nil
+	}
+	return c.CaseTags
 }
 
 func (c *CaseStatusDetails) GetExtraProperties() map[string]interface{} {
@@ -8341,6 +8402,13 @@ func (c *CaseStatusDetails) SetCaseGroupId(caseGroupId *string) {
 func (c *CaseStatusDetails) SetCaseGroupName(caseGroupName *string) {
 	c.CaseGroupName = caseGroupName
 	c.require(caseStatusDetailsFieldCaseGroupName)
+}
+
+// SetCaseTags sets the CaseTags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseStatusDetails) SetCaseTags(caseTags []*Tag) {
+	c.CaseTags = caseTags
+	c.require(caseStatusDetailsFieldCaseTags)
 }
 
 func (c *CaseStatusDetails) UnmarshalJSON(data []byte) error {
