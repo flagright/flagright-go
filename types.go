@@ -22437,6 +22437,7 @@ const (
 	SanctionsDetailsEntityTypePaymentName            SanctionsDetailsEntityType = "PAYMENT_NAME"
 	SanctionsDetailsEntityTypePaymentBeneficiaryName SanctionsDetailsEntityType = "PAYMENT_BENEFICIARY_NAME"
 	SanctionsDetailsEntityTypeBankName               SanctionsDetailsEntityType = "BANK_NAME"
+	SanctionsDetailsEntityTypeCorrespondentBankName  SanctionsDetailsEntityType = "CORRESPONDENT_BANK_NAME"
 	SanctionsDetailsEntityTypeBankAccountHolderName  SanctionsDetailsEntityType = "BANK_ACCOUNT_HOLDER_NAME"
 	SanctionsDetailsEntityTypeBusinessPartner        SanctionsDetailsEntityType = "BUSINESS_PARTNER"
 	SanctionsDetailsEntityTypeAssociatedParty        SanctionsDetailsEntityType = "ASSOCIATED_PARTY"
@@ -22464,6 +22465,8 @@ func NewSanctionsDetailsEntityTypeFromString(s string) (SanctionsDetailsEntityTy
 		return SanctionsDetailsEntityTypePaymentBeneficiaryName, nil
 	case "BANK_NAME":
 		return SanctionsDetailsEntityTypeBankName, nil
+	case "CORRESPONDENT_BANK_NAME":
+		return SanctionsDetailsEntityTypeCorrespondentBankName, nil
 	case "BANK_ACCOUNT_HOLDER_NAME":
 		return SanctionsDetailsEntityTypeBankAccountHolderName, nil
 	case "BUSINESS_PARTNER":

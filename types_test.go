@@ -88995,6 +88995,13 @@ func TestEnumSanctionsDetailsEntityType(t *testing.T) {
 		assert.Equal(t, SanctionsDetailsEntityType("BANK_NAME"), val, "enum value should match expected wire value")
 	})
 
+	t.Run("NewFromString_CORRESPONDENT_BANK_NAME", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("CORRESPONDENT_BANK_NAME")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("CORRESPONDENT_BANK_NAME"), val, "enum value should match expected wire value")
+	})
+
 	t.Run("NewFromString_BANK_ACCOUNT_HOLDER_NAME", func(t *testing.T) {
 		t.Parallel()
 		val, err := NewSanctionsDetailsEntityTypeFromString("BANK_ACCOUNT_HOLDER_NAME")
