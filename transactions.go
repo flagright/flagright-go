@@ -183,10 +183,11 @@ var (
 	transactionWithRulesResultFieldTags                      = big.NewInt(1 << 19)
 	transactionWithRulesResultFieldJurisdiction              = big.NewInt(1 << 20)
 	transactionWithRulesResultFieldExternalLinks             = big.NewInt(1 << 21)
-	transactionWithRulesResultFieldExecutedRules             = big.NewInt(1 << 22)
-	transactionWithRulesResultFieldHitRules                  = big.NewInt(1 << 23)
-	transactionWithRulesResultFieldStatus                    = big.NewInt(1 << 24)
-	transactionWithRulesResultFieldRiskScoreDetails          = big.NewInt(1 << 25)
+	transactionWithRulesResultFieldCustomObject              = big.NewInt(1 << 22)
+	transactionWithRulesResultFieldExecutedRules             = big.NewInt(1 << 23)
+	transactionWithRulesResultFieldHitRules                  = big.NewInt(1 << 24)
+	transactionWithRulesResultFieldStatus                    = big.NewInt(1 << 25)
+	transactionWithRulesResultFieldRiskScoreDetails          = big.NewInt(1 << 26)
 )
 
 type TransactionWithRulesResult struct {
@@ -224,7 +225,9 @@ type TransactionWithRulesResult struct {
 	// Legal authority or region governing the transaction
 	Jurisdiction *string `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	// External links related to the transaction
-	ExternalLinks    []string                      `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject     map[string]any                `json:"customObject,omitempty" url:"customObject,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult        `json:"executedRules" url:"executedRules"`
 	HitRules         []*HitRulesDetails            `json:"hitRules" url:"hitRules"`
 	Status           RuleAction                    `json:"status" url:"status"`
@@ -389,6 +392,13 @@ func (t *TransactionWithRulesResult) GetExternalLinks() []string {
 		return nil
 	}
 	return t.ExternalLinks
+}
+
+func (t *TransactionWithRulesResult) GetCustomObject() map[string]any {
+	if t == nil {
+		return nil
+	}
+	return t.CustomObject
 }
 
 func (t *TransactionWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -585,6 +595,13 @@ func (t *TransactionWithRulesResult) SetJurisdiction(jurisdiction *string) {
 func (t *TransactionWithRulesResult) SetExternalLinks(externalLinks []string) {
 	t.ExternalLinks = externalLinks
 	t.require(transactionWithRulesResultFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionWithRulesResult) SetCustomObject(customObject map[string]any) {
+	t.CustomObject = customObject
+	t.require(transactionWithRulesResultFieldCustomObject)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;

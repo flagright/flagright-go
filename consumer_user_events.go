@@ -366,10 +366,11 @@ var (
 	consumerUserEventsCreateResponseFieldJurisdiction                  = big.NewInt(1 << 31)
 	consumerUserEventsCreateResponseFieldProductsEnabled               = big.NewInt(1 << 32)
 	consumerUserEventsCreateResponseFieldExternalLinks                 = big.NewInt(1 << 33)
-	consumerUserEventsCreateResponseFieldExecutedRules                 = big.NewInt(1 << 34)
-	consumerUserEventsCreateResponseFieldHitRules                      = big.NewInt(1 << 35)
-	consumerUserEventsCreateResponseFieldRiskScoreDetails              = big.NewInt(1 << 36)
-	consumerUserEventsCreateResponseFieldMessage                       = big.NewInt(1 << 37)
+	consumerUserEventsCreateResponseFieldCustomObject                  = big.NewInt(1 << 34)
+	consumerUserEventsCreateResponseFieldExecutedRules                 = big.NewInt(1 << 35)
+	consumerUserEventsCreateResponseFieldHitRules                      = big.NewInt(1 << 36)
+	consumerUserEventsCreateResponseFieldRiskScoreDetails              = big.NewInt(1 << 37)
+	consumerUserEventsCreateResponseFieldMessage                       = big.NewInt(1 << 38)
 )
 
 type ConsumerUserEventsCreateResponse struct {
@@ -415,7 +416,9 @@ type ConsumerUserEventsCreateResponse struct {
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	// External links related to the consumer user
-	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -664,6 +667,13 @@ func (c *ConsumerUserEventsCreateResponse) GetExternalLinks() []string {
 		return nil
 	}
 	return c.ExternalLinks
+}
+
+func (c *ConsumerUserEventsCreateResponse) GetCustomObject() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.CustomObject
 }
 
 func (c *ConsumerUserEventsCreateResponse) GetExecutedRules() []*ExecutedRulesResult {
@@ -944,6 +954,13 @@ func (c *ConsumerUserEventsCreateResponse) SetProductsEnabled(productsEnabled []
 func (c *ConsumerUserEventsCreateResponse) SetExternalLinks(externalLinks []string) {
 	c.ExternalLinks = externalLinks
 	c.require(consumerUserEventsCreateResponseFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ConsumerUserEventsCreateResponse) SetCustomObject(customObject map[string]any) {
+	c.CustomObject = customObject
+	c.require(consumerUserEventsCreateResponseFieldCustomObject)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;

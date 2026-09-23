@@ -947,8 +947,9 @@ var (
 	batchBusinessUserWithRulesResultFieldSanctionsStatus               = big.NewInt(1 << 28)
 	batchBusinessUserWithRulesResultFieldAdverseMediaStatus            = big.NewInt(1 << 29)
 	batchBusinessUserWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 30)
-	batchBusinessUserWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 31)
-	batchBusinessUserWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 32)
+	batchBusinessUserWithRulesResultFieldCustomObject                  = big.NewInt(1 << 31)
+	batchBusinessUserWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 32)
+	batchBusinessUserWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 33)
 )
 
 type BatchBusinessUserWithRulesResult struct {
@@ -996,7 +997,9 @@ type BatchBusinessUserWithRulesResult struct {
 	// Whether the user is in the adverse media list
 	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// External links related to the business user
-	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -1222,6 +1225,13 @@ func (b *BatchBusinessUserWithRulesResult) GetExternalLinks() []string {
 		return nil
 	}
 	return b.ExternalLinks
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetCustomObject() map[string]any {
+	if b == nil {
+		return nil
+	}
+	return b.CustomObject
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -1467,6 +1477,13 @@ func (b *BatchBusinessUserWithRulesResult) SetAdverseMediaStatus(adverseMediaSta
 func (b *BatchBusinessUserWithRulesResult) SetExternalLinks(externalLinks []string) {
 	b.ExternalLinks = externalLinks
 	b.require(batchBusinessUserWithRulesResultFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchBusinessUserWithRulesResult) SetCustomObject(customObject map[string]any) {
+	b.CustomObject = customObject
+	b.require(batchBusinessUserWithRulesResultFieldCustomObject)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;
@@ -2514,8 +2531,9 @@ var (
 	batchConsumerUserWithRulesResultFieldJurisdiction                  = big.NewInt(1 << 31)
 	batchConsumerUserWithRulesResultFieldProductsEnabled               = big.NewInt(1 << 32)
 	batchConsumerUserWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 33)
-	batchConsumerUserWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 34)
-	batchConsumerUserWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 35)
+	batchConsumerUserWithRulesResultFieldCustomObject                  = big.NewInt(1 << 34)
+	batchConsumerUserWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 35)
+	batchConsumerUserWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 36)
 )
 
 type BatchConsumerUserWithRulesResult struct {
@@ -2561,7 +2579,9 @@ type BatchConsumerUserWithRulesResult struct {
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	// External links related to the consumer user
-	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -2808,6 +2828,13 @@ func (b *BatchConsumerUserWithRulesResult) GetExternalLinks() []string {
 		return nil
 	}
 	return b.ExternalLinks
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetCustomObject() map[string]any {
+	if b == nil {
+		return nil
+	}
+	return b.CustomObject
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -3074,6 +3101,13 @@ func (b *BatchConsumerUserWithRulesResult) SetProductsEnabled(productsEnabled []
 func (b *BatchConsumerUserWithRulesResult) SetExternalLinks(externalLinks []string) {
 	b.ExternalLinks = externalLinks
 	b.require(batchConsumerUserWithRulesResultFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchConsumerUserWithRulesResult) SetCustomObject(customObject map[string]any) {
+	b.CustomObject = customObject
+	b.require(batchConsumerUserWithRulesResultFieldCustomObject)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;

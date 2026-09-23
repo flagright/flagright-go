@@ -363,10 +363,11 @@ var (
 	businessUserEventsCreateResponseFieldSanctionsStatus               = big.NewInt(1 << 28)
 	businessUserEventsCreateResponseFieldAdverseMediaStatus            = big.NewInt(1 << 29)
 	businessUserEventsCreateResponseFieldExternalLinks                 = big.NewInt(1 << 30)
-	businessUserEventsCreateResponseFieldExecutedRules                 = big.NewInt(1 << 31)
-	businessUserEventsCreateResponseFieldHitRules                      = big.NewInt(1 << 32)
-	businessUserEventsCreateResponseFieldRiskScoreDetails              = big.NewInt(1 << 33)
-	businessUserEventsCreateResponseFieldMessage                       = big.NewInt(1 << 34)
+	businessUserEventsCreateResponseFieldCustomObject                  = big.NewInt(1 << 31)
+	businessUserEventsCreateResponseFieldExecutedRules                 = big.NewInt(1 << 32)
+	businessUserEventsCreateResponseFieldHitRules                      = big.NewInt(1 << 33)
+	businessUserEventsCreateResponseFieldRiskScoreDetails              = big.NewInt(1 << 34)
+	businessUserEventsCreateResponseFieldMessage                       = big.NewInt(1 << 35)
 )
 
 type BusinessUserEventsCreateResponse struct {
@@ -414,7 +415,9 @@ type BusinessUserEventsCreateResponse struct {
 	// Whether the user is in the adverse media list
 	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// External links related to the business user
-	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -642,6 +645,13 @@ func (b *BusinessUserEventsCreateResponse) GetExternalLinks() []string {
 		return nil
 	}
 	return b.ExternalLinks
+}
+
+func (b *BusinessUserEventsCreateResponse) GetCustomObject() map[string]any {
+	if b == nil {
+		return nil
+	}
+	return b.CustomObject
 }
 
 func (b *BusinessUserEventsCreateResponse) GetExecutedRules() []*ExecutedRulesResult {
@@ -901,6 +911,13 @@ func (b *BusinessUserEventsCreateResponse) SetAdverseMediaStatus(adverseMediaSta
 func (b *BusinessUserEventsCreateResponse) SetExternalLinks(externalLinks []string) {
 	b.ExternalLinks = externalLinks
 	b.require(businessUserEventsCreateResponseFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetCustomObject(customObject map[string]any) {
+	b.CustomObject = customObject
+	b.require(businessUserEventsCreateResponseFieldCustomObject)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;

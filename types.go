@@ -1107,6 +1107,107 @@ func (a *AlertStatusDetails) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	alertTagsUpdateFieldAlertId = big.NewInt(1 << 0)
+	alertTagsUpdateFieldTags    = big.NewInt(1 << 1)
+)
+
+type AlertTagsUpdate struct {
+	AlertId *string `json:"alertId,omitempty" url:"alertId,omitempty"`
+	// Tags added, updated, or deleted on the alert.
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AlertTagsUpdate) GetAlertId() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AlertId
+}
+
+func (a *AlertTagsUpdate) GetTags() []*Tag {
+	if a == nil {
+		return nil
+	}
+	return a.Tags
+}
+
+func (a *AlertTagsUpdate) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *AlertTagsUpdate) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetAlertId sets the AlertId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertTagsUpdate) SetAlertId(alertId *string) {
+	a.AlertId = alertId
+	a.require(alertTagsUpdateFieldAlertId)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AlertTagsUpdate) SetTags(tags []*Tag) {
+	a.Tags = tags
+	a.require(alertTagsUpdateFieldTags)
+}
+
+func (a *AlertTagsUpdate) UnmarshalJSON(data []byte) error {
+	type unmarshaler AlertTagsUpdate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AlertTagsUpdate(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AlertTagsUpdate) MarshalJSON() ([]byte, error) {
+	type embed AlertTagsUpdate
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AlertTagsUpdate) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 // Model for amount
 var (
 	amountFieldAmountValue    = big.NewInt(1 << 0)
@@ -2778,6 +2879,7 @@ var (
 	businessFieldSanctionsStatus               = big.NewInt(1 << 28)
 	businessFieldAdverseMediaStatus            = big.NewInt(1 << 29)
 	businessFieldExternalLinks                 = big.NewInt(1 << 30)
+	businessFieldCustomObject                  = big.NewInt(1 << 31)
 )
 
 type Business struct {
@@ -2826,6 +2928,8 @@ type Business struct {
 	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// External links related to the business user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3049,6 +3153,13 @@ func (b *Business) GetExternalLinks() []string {
 		return nil
 	}
 	return b.ExternalLinks
+}
+
+func (b *Business) GetCustomObject() map[string]any {
+	if b == nil {
+		return nil
+	}
+	return b.CustomObject
 }
 
 func (b *Business) GetExtraProperties() map[string]interface{} {
@@ -3280,6 +3391,13 @@ func (b *Business) SetAdverseMediaStatus(adverseMediaStatus *bool) {
 func (b *Business) SetExternalLinks(externalLinks []string) {
 	b.ExternalLinks = externalLinks
 	b.require(businessFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *Business) SetCustomObject(customObject map[string]any) {
+	b.CustomObject = customObject
+	b.require(businessFieldCustomObject)
 }
 
 func (b *Business) UnmarshalJSON(data []byte) error {
@@ -3598,6 +3716,7 @@ var (
 	businessOptionalFieldSanctionsStatus               = big.NewInt(1 << 26)
 	businessOptionalFieldAdverseMediaStatus            = big.NewInt(1 << 27)
 	businessOptionalFieldExternalLinks                 = big.NewInt(1 << 28)
+	businessOptionalFieldCustomObject                  = big.NewInt(1 << 29)
 )
 
 type BusinessOptional struct {
@@ -3642,6 +3761,8 @@ type BusinessOptional struct {
 	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// External links related to the business user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3851,6 +3972,13 @@ func (b *BusinessOptional) GetExternalLinks() []string {
 		return nil
 	}
 	return b.ExternalLinks
+}
+
+func (b *BusinessOptional) GetCustomObject() map[string]any {
+	if b == nil {
+		return nil
+	}
+	return b.CustomObject
 }
 
 func (b *BusinessOptional) GetExtraProperties() map[string]interface{} {
@@ -4068,6 +4196,13 @@ func (b *BusinessOptional) SetAdverseMediaStatus(adverseMediaStatus *bool) {
 func (b *BusinessOptional) SetExternalLinks(externalLinks []string) {
 	b.ExternalLinks = externalLinks
 	b.require(businessOptionalFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessOptional) SetCustomObject(customObject map[string]any) {
+	b.CustomObject = customObject
+	b.require(businessOptionalFieldCustomObject)
 }
 
 func (b *BusinessOptional) UnmarshalJSON(data []byte) error {
@@ -5299,9 +5434,10 @@ var (
 	businessWithRulesResultFieldSanctionsStatus               = big.NewInt(1 << 28)
 	businessWithRulesResultFieldAdverseMediaStatus            = big.NewInt(1 << 29)
 	businessWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 30)
-	businessWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 31)
-	businessWithRulesResultFieldHitRules                      = big.NewInt(1 << 32)
-	businessWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 33)
+	businessWithRulesResultFieldCustomObject                  = big.NewInt(1 << 31)
+	businessWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 32)
+	businessWithRulesResultFieldHitRules                      = big.NewInt(1 << 33)
+	businessWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 34)
 )
 
 type BusinessWithRulesResult struct {
@@ -5349,7 +5485,9 @@ type BusinessWithRulesResult struct {
 	// Whether the user is in the adverse media list
 	AdverseMediaStatus *bool `json:"adverseMediaStatus,omitempty" url:"adverseMediaStatus,omitempty"`
 	// External links related to the business user
-	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -5576,6 +5714,13 @@ func (b *BusinessWithRulesResult) GetExternalLinks() []string {
 		return nil
 	}
 	return b.ExternalLinks
+}
+
+func (b *BusinessWithRulesResult) GetCustomObject() map[string]any {
+	if b == nil {
+		return nil
+	}
+	return b.CustomObject
 }
 
 func (b *BusinessWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -5828,6 +5973,13 @@ func (b *BusinessWithRulesResult) SetAdverseMediaStatus(adverseMediaStatus *bool
 func (b *BusinessWithRulesResult) SetExternalLinks(externalLinks []string) {
 	b.ExternalLinks = externalLinks
 	b.require(businessWithRulesResultFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessWithRulesResult) SetCustomObject(customObject map[string]any) {
+	b.CustomObject = customObject
+	b.require(businessWithRulesResultFieldCustomObject)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;
@@ -7949,13 +8101,14 @@ var (
 	caseOpenedDetailsFieldCaseObject                = big.NewInt(1 << 2)
 	caseOpenedDetailsFieldStatus                    = big.NewInt(1 << 3)
 	caseOpenedDetailsFieldUserId                    = big.NewInt(1 << 4)
-	caseOpenedDetailsFieldTransactionIds            = big.NewInt(1 << 5)
-	caseOpenedDetailsFieldReasons                   = big.NewInt(1 << 6)
-	caseOpenedDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 7)
-	caseOpenedDetailsFieldComment                   = big.NewInt(1 << 8)
-	caseOpenedDetailsFieldCaseGroupId               = big.NewInt(1 << 9)
-	caseOpenedDetailsFieldCaseGroupName             = big.NewInt(1 << 10)
-	caseOpenedDetailsFieldCaseTags                  = big.NewInt(1 << 11)
+	caseOpenedDetailsFieldUserType                  = big.NewInt(1 << 5)
+	caseOpenedDetailsFieldTransactionIds            = big.NewInt(1 << 6)
+	caseOpenedDetailsFieldReasons                   = big.NewInt(1 << 7)
+	caseOpenedDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 8)
+	caseOpenedDetailsFieldComment                   = big.NewInt(1 << 9)
+	caseOpenedDetailsFieldCaseGroupId               = big.NewInt(1 << 10)
+	caseOpenedDetailsFieldCaseGroupName             = big.NewInt(1 << 11)
+	caseOpenedDetailsFieldCaseTags                  = big.NewInt(1 << 12)
 )
 
 type CaseOpenedDetails struct {
@@ -7964,6 +8117,7 @@ type CaseOpenedDetails struct {
 	CaseObject                map[string]any `json:"caseObject,omitempty" url:"caseObject,omitempty"`
 	Status                    *string        `json:"status,omitempty" url:"status,omitempty"`
 	UserId                    *string        `json:"userId,omitempty" url:"userId,omitempty"`
+	UserType                  *UserType      `json:"userType,omitempty" url:"userType,omitempty"`
 	TransactionIds            []string       `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
 	Reasons                   []string       `json:"reasons,omitempty" url:"reasons,omitempty"`
 	ReasonDescriptionForOther *string        `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
@@ -8015,6 +8169,13 @@ func (c *CaseOpenedDetails) GetUserId() *string {
 		return nil
 	}
 	return c.UserId
+}
+
+func (c *CaseOpenedDetails) GetUserType() *UserType {
+	if c == nil {
+		return nil
+	}
+	return c.UserType
 }
 
 func (c *CaseOpenedDetails) GetTransactionIds() []string {
@@ -8113,6 +8274,13 @@ func (c *CaseOpenedDetails) SetStatus(status *string) {
 func (c *CaseOpenedDetails) SetUserId(userId *string) {
 	c.UserId = userId
 	c.require(caseOpenedDetailsFieldUserId)
+}
+
+// SetUserType sets the UserType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseOpenedDetails) SetUserType(userType *UserType) {
+	c.UserType = userType
+	c.require(caseOpenedDetailsFieldUserType)
 }
 
 // SetTransactionIds sets the TransactionIds field and marks it as non-optional;
@@ -8214,10 +8382,11 @@ var (
 	caseStatusDetailsFieldReasonDescriptionForOther = big.NewInt(1 << 4)
 	caseStatusDetailsFieldComment                   = big.NewInt(1 << 5)
 	caseStatusDetailsFieldUserId                    = big.NewInt(1 << 6)
-	caseStatusDetailsFieldTransactionIds            = big.NewInt(1 << 7)
-	caseStatusDetailsFieldCaseGroupId               = big.NewInt(1 << 8)
-	caseStatusDetailsFieldCaseGroupName             = big.NewInt(1 << 9)
-	caseStatusDetailsFieldCaseTags                  = big.NewInt(1 << 10)
+	caseStatusDetailsFieldUserType                  = big.NewInt(1 << 7)
+	caseStatusDetailsFieldTransactionIds            = big.NewInt(1 << 8)
+	caseStatusDetailsFieldCaseGroupId               = big.NewInt(1 << 9)
+	caseStatusDetailsFieldCaseGroupName             = big.NewInt(1 << 10)
+	caseStatusDetailsFieldCaseTags                  = big.NewInt(1 << 11)
 )
 
 type CaseStatusDetails struct {
@@ -8228,6 +8397,7 @@ type CaseStatusDetails struct {
 	ReasonDescriptionForOther *string   `json:"reasonDescriptionForOther,omitempty" url:"reasonDescriptionForOther,omitempty"`
 	Comment                   *string   `json:"comment,omitempty" url:"comment,omitempty"`
 	UserId                    *string   `json:"userId,omitempty" url:"userId,omitempty"`
+	UserType                  *UserType `json:"userType,omitempty" url:"userType,omitempty"`
 	TransactionIds            []string  `json:"transactionIds,omitempty" url:"transactionIds,omitempty"`
 	// Id of the case group this case belongs to. Absent when the case is not mapped to a case group.
 	CaseGroupId *string `json:"caseGroupId,omitempty" url:"caseGroupId,omitempty"`
@@ -8290,6 +8460,13 @@ func (c *CaseStatusDetails) GetUserId() *string {
 		return nil
 	}
 	return c.UserId
+}
+
+func (c *CaseStatusDetails) GetUserType() *UserType {
+	if c == nil {
+		return nil
+	}
+	return c.UserType
 }
 
 func (c *CaseStatusDetails) GetTransactionIds() []string {
@@ -8383,6 +8560,13 @@ func (c *CaseStatusDetails) SetUserId(userId *string) {
 	c.require(caseStatusDetailsFieldUserId)
 }
 
+// SetUserType sets the UserType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseStatusDetails) SetUserType(userType *UserType) {
+	c.UserType = userType
+	c.require(caseStatusDetailsFieldUserType)
+}
+
 // SetTransactionIds sets the TransactionIds field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (c *CaseStatusDetails) SetTransactionIds(transactionIds []string) {
@@ -8439,6 +8623,107 @@ func (c *CaseStatusDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaseStatusDetails) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	caseTagsUpdateFieldCaseId = big.NewInt(1 << 0)
+	caseTagsUpdateFieldTags   = big.NewInt(1 << 1)
+)
+
+type CaseTagsUpdate struct {
+	CaseId *string `json:"caseId,omitempty" url:"caseId,omitempty"`
+	// Tags added, updated, or deleted on the case.
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CaseTagsUpdate) GetCaseId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CaseId
+}
+
+func (c *CaseTagsUpdate) GetTags() []*Tag {
+	if c == nil {
+		return nil
+	}
+	return c.Tags
+}
+
+func (c *CaseTagsUpdate) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CaseTagsUpdate) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetCaseId sets the CaseId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseTagsUpdate) SetCaseId(caseId *string) {
+	c.CaseId = caseId
+	c.require(caseTagsUpdateFieldCaseId)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaseTagsUpdate) SetTags(tags []*Tag) {
+	c.Tags = tags
+	c.require(caseTagsUpdateFieldTags)
+}
+
+func (c *CaseTagsUpdate) UnmarshalJSON(data []byte) error {
+	type unmarshaler CaseTagsUpdate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CaseTagsUpdate(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CaseTagsUpdate) MarshalJSON() ([]byte, error) {
+	type embed CaseTagsUpdate
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CaseTagsUpdate) String() string {
 	if c == nil {
 		return "<nil>"
 	}
@@ -23107,6 +23392,7 @@ var (
 	transactionFieldTags                      = big.NewInt(1 << 19)
 	transactionFieldJurisdiction              = big.NewInt(1 << 20)
 	transactionFieldExternalLinks             = big.NewInt(1 << 21)
+	transactionFieldCustomObject              = big.NewInt(1 << 22)
 )
 
 type Transaction struct {
@@ -23145,6 +23431,8 @@ type Transaction struct {
 	Jurisdiction *string `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	// External links related to the transaction
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -23305,6 +23593,13 @@ func (t *Transaction) GetExternalLinks() []string {
 		return nil
 	}
 	return t.ExternalLinks
+}
+
+func (t *Transaction) GetCustomObject() map[string]any {
+	if t == nil {
+		return nil
+	}
+	return t.CustomObject
 }
 
 func (t *Transaction) GetExtraProperties() map[string]interface{} {
@@ -23473,6 +23768,13 @@ func (t *Transaction) SetJurisdiction(jurisdiction *string) {
 func (t *Transaction) SetExternalLinks(externalLinks []string) {
 	t.ExternalLinks = externalLinks
 	t.require(transactionFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transaction) SetCustomObject(customObject map[string]any) {
+	t.CustomObject = customObject
+	t.require(transactionFieldCustomObject)
 }
 
 func (t *Transaction) UnmarshalJSON(data []byte) error {
@@ -26066,6 +26368,7 @@ var (
 	transactionUpdatableFieldTags                      = big.NewInt(1 << 13)
 	transactionUpdatableFieldJurisdiction              = big.NewInt(1 << 14)
 	transactionUpdatableFieldExternalLinks             = big.NewInt(1 << 15)
+	transactionUpdatableFieldCustomObject              = big.NewInt(1 << 16)
 )
 
 type TransactionUpdatable struct {
@@ -26093,6 +26396,8 @@ type TransactionUpdatable struct {
 	Jurisdiction *string `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	// External links related to the transaction
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -26211,6 +26516,13 @@ func (t *TransactionUpdatable) GetExternalLinks() []string {
 		return nil
 	}
 	return t.ExternalLinks
+}
+
+func (t *TransactionUpdatable) GetCustomObject() map[string]any {
+	if t == nil {
+		return nil
+	}
+	return t.CustomObject
 }
 
 func (t *TransactionUpdatable) GetExtraProperties() map[string]interface{} {
@@ -26337,6 +26649,13 @@ func (t *TransactionUpdatable) SetJurisdiction(jurisdiction *string) {
 func (t *TransactionUpdatable) SetExternalLinks(externalLinks []string) {
 	t.ExternalLinks = externalLinks
 	t.require(transactionUpdatableFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionUpdatable) SetCustomObject(customObject map[string]any) {
+	t.CustomObject = customObject
+	t.require(transactionUpdatableFieldCustomObject)
 }
 
 func (t *TransactionUpdatable) UnmarshalJSON(data []byte) error {
@@ -27288,6 +27607,7 @@ var (
 	userFieldJurisdiction                  = big.NewInt(1 << 31)
 	userFieldProductsEnabled               = big.NewInt(1 << 32)
 	userFieldExternalLinks                 = big.NewInt(1 << 33)
+	userFieldCustomObject                  = big.NewInt(1 << 34)
 )
 
 type User struct {
@@ -27334,6 +27654,8 @@ type User struct {
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	// External links related to the consumer user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -27578,6 +27900,13 @@ func (u *User) GetExternalLinks() []string {
 		return nil
 	}
 	return u.ExternalLinks
+}
+
+func (u *User) GetCustomObject() map[string]any {
+	if u == nil {
+		return nil
+	}
+	return u.CustomObject
 }
 
 func (u *User) GetExtraProperties() map[string]interface{} {
@@ -27830,6 +28159,13 @@ func (u *User) SetProductsEnabled(productsEnabled []*ProductsEnabled) {
 func (u *User) SetExternalLinks(externalLinks []string) {
 	u.ExternalLinks = externalLinks
 	u.require(userFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *User) SetCustomObject(customObject map[string]any) {
+	u.CustomObject = customObject
+	u.require(userFieldCustomObject)
 }
 
 func (u *User) UnmarshalJSON(data []byte) error {
@@ -28361,6 +28697,7 @@ var (
 	userOptionalFieldJurisdiction                  = big.NewInt(1 << 29)
 	userOptionalFieldProductsEnabled               = big.NewInt(1 << 30)
 	userOptionalFieldExternalLinks                 = big.NewInt(1 << 31)
+	userOptionalFieldCustomObject                  = big.NewInt(1 << 32)
 )
 
 type UserOptional struct {
@@ -28403,6 +28740,8 @@ type UserOptional struct {
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	// External links related to the consumer user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -28633,6 +28972,13 @@ func (u *UserOptional) GetExternalLinks() []string {
 		return nil
 	}
 	return u.ExternalLinks
+}
+
+func (u *UserOptional) GetCustomObject() map[string]any {
+	if u == nil {
+		return nil
+	}
+	return u.CustomObject
 }
 
 func (u *UserOptional) GetExtraProperties() map[string]interface{} {
@@ -28871,6 +29217,13 @@ func (u *UserOptional) SetProductsEnabled(productsEnabled []*ProductsEnabled) {
 func (u *UserOptional) SetExternalLinks(externalLinks []string) {
 	u.ExternalLinks = externalLinks
 	u.require(userOptionalFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserOptional) SetCustomObject(customObject map[string]any) {
+	u.CustomObject = customObject
+	u.require(userOptionalFieldCustomObject)
 }
 
 func (u *UserOptional) UnmarshalJSON(data []byte) error {
@@ -30292,6 +30645,28 @@ func (u *UserTagsUpdate) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
+type UserType string
+
+const (
+	UserTypeBusiness UserType = "BUSINESS"
+	UserTypeConsumer UserType = "CONSUMER"
+)
+
+func NewUserTypeFromString(s string) (UserType, error) {
+	switch s {
+	case "BUSINESS":
+		return UserTypeBusiness, nil
+	case "CONSUMER":
+		return UserTypeConsumer, nil
+	}
+	var t UserType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UserType) Ptr() *UserType {
+	return &u
+}
+
 var (
 	userWithRulesResultFieldUserId                        = big.NewInt(1 << 0)
 	userWithRulesResultFieldCreatedTimestamp              = big.NewInt(1 << 1)
@@ -30327,9 +30702,10 @@ var (
 	userWithRulesResultFieldJurisdiction                  = big.NewInt(1 << 31)
 	userWithRulesResultFieldProductsEnabled               = big.NewInt(1 << 32)
 	userWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 33)
-	userWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 34)
-	userWithRulesResultFieldHitRules                      = big.NewInt(1 << 35)
-	userWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 36)
+	userWithRulesResultFieldCustomObject                  = big.NewInt(1 << 34)
+	userWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 35)
+	userWithRulesResultFieldHitRules                      = big.NewInt(1 << 36)
+	userWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 37)
 )
 
 type UserWithRulesResult struct {
@@ -30375,7 +30751,9 @@ type UserWithRulesResult struct {
 	Jurisdiction    *string            `json:"jurisdiction,omitempty" url:"jurisdiction,omitempty"`
 	ProductsEnabled []*ProductsEnabled `json:"productsEnabled,omitempty" url:"productsEnabled,omitempty"`
 	// External links related to the consumer user
-	ExternalLinks    []string               `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
+	// Typed Object defined on the console for additional data
+	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -30623,6 +31001,13 @@ func (u *UserWithRulesResult) GetExternalLinks() []string {
 		return nil
 	}
 	return u.ExternalLinks
+}
+
+func (u *UserWithRulesResult) GetCustomObject() map[string]any {
+	if u == nil {
+		return nil
+	}
+	return u.CustomObject
 }
 
 func (u *UserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -30896,6 +31281,13 @@ func (u *UserWithRulesResult) SetProductsEnabled(productsEnabled []*ProductsEnab
 func (u *UserWithRulesResult) SetExternalLinks(externalLinks []string) {
 	u.ExternalLinks = externalLinks
 	u.require(userWithRulesResultFieldExternalLinks)
+}
+
+// SetCustomObject sets the CustomObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserWithRulesResult) SetCustomObject(customObject map[string]any) {
+	u.CustomObject = customObject
+	u.require(userWithRulesResultFieldCustomObject)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;
@@ -32209,6 +32601,8 @@ type WebhookEventData struct {
 	TransactionStatusDetails         *TransactionStatusDetails
 	KycStatusDetails                 *KycStatusDetails
 	UserTagsUpdate                   *UserTagsUpdate
+	CaseTagsUpdate                   *CaseTagsUpdate
+	AlertTagsUpdate                  *AlertTagsUpdate
 	CraRiskLevelUpdatedDetails       *CraRiskLevelUpdatedDetails
 	BatchCompletedDetails            *BatchCompletedDetails
 	WebhookPepStatusDetails          *WebhookPepStatusDetails
@@ -32272,6 +32666,20 @@ func (w *WebhookEventData) GetUserTagsUpdate() *UserTagsUpdate {
 		return nil
 	}
 	return w.UserTagsUpdate
+}
+
+func (w *WebhookEventData) GetCaseTagsUpdate() *CaseTagsUpdate {
+	if w == nil {
+		return nil
+	}
+	return w.CaseTagsUpdate
+}
+
+func (w *WebhookEventData) GetAlertTagsUpdate() *AlertTagsUpdate {
+	if w == nil {
+		return nil
+	}
+	return w.AlertTagsUpdate
 }
 
 func (w *WebhookEventData) GetCraRiskLevelUpdatedDetails() *CraRiskLevelUpdatedDetails {
@@ -32358,6 +32766,18 @@ func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 		w.UserTagsUpdate = valueUserTagsUpdate
 		return nil
 	}
+	valueCaseTagsUpdate := new(CaseTagsUpdate)
+	if err := json.Unmarshal(data, &valueCaseTagsUpdate); err == nil {
+		w.typ = "CaseTagsUpdate"
+		w.CaseTagsUpdate = valueCaseTagsUpdate
+		return nil
+	}
+	valueAlertTagsUpdate := new(AlertTagsUpdate)
+	if err := json.Unmarshal(data, &valueAlertTagsUpdate); err == nil {
+		w.typ = "AlertTagsUpdate"
+		w.AlertTagsUpdate = valueAlertTagsUpdate
+		return nil
+	}
 	valueCraRiskLevelUpdatedDetails := new(CraRiskLevelUpdatedDetails)
 	if err := json.Unmarshal(data, &valueCraRiskLevelUpdatedDetails); err == nil {
 		w.typ = "CraRiskLevelUpdatedDetails"
@@ -32416,6 +32836,12 @@ func (w WebhookEventData) MarshalJSON() ([]byte, error) {
 	if w.typ == "UserTagsUpdate" || w.UserTagsUpdate != nil {
 		return json.Marshal(w.UserTagsUpdate)
 	}
+	if w.typ == "CaseTagsUpdate" || w.CaseTagsUpdate != nil {
+		return json.Marshal(w.CaseTagsUpdate)
+	}
+	if w.typ == "AlertTagsUpdate" || w.AlertTagsUpdate != nil {
+		return json.Marshal(w.AlertTagsUpdate)
+	}
 	if w.typ == "CraRiskLevelUpdatedDetails" || w.CraRiskLevelUpdatedDetails != nil {
 		return json.Marshal(w.CraRiskLevelUpdatedDetails)
 	}
@@ -32443,6 +32869,8 @@ type WebhookEventDataVisitor interface {
 	VisitTransactionStatusDetails(*TransactionStatusDetails) error
 	VisitKycStatusDetails(*KycStatusDetails) error
 	VisitUserTagsUpdate(*UserTagsUpdate) error
+	VisitCaseTagsUpdate(*CaseTagsUpdate) error
+	VisitAlertTagsUpdate(*AlertTagsUpdate) error
 	VisitCraRiskLevelUpdatedDetails(*CraRiskLevelUpdatedDetails) error
 	VisitBatchCompletedDetails(*BatchCompletedDetails) error
 	VisitWebhookPepStatusDetails(*WebhookPepStatusDetails) error
@@ -32474,6 +32902,12 @@ func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
 	}
 	if w.typ == "UserTagsUpdate" || w.UserTagsUpdate != nil {
 		return visitor.VisitUserTagsUpdate(w.UserTagsUpdate)
+	}
+	if w.typ == "CaseTagsUpdate" || w.CaseTagsUpdate != nil {
+		return visitor.VisitCaseTagsUpdate(w.CaseTagsUpdate)
+	}
+	if w.typ == "AlertTagsUpdate" || w.AlertTagsUpdate != nil {
+		return visitor.VisitAlertTagsUpdate(w.AlertTagsUpdate)
 	}
 	if w.typ == "CraRiskLevelUpdatedDetails" || w.CraRiskLevelUpdatedDetails != nil {
 		return visitor.VisitCraRiskLevelUpdatedDetails(w.CraRiskLevelUpdatedDetails)
@@ -32529,6 +32963,10 @@ const (
 	WebhookEventTypePepStatusUpdated          WebhookEventType = "PEP_STATUS_UPDATED"
 	WebhookEventTypeUserTagsUpdated           WebhookEventType = "USER_TAGS_UPDATED"
 	WebhookEventTypeUserTagsDeleted           WebhookEventType = "USER_TAGS_DELETED"
+	WebhookEventTypeCaseTagsUpdated           WebhookEventType = "CASE_TAGS_UPDATED"
+	WebhookEventTypeCaseTagsDeleted           WebhookEventType = "CASE_TAGS_DELETED"
+	WebhookEventTypeAlertTagsUpdated          WebhookEventType = "ALERT_TAGS_UPDATED"
+	WebhookEventTypeAlertTagsDeleted          WebhookEventType = "ALERT_TAGS_DELETED"
 	WebhookEventTypeCraRiskLevelUpdated       WebhookEventType = "CRA_RISK_LEVEL_UPDATED"
 	WebhookEventTypeListUpdated               WebhookEventType = "LIST_UPDATED"
 	WebhookEventTypeSanctionsStatusUpdated    WebhookEventType = "SANCTIONS_STATUS_UPDATED"
@@ -32562,6 +33000,14 @@ func NewWebhookEventTypeFromString(s string) (WebhookEventType, error) {
 		return WebhookEventTypeUserTagsUpdated, nil
 	case "USER_TAGS_DELETED":
 		return WebhookEventTypeUserTagsDeleted, nil
+	case "CASE_TAGS_UPDATED":
+		return WebhookEventTypeCaseTagsUpdated, nil
+	case "CASE_TAGS_DELETED":
+		return WebhookEventTypeCaseTagsDeleted, nil
+	case "ALERT_TAGS_UPDATED":
+		return WebhookEventTypeAlertTagsUpdated, nil
+	case "ALERT_TAGS_DELETED":
+		return WebhookEventTypeAlertTagsDeleted, nil
 	case "CRA_RISK_LEVEL_UPDATED":
 		return WebhookEventTypeCraRiskLevelUpdated, nil
 	case "LIST_UPDATED":
