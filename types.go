@@ -8769,15 +8769,20 @@ var (
 	cashDetailsFieldAddress          = big.NewInt(1 << 2)
 	cashDetailsFieldName             = big.NewInt(1 << 3)
 	cashDetailsFieldEmailId          = big.NewInt(1 << 4)
+	cashDetailsFieldAccountBalance   = big.NewInt(1 << 5)
+	cashDetailsFieldTags             = big.NewInt(1 << 6)
 )
 
 type CashDetails struct {
 	CounterpartyType *CounterpartyType `json:"counterpartyType,omitempty" url:"counterpartyType,omitempty"`
 	// Identifier for the cash transaction
-	Identifier *string  `json:"identifier,omitempty" url:"identifier,omitempty"`
-	Address    *Address `json:"address,omitempty" url:"address,omitempty"`
-	Name       *string  `json:"name,omitempty" url:"name,omitempty"`
-	EmailId    *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
+	Identifier     *string  `json:"identifier,omitempty" url:"identifier,omitempty"`
+	Address        *Address `json:"address,omitempty" url:"address,omitempty"`
+	Name           *string  `json:"name,omitempty" url:"name,omitempty"`
+	EmailId        *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
+	AccountBalance *Amount  `json:"accountBalance,omitempty" url:"accountBalance,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8819,6 +8824,20 @@ func (c *CashDetails) GetEmailId() *EmailId {
 		return nil
 	}
 	return c.EmailId
+}
+
+func (c *CashDetails) GetAccountBalance() *Amount {
+	if c == nil {
+		return nil
+	}
+	return c.AccountBalance
+}
+
+func (c *CashDetails) GetTags() []*Tag {
+	if c == nil {
+		return nil
+	}
+	return c.Tags
 }
 
 func (c *CashDetails) GetExtraProperties() map[string]interface{} {
@@ -8868,6 +8887,20 @@ func (c *CashDetails) SetName(name *string) {
 func (c *CashDetails) SetEmailId(emailId *EmailId) {
 	c.EmailId = emailId
 	c.require(cashDetailsFieldEmailId)
+}
+
+// SetAccountBalance sets the AccountBalance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CashDetails) SetAccountBalance(accountBalance *Amount) {
+	c.AccountBalance = accountBalance
+	c.require(cashDetailsFieldAccountBalance)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CashDetails) SetTags(tags []*Tag) {
+	c.Tags = tags
+	c.require(cashDetailsFieldTags)
 }
 
 func (c *CashDetails) UnmarshalJSON(data []byte) error {
