@@ -1421,6 +1421,9 @@ request := &flagrightgo.ConsumerUsersCreateRequest{
                             Value: "wallet",
                         },
                     },
+                    DocumentIssuedState: flagrightgo.String(
+                        "Berlin",
+                    ),
                 },
             },
             ContactDetails: &flagrightgo.ContactDetails{

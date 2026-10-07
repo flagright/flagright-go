@@ -128,6 +128,9 @@ func TestConsumerUsersCreateWithWireMock(
 							Value: "wallet",
 						},
 					},
+					DocumentIssuedState: flagrightgo.String(
+						"Berlin",
+					),
 				},
 			},
 			ContactDetails: &flagrightgo.ContactDetails{

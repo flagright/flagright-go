@@ -17186,6 +17186,7 @@ var (
 	legalDocumentFieldDocumentIssuedCountry  = big.NewInt(1 << 4)
 	legalDocumentFieldTags                   = big.NewInt(1 << 5)
 	legalDocumentFieldNameOnDocument         = big.NewInt(1 << 6)
+	legalDocumentFieldDocumentIssuedState    = big.NewInt(1 << 7)
 )
 
 type LegalDocument struct {
@@ -17201,6 +17202,8 @@ type LegalDocument struct {
 	// Additional information that can be added via tags
 	Tags           []*Tag        `json:"tags,omitempty" url:"tags,omitempty"`
 	NameOnDocument *ConsumerName `json:"nameOnDocument,omitempty" url:"nameOnDocument,omitempty"`
+	// State or province that issued the user's identity document
+	DocumentIssuedState *string `json:"documentIssuedState,omitempty" url:"documentIssuedState,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -17256,6 +17259,13 @@ func (l *LegalDocument) GetNameOnDocument() *ConsumerName {
 		return nil
 	}
 	return l.NameOnDocument
+}
+
+func (l *LegalDocument) GetDocumentIssuedState() *string {
+	if l == nil {
+		return nil
+	}
+	return l.DocumentIssuedState
 }
 
 func (l *LegalDocument) GetExtraProperties() map[string]interface{} {
@@ -17319,6 +17329,13 @@ func (l *LegalDocument) SetTags(tags []*Tag) {
 func (l *LegalDocument) SetNameOnDocument(nameOnDocument *ConsumerName) {
 	l.NameOnDocument = nameOnDocument
 	l.require(legalDocumentFieldNameOnDocument)
+}
+
+// SetDocumentIssuedState sets the DocumentIssuedState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LegalDocument) SetDocumentIssuedState(documentIssuedState *string) {
+	l.DocumentIssuedState = documentIssuedState
+	l.require(legalDocumentFieldDocumentIssuedState)
 }
 
 func (l *LegalDocument) UnmarshalJSON(data []byte) error {
@@ -22747,23 +22764,32 @@ func (s *SanctionsDetails) String() string {
 type SanctionsDetailsEntityType string
 
 const (
-	SanctionsDetailsEntityTypeConsumerName           SanctionsDetailsEntityType = "CONSUMER_NAME"
-	SanctionsDetailsEntityTypeLegalName              SanctionsDetailsEntityType = "LEGAL_NAME"
-	SanctionsDetailsEntityTypeShareholder            SanctionsDetailsEntityType = "SHAREHOLDER"
-	SanctionsDetailsEntityTypeDirector               SanctionsDetailsEntityType = "DIRECTOR"
-	SanctionsDetailsEntityTypeNameOnCard             SanctionsDetailsEntityType = "NAME_ON_CARD"
-	SanctionsDetailsEntityTypePaymentName            SanctionsDetailsEntityType = "PAYMENT_NAME"
-	SanctionsDetailsEntityTypePaymentBeneficiaryName SanctionsDetailsEntityType = "PAYMENT_BENEFICIARY_NAME"
-	SanctionsDetailsEntityTypeBankName               SanctionsDetailsEntityType = "BANK_NAME"
-	SanctionsDetailsEntityTypeBankBic                SanctionsDetailsEntityType = "BANK_BIC"
-	SanctionsDetailsEntityTypeCorrespondentBankName  SanctionsDetailsEntityType = "CORRESPONDENT_BANK_NAME"
-	SanctionsDetailsEntityTypeBankAccountHolderName  SanctionsDetailsEntityType = "BANK_ACCOUNT_HOLDER_NAME"
-	SanctionsDetailsEntityTypeBusinessPartner        SanctionsDetailsEntityType = "BUSINESS_PARTNER"
-	SanctionsDetailsEntityTypeAssociatedParty        SanctionsDetailsEntityType = "ASSOCIATED_PARTY"
-	SanctionsDetailsEntityTypeConsumerAlias          SanctionsDetailsEntityType = "CONSUMER_ALIAS"
-	SanctionsDetailsEntityTypeLegalEntityAlias       SanctionsDetailsEntityType = "LEGAL_ENTITY_ALIAS"
-	SanctionsDetailsEntityTypeTransactionReference   SanctionsDetailsEntityType = "TRANSACTION_REFERENCE"
-	SanctionsDetailsEntityTypeTransactionTag         SanctionsDetailsEntityType = "TRANSACTION_TAG"
+	SanctionsDetailsEntityTypeConsumerName             SanctionsDetailsEntityType = "CONSUMER_NAME"
+	SanctionsDetailsEntityTypeLegalName                SanctionsDetailsEntityType = "LEGAL_NAME"
+	SanctionsDetailsEntityTypeShareholder              SanctionsDetailsEntityType = "SHAREHOLDER"
+	SanctionsDetailsEntityTypeDirector                 SanctionsDetailsEntityType = "DIRECTOR"
+	SanctionsDetailsEntityTypeNameOnCard               SanctionsDetailsEntityType = "NAME_ON_CARD"
+	SanctionsDetailsEntityTypePaymentName              SanctionsDetailsEntityType = "PAYMENT_NAME"
+	SanctionsDetailsEntityTypePaymentBeneficiaryName   SanctionsDetailsEntityType = "PAYMENT_BENEFICIARY_NAME"
+	SanctionsDetailsEntityTypeBankName                 SanctionsDetailsEntityType = "BANK_NAME"
+	SanctionsDetailsEntityTypeBankBic                  SanctionsDetailsEntityType = "BANK_BIC"
+	SanctionsDetailsEntityTypeCorrespondentBankName    SanctionsDetailsEntityType = "CORRESPONDENT_BANK_NAME"
+	SanctionsDetailsEntityTypeBankAccountHolderName    SanctionsDetailsEntityType = "BANK_ACCOUNT_HOLDER_NAME"
+	SanctionsDetailsEntityTypeBusinessPartner          SanctionsDetailsEntityType = "BUSINESS_PARTNER"
+	SanctionsDetailsEntityTypeAssociatedParty          SanctionsDetailsEntityType = "ASSOCIATED_PARTY"
+	SanctionsDetailsEntityTypeConsumerAlias            SanctionsDetailsEntityType = "CONSUMER_ALIAS"
+	SanctionsDetailsEntityTypeLegalEntityAlias         SanctionsDetailsEntityType = "LEGAL_ENTITY_ALIAS"
+	SanctionsDetailsEntityTypeTransactionReference     SanctionsDetailsEntityType = "TRANSACTION_REFERENCE"
+	SanctionsDetailsEntityTypeTransactionTag           SanctionsDetailsEntityType = "TRANSACTION_TAG"
+	SanctionsDetailsEntityTypeConsumerAddress          SanctionsDetailsEntityType = "CONSUMER_ADDRESS"
+	SanctionsDetailsEntityTypeLegalEntityAddress       SanctionsDetailsEntityType = "LEGAL_ENTITY_ADDRESS"
+	SanctionsDetailsEntityTypeDirectorAddress          SanctionsDetailsEntityType = "DIRECTOR_ADDRESS"
+	SanctionsDetailsEntityTypeShareholderAddress       SanctionsDetailsEntityType = "SHAREHOLDER_ADDRESS"
+	SanctionsDetailsEntityTypeBusinessPartnerAddress   SanctionsDetailsEntityType = "BUSINESS_PARTNER_ADDRESS"
+	SanctionsDetailsEntityTypeAssociatedPartyAddress   SanctionsDetailsEntityType = "ASSOCIATED_PARTY_ADDRESS"
+	SanctionsDetailsEntityTypeBankAddress              SanctionsDetailsEntityType = "BANK_ADDRESS"
+	SanctionsDetailsEntityTypeCorrespondentBankAddress SanctionsDetailsEntityType = "CORRESPONDENT_BANK_ADDRESS"
+	SanctionsDetailsEntityTypePaymentDetailsAddress    SanctionsDetailsEntityType = "PAYMENT_DETAILS_ADDRESS"
 )
 
 func NewSanctionsDetailsEntityTypeFromString(s string) (SanctionsDetailsEntityType, error) {
@@ -22802,6 +22828,24 @@ func NewSanctionsDetailsEntityTypeFromString(s string) (SanctionsDetailsEntityTy
 		return SanctionsDetailsEntityTypeTransactionReference, nil
 	case "TRANSACTION_TAG":
 		return SanctionsDetailsEntityTypeTransactionTag, nil
+	case "CONSUMER_ADDRESS":
+		return SanctionsDetailsEntityTypeConsumerAddress, nil
+	case "LEGAL_ENTITY_ADDRESS":
+		return SanctionsDetailsEntityTypeLegalEntityAddress, nil
+	case "DIRECTOR_ADDRESS":
+		return SanctionsDetailsEntityTypeDirectorAddress, nil
+	case "SHAREHOLDER_ADDRESS":
+		return SanctionsDetailsEntityTypeShareholderAddress, nil
+	case "BUSINESS_PARTNER_ADDRESS":
+		return SanctionsDetailsEntityTypeBusinessPartnerAddress, nil
+	case "ASSOCIATED_PARTY_ADDRESS":
+		return SanctionsDetailsEntityTypeAssociatedPartyAddress, nil
+	case "BANK_ADDRESS":
+		return SanctionsDetailsEntityTypeBankAddress, nil
+	case "CORRESPONDENT_BANK_ADDRESS":
+		return SanctionsDetailsEntityTypeCorrespondentBankAddress, nil
+	case "PAYMENT_DETAILS_ADDRESS":
+		return SanctionsDetailsEntityTypePaymentDetailsAddress, nil
 	}
 	var t SanctionsDetailsEntityType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)

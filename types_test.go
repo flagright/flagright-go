@@ -38913,6 +38913,14 @@ func TestSettersLegalDocument(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetDocumentIssuedState", func(t *testing.T) {
+		obj := &LegalDocument{}
+		var fernTestValueDocumentIssuedState *string
+		obj.SetDocumentIssuedState(fernTestValueDocumentIssuedState)
+		assert.Equal(t, fernTestValueDocumentIssuedState, obj.DocumentIssuedState)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersLegalDocument(t *testing.T) {
@@ -39127,6 +39135,39 @@ func TestGettersLegalDocument(t *testing.T) {
 		_ = obj.GetNameOnDocument() // Should return zero value
 	})
 
+	t.Run("GetDocumentIssuedState", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LegalDocument{}
+		var expected *string
+		obj.DocumentIssuedState = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDocumentIssuedState(), "getter should return the property value")
+	})
+
+	t.Run("GetDocumentIssuedState_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LegalDocument{}
+		obj.DocumentIssuedState = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDocumentIssuedState(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetDocumentIssuedState_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *LegalDocument
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDocumentIssuedState() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitLegalDocument(t *testing.T) {
@@ -39324,6 +39365,37 @@ func TestSettersMarkExplicitLegalDocument(t *testing.T) {
 
 		// Act
 		obj.SetNameOnDocument(fernTestValueNameOnDocument)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetDocumentIssuedState_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &LegalDocument{}
+		var fernTestValueDocumentIssuedState *string
+
+		// Act
+		obj.SetDocumentIssuedState(fernTestValueDocumentIssuedState)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -90390,6 +90462,69 @@ func TestEnumSanctionsDetailsEntityType(t *testing.T) {
 		val, err := NewSanctionsDetailsEntityTypeFromString("TRANSACTION_TAG")
 		assert.NoError(t, err, "valid enum value should not return error")
 		assert.Equal(t, SanctionsDetailsEntityType("TRANSACTION_TAG"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_CONSUMER_ADDRESS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("CONSUMER_ADDRESS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("CONSUMER_ADDRESS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_LEGAL_ENTITY_ADDRESS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("LEGAL_ENTITY_ADDRESS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("LEGAL_ENTITY_ADDRESS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_DIRECTOR_ADDRESS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("DIRECTOR_ADDRESS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("DIRECTOR_ADDRESS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_SHAREHOLDER_ADDRESS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("SHAREHOLDER_ADDRESS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("SHAREHOLDER_ADDRESS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_BUSINESS_PARTNER_ADDRESS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("BUSINESS_PARTNER_ADDRESS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("BUSINESS_PARTNER_ADDRESS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ASSOCIATED_PARTY_ADDRESS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("ASSOCIATED_PARTY_ADDRESS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("ASSOCIATED_PARTY_ADDRESS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_BANK_ADDRESS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("BANK_ADDRESS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("BANK_ADDRESS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_CORRESPONDENT_BANK_ADDRESS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("CORRESPONDENT_BANK_ADDRESS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("CORRESPONDENT_BANK_ADDRESS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_PAYMENT_DETAILS_ADDRESS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewSanctionsDetailsEntityTypeFromString("PAYMENT_DETAILS_ADDRESS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, SanctionsDetailsEntityType("PAYMENT_DETAILS_ADDRESS"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_Invalid", func(t *testing.T) {
