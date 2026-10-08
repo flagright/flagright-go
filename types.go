@@ -10652,6 +10652,142 @@ func (c *CorrespondentBankDetails) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// Model for Correspondent bank details for generic bank account
+var (
+	correspondentGenericBankDetailsFieldBankName    = big.NewInt(1 << 0)
+	correspondentGenericBankDetailsFieldBankAddress = big.NewInt(1 << 1)
+	correspondentGenericBankDetailsFieldBankCode    = big.NewInt(1 << 2)
+	correspondentGenericBankDetailsFieldTags        = big.NewInt(1 << 3)
+)
+
+type CorrespondentGenericBankDetails struct {
+	// Name of the bank
+	BankName    *string  `json:"bankName,omitempty" url:"bankName,omitempty"`
+	BankAddress *Address `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
+	// Unique identifier of the correspondent bank
+	BankCode *string `json:"bankCode,omitempty" url:"bankCode,omitempty"`
+	// Additional information that can be added via tags
+	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CorrespondentGenericBankDetails) GetBankName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.BankName
+}
+
+func (c *CorrespondentGenericBankDetails) GetBankAddress() *Address {
+	if c == nil {
+		return nil
+	}
+	return c.BankAddress
+}
+
+func (c *CorrespondentGenericBankDetails) GetBankCode() *string {
+	if c == nil {
+		return nil
+	}
+	return c.BankCode
+}
+
+func (c *CorrespondentGenericBankDetails) GetTags() []*Tag {
+	if c == nil {
+		return nil
+	}
+	return c.Tags
+}
+
+func (c *CorrespondentGenericBankDetails) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CorrespondentGenericBankDetails) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CorrespondentGenericBankDetails) SetBankName(bankName *string) {
+	c.BankName = bankName
+	c.require(correspondentGenericBankDetailsFieldBankName)
+}
+
+// SetBankAddress sets the BankAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CorrespondentGenericBankDetails) SetBankAddress(bankAddress *Address) {
+	c.BankAddress = bankAddress
+	c.require(correspondentGenericBankDetailsFieldBankAddress)
+}
+
+// SetBankCode sets the BankCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CorrespondentGenericBankDetails) SetBankCode(bankCode *string) {
+	c.BankCode = bankCode
+	c.require(correspondentGenericBankDetailsFieldBankCode)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CorrespondentGenericBankDetails) SetTags(tags []*Tag) {
+	c.Tags = tags
+	c.require(correspondentGenericBankDetailsFieldTags)
+}
+
+func (c *CorrespondentGenericBankDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler CorrespondentGenericBankDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CorrespondentGenericBankDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CorrespondentGenericBankDetails) MarshalJSON() ([]byte, error) {
+	type embed CorrespondentGenericBankDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CorrespondentGenericBankDetails) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type CounterpartyType string
 
 const (
@@ -15947,26 +16083,27 @@ type GeneralBankAccountPaymentMethod = string
 
 // Model for any generic bank account
 var (
-	genericBankAccountDetailsFieldCounterpartyType     = big.NewInt(1 << 0)
-	genericBankAccountDetailsFieldAccountNumber        = big.NewInt(1 << 1)
-	genericBankAccountDetailsFieldAccountType          = big.NewInt(1 << 2)
-	genericBankAccountDetailsFieldAccountBalance       = big.NewInt(1 << 3)
-	genericBankAccountDetailsFieldBankName             = big.NewInt(1 << 4)
-	genericBankAccountDetailsFieldBankCode             = big.NewInt(1 << 5)
-	genericBankAccountDetailsFieldCountry              = big.NewInt(1 << 6)
-	genericBankAccountDetailsFieldName                 = big.NewInt(1 << 7)
-	genericBankAccountDetailsFieldCountryOfNationality = big.NewInt(1 << 8)
-	genericBankAccountDetailsFieldCountryOfResidence   = big.NewInt(1 << 9)
-	genericBankAccountDetailsFieldDateOfBirth          = big.NewInt(1 << 10)
-	genericBankAccountDetailsFieldBankAddress          = big.NewInt(1 << 11)
-	genericBankAccountDetailsFieldEmailId              = big.NewInt(1 << 12)
-	genericBankAccountDetailsFieldSpecialInstructions  = big.NewInt(1 << 13)
-	genericBankAccountDetailsFieldPaymentChannel       = big.NewInt(1 << 14)
-	genericBankAccountDetailsFieldBeneficiaryName      = big.NewInt(1 << 15)
-	genericBankAccountDetailsFieldTags                 = big.NewInt(1 << 16)
-	genericBankAccountDetailsFieldTransitNumber        = big.NewInt(1 << 17)
-	genericBankAccountDetailsFieldAddress              = big.NewInt(1 << 18)
-	genericBankAccountDetailsFieldRoutingNumber        = big.NewInt(1 << 19)
+	genericBankAccountDetailsFieldCounterpartyType         = big.NewInt(1 << 0)
+	genericBankAccountDetailsFieldAccountNumber            = big.NewInt(1 << 1)
+	genericBankAccountDetailsFieldAccountType              = big.NewInt(1 << 2)
+	genericBankAccountDetailsFieldAccountBalance           = big.NewInt(1 << 3)
+	genericBankAccountDetailsFieldBankName                 = big.NewInt(1 << 4)
+	genericBankAccountDetailsFieldBankCode                 = big.NewInt(1 << 5)
+	genericBankAccountDetailsFieldCountry                  = big.NewInt(1 << 6)
+	genericBankAccountDetailsFieldName                     = big.NewInt(1 << 7)
+	genericBankAccountDetailsFieldCountryOfNationality     = big.NewInt(1 << 8)
+	genericBankAccountDetailsFieldCountryOfResidence       = big.NewInt(1 << 9)
+	genericBankAccountDetailsFieldDateOfBirth              = big.NewInt(1 << 10)
+	genericBankAccountDetailsFieldBankAddress              = big.NewInt(1 << 11)
+	genericBankAccountDetailsFieldEmailId                  = big.NewInt(1 << 12)
+	genericBankAccountDetailsFieldSpecialInstructions      = big.NewInt(1 << 13)
+	genericBankAccountDetailsFieldPaymentChannel           = big.NewInt(1 << 14)
+	genericBankAccountDetailsFieldBeneficiaryName          = big.NewInt(1 << 15)
+	genericBankAccountDetailsFieldTags                     = big.NewInt(1 << 16)
+	genericBankAccountDetailsFieldTransitNumber            = big.NewInt(1 << 17)
+	genericBankAccountDetailsFieldAddress                  = big.NewInt(1 << 18)
+	genericBankAccountDetailsFieldRoutingNumber            = big.NewInt(1 << 19)
+	genericBankAccountDetailsFieldCorrespondentBankDetails = big.NewInt(1 << 20)
 )
 
 type GenericBankAccountDetails struct {
@@ -16002,7 +16139,8 @@ type GenericBankAccountDetails struct {
 	TransitNumber *string  `json:"transitNumber,omitempty" url:"transitNumber,omitempty"`
 	Address       *Address `json:"address,omitempty" url:"address,omitempty"`
 	// Routing number of the bank
-	RoutingNumber *string `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
+	RoutingNumber            *string                            `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
+	CorrespondentBankDetails []*CorrespondentGenericBankDetails `json:"correspondentBankDetails,omitempty" url:"correspondentBankDetails,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -16149,6 +16287,13 @@ func (g *GenericBankAccountDetails) GetRoutingNumber() *string {
 		return nil
 	}
 	return g.RoutingNumber
+}
+
+func (g *GenericBankAccountDetails) GetCorrespondentBankDetails() []*CorrespondentGenericBankDetails {
+	if g == nil {
+		return nil
+	}
+	return g.CorrespondentBankDetails
 }
 
 func (g *GenericBankAccountDetails) GetExtraProperties() map[string]interface{} {
@@ -16303,6 +16448,13 @@ func (g *GenericBankAccountDetails) SetAddress(address *Address) {
 func (g *GenericBankAccountDetails) SetRoutingNumber(routingNumber *string) {
 	g.RoutingNumber = routingNumber
 	g.require(genericBankAccountDetailsFieldRoutingNumber)
+}
+
+// SetCorrespondentBankDetails sets the CorrespondentBankDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GenericBankAccountDetails) SetCorrespondentBankDetails(correspondentBankDetails []*CorrespondentGenericBankDetails) {
+	g.CorrespondentBankDetails = correspondentBankDetails
+	g.require(genericBankAccountDetailsFieldCorrespondentBankDetails)
 }
 
 func (g *GenericBankAccountDetails) UnmarshalJSON(data []byte) error {
