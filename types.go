@@ -1414,17 +1414,19 @@ func (a *ApiErrorResponse) String() string {
 var (
 	batchCompletedDetailsFieldBatchId        = big.NewInt(1 << 0)
 	batchCompletedDetailsFieldType           = big.NewInt(1 << 1)
-	batchCompletedDetailsFieldTotalCount     = big.NewInt(1 << 2)
-	batchCompletedDetailsFieldProcessedCount = big.NewInt(1 << 3)
-	batchCompletedDetailsFieldCreatedAt      = big.NewInt(1 << 4)
-	batchCompletedDetailsFieldCompletedAt    = big.NewInt(1 << 5)
+	batchCompletedDetailsFieldUserType       = big.NewInt(1 << 2)
+	batchCompletedDetailsFieldTotalCount     = big.NewInt(1 << 3)
+	batchCompletedDetailsFieldProcessedCount = big.NewInt(1 << 4)
+	batchCompletedDetailsFieldCreatedAt      = big.NewInt(1 << 5)
+	batchCompletedDetailsFieldCompletedAt    = big.NewInt(1 << 6)
 )
 
 type BatchCompletedDetails struct {
 	// Unique identifier of the batch
 	BatchId string `json:"batchId" url:"batchId"`
 	// Type of batch entity
-	Type BatchCompletedDetailsType `json:"type" url:"type"`
+	Type     BatchCompletedDetailsType `json:"type" url:"type"`
+	UserType *UserType                 `json:"userType,omitempty" url:"userType,omitempty"`
 	// Total number of successfully validated records in the batch
 	TotalCount int `json:"totalCount" url:"totalCount"`
 	// Number of records that were processed
@@ -1454,6 +1456,13 @@ func (b *BatchCompletedDetails) GetType() BatchCompletedDetailsType {
 		return ""
 	}
 	return b.Type
+}
+
+func (b *BatchCompletedDetails) GetUserType() *UserType {
+	if b == nil {
+		return nil
+	}
+	return b.UserType
 }
 
 func (b *BatchCompletedDetails) GetTotalCount() int {
@@ -1514,6 +1523,13 @@ func (b *BatchCompletedDetails) SetBatchId(batchId string) {
 func (b *BatchCompletedDetails) SetType(type_ BatchCompletedDetailsType) {
 	b.Type = type_
 	b.require(batchCompletedDetailsFieldType)
+}
+
+// SetUserType sets the UserType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchCompletedDetails) SetUserType(userType *UserType) {
+	b.UserType = userType
+	b.require(batchCompletedDetailsFieldUserType)
 }
 
 // SetTotalCount sets the TotalCount field and marks it as non-optional;
@@ -6567,15 +6583,17 @@ func (b *BusinessWithRulesResultShareHoldersItem) Accept(visitor BusinessWithRul
 var (
 	craRiskLevelUpdatedDetailsFieldRiskLevel    = big.NewInt(1 << 0)
 	craRiskLevelUpdatedDetailsFieldUserId       = big.NewInt(1 << 1)
-	craRiskLevelUpdatedDetailsFieldRiskScore    = big.NewInt(1 << 2)
-	craRiskLevelUpdatedDetailsFieldKycRiskScore = big.NewInt(1 << 3)
-	craRiskLevelUpdatedDetailsFieldKycRiskLevel = big.NewInt(1 << 4)
-	craRiskLevelUpdatedDetailsFieldRiskFactors  = big.NewInt(1 << 5)
+	craRiskLevelUpdatedDetailsFieldUserType     = big.NewInt(1 << 2)
+	craRiskLevelUpdatedDetailsFieldRiskScore    = big.NewInt(1 << 3)
+	craRiskLevelUpdatedDetailsFieldKycRiskScore = big.NewInt(1 << 4)
+	craRiskLevelUpdatedDetailsFieldKycRiskLevel = big.NewInt(1 << 5)
+	craRiskLevelUpdatedDetailsFieldRiskFactors  = big.NewInt(1 << 6)
 )
 
 type CraRiskLevelUpdatedDetails struct {
-	RiskLevel *string `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
-	UserId    *string `json:"userId,omitempty" url:"userId,omitempty"`
+	RiskLevel *string   `json:"riskLevel,omitempty" url:"riskLevel,omitempty"`
+	UserId    *string   `json:"userId,omitempty" url:"userId,omitempty"`
+	UserType  *UserType `json:"userType,omitempty" url:"userType,omitempty"`
 	// Current CRA (DRS) risk score for the user
 	RiskScore *float64 `json:"riskScore,omitempty" url:"riskScore,omitempty"`
 	// KRS score when a KRS record exists for the user
@@ -6604,6 +6622,13 @@ func (c *CraRiskLevelUpdatedDetails) GetUserId() *string {
 		return nil
 	}
 	return c.UserId
+}
+
+func (c *CraRiskLevelUpdatedDetails) GetUserType() *UserType {
+	if c == nil {
+		return nil
+	}
+	return c.UserType
 }
 
 func (c *CraRiskLevelUpdatedDetails) GetRiskScore() *float64 {
@@ -6660,6 +6685,13 @@ func (c *CraRiskLevelUpdatedDetails) SetRiskLevel(riskLevel *string) {
 func (c *CraRiskLevelUpdatedDetails) SetUserId(userId *string) {
 	c.UserId = userId
 	c.require(craRiskLevelUpdatedDetailsFieldUserId)
+}
+
+// SetUserType sets the UserType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CraRiskLevelUpdatedDetails) SetUserType(userType *UserType) {
+	c.UserType = userType
+	c.require(craRiskLevelUpdatedDetailsFieldUserType)
 }
 
 // SetRiskScore sets the RiskScore field and marks it as non-optional;
@@ -30775,13 +30807,15 @@ func (u *UserTag) String() string {
 }
 
 var (
-	userTagsUpdateFieldUserId = big.NewInt(1 << 0)
-	userTagsUpdateFieldTags   = big.NewInt(1 << 1)
+	userTagsUpdateFieldUserId   = big.NewInt(1 << 0)
+	userTagsUpdateFieldUserType = big.NewInt(1 << 1)
+	userTagsUpdateFieldTags     = big.NewInt(1 << 2)
 )
 
 type UserTagsUpdate struct {
-	UserId *string    `json:"userId,omitempty" url:"userId,omitempty"`
-	Tags   []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
+	UserId   *string    `json:"userId,omitempty" url:"userId,omitempty"`
+	UserType *UserType  `json:"userType,omitempty" url:"userType,omitempty"`
+	Tags     []*UserTag `json:"tags,omitempty" url:"tags,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -30795,6 +30829,13 @@ func (u *UserTagsUpdate) GetUserId() *string {
 		return nil
 	}
 	return u.UserId
+}
+
+func (u *UserTagsUpdate) GetUserType() *UserType {
+	if u == nil {
+		return nil
+	}
+	return u.UserType
 }
 
 func (u *UserTagsUpdate) GetTags() []*UserTag {
@@ -30823,6 +30864,13 @@ func (u *UserTagsUpdate) require(field *big.Int) {
 func (u *UserTagsUpdate) SetUserId(userId *string) {
 	u.UserId = userId
 	u.require(userTagsUpdateFieldUserId)
+}
+
+// SetUserType sets the UserType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserTagsUpdate) SetUserType(userType *UserType) {
+	u.UserType = userType
+	u.require(userTagsUpdateFieldUserType)
 }
 
 // SetTags sets the Tags field and marks it as non-optional;
@@ -32822,13 +32870,13 @@ func (w WebhookEventBaseTriggeredBy) Ptr() *WebhookEventBaseTriggeredBy {
 }
 
 type WebhookEventData struct {
-	UserStateDetails                 *UserStateDetails
+	WebhookUserStateDetails          *WebhookUserStateDetails
 	CaseStatusDetails                *CaseStatusDetails
 	CaseOpenedDetails                *CaseOpenedDetails
 	AlertStatusDetails               *AlertStatusDetails
 	AlertOpenedDetails               *AlertOpenedDetails
 	TransactionStatusDetails         *TransactionStatusDetails
-	KycStatusDetails                 *KycStatusDetails
+	WebhookKycStatusDetails          *WebhookKycStatusDetails
 	UserTagsUpdate                   *UserTagsUpdate
 	CaseTagsUpdate                   *CaseTagsUpdate
 	AlertTagsUpdate                  *AlertTagsUpdate
@@ -32841,11 +32889,11 @@ type WebhookEventData struct {
 	typ string
 }
 
-func (w *WebhookEventData) GetUserStateDetails() *UserStateDetails {
+func (w *WebhookEventData) GetWebhookUserStateDetails() *WebhookUserStateDetails {
 	if w == nil {
 		return nil
 	}
-	return w.UserStateDetails
+	return w.WebhookUserStateDetails
 }
 
 func (w *WebhookEventData) GetCaseStatusDetails() *CaseStatusDetails {
@@ -32883,11 +32931,11 @@ func (w *WebhookEventData) GetTransactionStatusDetails() *TransactionStatusDetai
 	return w.TransactionStatusDetails
 }
 
-func (w *WebhookEventData) GetKycStatusDetails() *KycStatusDetails {
+func (w *WebhookEventData) GetWebhookKycStatusDetails() *WebhookKycStatusDetails {
 	if w == nil {
 		return nil
 	}
-	return w.KycStatusDetails
+	return w.WebhookKycStatusDetails
 }
 
 func (w *WebhookEventData) GetUserTagsUpdate() *UserTagsUpdate {
@@ -32947,10 +32995,10 @@ func (w *WebhookEventData) GetWebhookAdverseMediaStatusDetails() *WebhookAdverse
 }
 
 func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
-	valueUserStateDetails := new(UserStateDetails)
-	if err := json.Unmarshal(data, &valueUserStateDetails); err == nil {
-		w.typ = "UserStateDetails"
-		w.UserStateDetails = valueUserStateDetails
+	valueWebhookUserStateDetails := new(WebhookUserStateDetails)
+	if err := json.Unmarshal(data, &valueWebhookUserStateDetails); err == nil {
+		w.typ = "WebhookUserStateDetails"
+		w.WebhookUserStateDetails = valueWebhookUserStateDetails
 		return nil
 	}
 	valueCaseStatusDetails := new(CaseStatusDetails)
@@ -32983,10 +33031,10 @@ func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 		w.TransactionStatusDetails = valueTransactionStatusDetails
 		return nil
 	}
-	valueKycStatusDetails := new(KycStatusDetails)
-	if err := json.Unmarshal(data, &valueKycStatusDetails); err == nil {
-		w.typ = "KycStatusDetails"
-		w.KycStatusDetails = valueKycStatusDetails
+	valueWebhookKycStatusDetails := new(WebhookKycStatusDetails)
+	if err := json.Unmarshal(data, &valueWebhookKycStatusDetails); err == nil {
+		w.typ = "WebhookKycStatusDetails"
+		w.WebhookKycStatusDetails = valueWebhookKycStatusDetails
 		return nil
 	}
 	valueUserTagsUpdate := new(UserTagsUpdate)
@@ -33041,8 +33089,8 @@ func (w *WebhookEventData) UnmarshalJSON(data []byte) error {
 }
 
 func (w WebhookEventData) MarshalJSON() ([]byte, error) {
-	if w.typ == "UserStateDetails" || w.UserStateDetails != nil {
-		return json.Marshal(w.UserStateDetails)
+	if w.typ == "WebhookUserStateDetails" || w.WebhookUserStateDetails != nil {
+		return json.Marshal(w.WebhookUserStateDetails)
 	}
 	if w.typ == "CaseStatusDetails" || w.CaseStatusDetails != nil {
 		return json.Marshal(w.CaseStatusDetails)
@@ -33059,8 +33107,8 @@ func (w WebhookEventData) MarshalJSON() ([]byte, error) {
 	if w.typ == "TransactionStatusDetails" || w.TransactionStatusDetails != nil {
 		return json.Marshal(w.TransactionStatusDetails)
 	}
-	if w.typ == "KycStatusDetails" || w.KycStatusDetails != nil {
-		return json.Marshal(w.KycStatusDetails)
+	if w.typ == "WebhookKycStatusDetails" || w.WebhookKycStatusDetails != nil {
+		return json.Marshal(w.WebhookKycStatusDetails)
 	}
 	if w.typ == "UserTagsUpdate" || w.UserTagsUpdate != nil {
 		return json.Marshal(w.UserTagsUpdate)
@@ -33090,13 +33138,13 @@ func (w WebhookEventData) MarshalJSON() ([]byte, error) {
 }
 
 type WebhookEventDataVisitor interface {
-	VisitUserStateDetails(*UserStateDetails) error
+	VisitWebhookUserStateDetails(*WebhookUserStateDetails) error
 	VisitCaseStatusDetails(*CaseStatusDetails) error
 	VisitCaseOpenedDetails(*CaseOpenedDetails) error
 	VisitAlertStatusDetails(*AlertStatusDetails) error
 	VisitAlertOpenedDetails(*AlertOpenedDetails) error
 	VisitTransactionStatusDetails(*TransactionStatusDetails) error
-	VisitKycStatusDetails(*KycStatusDetails) error
+	VisitWebhookKycStatusDetails(*WebhookKycStatusDetails) error
 	VisitUserTagsUpdate(*UserTagsUpdate) error
 	VisitCaseTagsUpdate(*CaseTagsUpdate) error
 	VisitAlertTagsUpdate(*AlertTagsUpdate) error
@@ -33108,8 +33156,8 @@ type WebhookEventDataVisitor interface {
 }
 
 func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
-	if w.typ == "UserStateDetails" || w.UserStateDetails != nil {
-		return visitor.VisitUserStateDetails(w.UserStateDetails)
+	if w.typ == "WebhookUserStateDetails" || w.WebhookUserStateDetails != nil {
+		return visitor.VisitWebhookUserStateDetails(w.WebhookUserStateDetails)
 	}
 	if w.typ == "CaseStatusDetails" || w.CaseStatusDetails != nil {
 		return visitor.VisitCaseStatusDetails(w.CaseStatusDetails)
@@ -33126,8 +33174,8 @@ func (w *WebhookEventData) Accept(visitor WebhookEventDataVisitor) error {
 	if w.typ == "TransactionStatusDetails" || w.TransactionStatusDetails != nil {
 		return visitor.VisitTransactionStatusDetails(w.TransactionStatusDetails)
 	}
-	if w.typ == "KycStatusDetails" || w.KycStatusDetails != nil {
-		return visitor.VisitKycStatusDetails(w.KycStatusDetails)
+	if w.typ == "WebhookKycStatusDetails" || w.WebhookKycStatusDetails != nil {
+		return visitor.VisitWebhookKycStatusDetails(w.WebhookKycStatusDetails)
 	}
 	if w.typ == "UserTagsUpdate" || w.UserTagsUpdate != nil {
 		return visitor.VisitUserTagsUpdate(w.UserTagsUpdate)
@@ -33265,15 +33313,17 @@ func (w WebhookEventType) Ptr() *WebhookEventType {
 }
 
 var (
-	webhookKycStatusDetailsFieldReason = big.NewInt(1 << 0)
-	webhookKycStatusDetailsFieldStatus = big.NewInt(1 << 1)
-	webhookKycStatusDetailsFieldUserId = big.NewInt(1 << 2)
+	webhookKycStatusDetailsFieldReason   = big.NewInt(1 << 0)
+	webhookKycStatusDetailsFieldStatus   = big.NewInt(1 << 1)
+	webhookKycStatusDetailsFieldUserId   = big.NewInt(1 << 2)
+	webhookKycStatusDetailsFieldUserType = big.NewInt(1 << 3)
 )
 
 type WebhookKycStatusDetails struct {
-	Reason *string    `json:"reason,omitempty" url:"reason,omitempty"`
-	Status *KycStatus `json:"status,omitempty" url:"status,omitempty"`
-	UserId string     `json:"userId" url:"userId"`
+	Reason   *string    `json:"reason,omitempty" url:"reason,omitempty"`
+	Status   *KycStatus `json:"status,omitempty" url:"status,omitempty"`
+	UserId   string     `json:"userId" url:"userId"`
+	UserType *UserType  `json:"userType,omitempty" url:"userType,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -33301,6 +33351,13 @@ func (w *WebhookKycStatusDetails) GetUserId() string {
 		return ""
 	}
 	return w.UserId
+}
+
+func (w *WebhookKycStatusDetails) GetUserType() *UserType {
+	if w == nil {
+		return nil
+	}
+	return w.UserType
 }
 
 func (w *WebhookKycStatusDetails) GetExtraProperties() map[string]interface{} {
@@ -33336,6 +33393,13 @@ func (w *WebhookKycStatusDetails) SetStatus(status *KycStatus) {
 func (w *WebhookKycStatusDetails) SetUserId(userId string) {
 	w.UserId = userId
 	w.require(webhookKycStatusDetailsFieldUserId)
+}
+
+// SetUserType sets the UserType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookKycStatusDetails) SetUserType(userType *UserType) {
+	w.UserType = userType
+	w.require(webhookKycStatusDetailsFieldUserType)
 }
 
 func (w *WebhookKycStatusDetails) UnmarshalJSON(data []byte) error {
@@ -33581,15 +33645,17 @@ func (w *WebhookSanctionsStatusDetails) String() string {
 }
 
 var (
-	webhookUserStateDetailsFieldReason = big.NewInt(1 << 0)
-	webhookUserStateDetailsFieldState  = big.NewInt(1 << 1)
-	webhookUserStateDetailsFieldUserId = big.NewInt(1 << 2)
+	webhookUserStateDetailsFieldReason   = big.NewInt(1 << 0)
+	webhookUserStateDetailsFieldState    = big.NewInt(1 << 1)
+	webhookUserStateDetailsFieldUserId   = big.NewInt(1 << 2)
+	webhookUserStateDetailsFieldUserType = big.NewInt(1 << 3)
 )
 
 type WebhookUserStateDetails struct {
-	Reason *string   `json:"reason,omitempty" url:"reason,omitempty"`
-	State  UserState `json:"state" url:"state"`
-	UserId string    `json:"userId" url:"userId"`
+	Reason   *string   `json:"reason,omitempty" url:"reason,omitempty"`
+	State    UserState `json:"state" url:"state"`
+	UserId   string    `json:"userId" url:"userId"`
+	UserType *UserType `json:"userType,omitempty" url:"userType,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -33617,6 +33683,13 @@ func (w *WebhookUserStateDetails) GetUserId() string {
 		return ""
 	}
 	return w.UserId
+}
+
+func (w *WebhookUserStateDetails) GetUserType() *UserType {
+	if w == nil {
+		return nil
+	}
+	return w.UserType
 }
 
 func (w *WebhookUserStateDetails) GetExtraProperties() map[string]interface{} {
@@ -33652,6 +33725,13 @@ func (w *WebhookUserStateDetails) SetState(state UserState) {
 func (w *WebhookUserStateDetails) SetUserId(userId string) {
 	w.UserId = userId
 	w.require(webhookUserStateDetailsFieldUserId)
+}
+
+// SetUserType sets the UserType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebhookUserStateDetails) SetUserType(userType *UserType) {
+	w.UserType = userType
+	w.require(webhookUserStateDetailsFieldUserType)
 }
 
 func (w *WebhookUserStateDetails) UnmarshalJSON(data []byte) error {

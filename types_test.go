@@ -3947,6 +3947,14 @@ func TestSettersBatchCompletedDetails(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetUserType", func(t *testing.T) {
+		obj := &BatchCompletedDetails{}
+		var fernTestValueUserType *UserType
+		obj.SetUserType(fernTestValueUserType)
+		assert.Equal(t, fernTestValueUserType, obj.UserType)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetTotalCount", func(t *testing.T) {
 		obj := &BatchCompletedDetails{}
 		var fernTestValueTotalCount int
@@ -4026,6 +4034,39 @@ func TestGettersBatchCompletedDetails(t *testing.T) {
 			}
 		}()
 		_ = obj.GetType() // Should return zero value
+	})
+
+	t.Run("GetUserType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BatchCompletedDetails{}
+		var expected *UserType
+		obj.UserType = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetUserType(), "getter should return the property value")
+	})
+
+	t.Run("GetUserType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BatchCompletedDetails{}
+		obj.UserType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetUserType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetUserType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BatchCompletedDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetUserType() // Should return zero value
 	})
 
 	t.Run("GetTotalCount", func(t *testing.T) {
@@ -4162,6 +4203,37 @@ func TestSettersMarkExplicitBatchCompletedDetails(t *testing.T) {
 
 		// Act
 		obj.SetType(fernTestValueType)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetUserType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BatchCompletedDetails{}
+		var fernTestValueUserType *UserType
+
+		// Act
+		obj.SetUserType(fernTestValueUserType)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -16377,6 +16449,14 @@ func TestSettersCraRiskLevelUpdatedDetails(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetUserType", func(t *testing.T) {
+		obj := &CraRiskLevelUpdatedDetails{}
+		var fernTestValueUserType *UserType
+		obj.SetUserType(fernTestValueUserType)
+		assert.Equal(t, fernTestValueUserType, obj.UserType)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetRiskScore", func(t *testing.T) {
 		obj := &CraRiskLevelUpdatedDetails{}
 		var fernTestValueRiskScore *float64
@@ -16476,6 +16556,39 @@ func TestGettersCraRiskLevelUpdatedDetails(t *testing.T) {
 			}
 		}()
 		_ = obj.GetUserId() // Should return zero value
+	})
+
+	t.Run("GetUserType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CraRiskLevelUpdatedDetails{}
+		var expected *UserType
+		obj.UserType = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetUserType(), "getter should return the property value")
+	})
+
+	t.Run("GetUserType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CraRiskLevelUpdatedDetails{}
+		obj.UserType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetUserType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetUserType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *CraRiskLevelUpdatedDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetUserType() // Should return zero value
 	})
 
 	t.Run("GetRiskScore", func(t *testing.T) {
@@ -16652,6 +16765,37 @@ func TestSettersMarkExplicitCraRiskLevelUpdatedDetails(t *testing.T) {
 
 		// Act
 		obj.SetUserId(fernTestValueUserId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetUserType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CraRiskLevelUpdatedDetails{}
+		var fernTestValueUserType *UserType
+
+		// Act
+		obj.SetUserType(fernTestValueUserType)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -70536,6 +70680,14 @@ func TestSettersUserTagsUpdate(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetUserType", func(t *testing.T) {
+		obj := &UserTagsUpdate{}
+		var fernTestValueUserType *UserType
+		obj.SetUserType(fernTestValueUserType)
+		assert.Equal(t, fernTestValueUserType, obj.UserType)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetTags", func(t *testing.T) {
 		obj := &UserTagsUpdate{}
 		var fernTestValueTags []*UserTag
@@ -70578,6 +70730,39 @@ func TestGettersUserTagsUpdate(t *testing.T) {
 			}
 		}()
 		_ = obj.GetUserId() // Should return zero value
+	})
+
+	t.Run("GetUserType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UserTagsUpdate{}
+		var expected *UserType
+		obj.UserType = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetUserType(), "getter should return the property value")
+	})
+
+	t.Run("GetUserType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UserTagsUpdate{}
+		obj.UserType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetUserType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetUserType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *UserTagsUpdate
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetUserType() // Should return zero value
 	})
 
 	t.Run("GetTags", func(t *testing.T) {
@@ -70624,6 +70809,37 @@ func TestSettersMarkExplicitUserTagsUpdate(t *testing.T) {
 
 		// Act
 		obj.SetUserId(fernTestValueUserId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetUserType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &UserTagsUpdate{}
+		var fernTestValueUserType *UserType
+
+		// Act
+		obj.SetUserType(fernTestValueUserType)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -75901,28 +76117,28 @@ func TestSettersMarkExplicitWebhookEventBase(t *testing.T) {
 }
 
 func TestGettersWebhookEventData(t *testing.T) {
-	t.Run("GetUserStateDetails", func(t *testing.T) {
+	t.Run("GetWebhookUserStateDetails", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WebhookEventData{}
-		var expected *UserStateDetails
-		obj.UserStateDetails = expected
+		var expected *WebhookUserStateDetails
+		obj.WebhookUserStateDetails = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetUserStateDetails(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetWebhookUserStateDetails(), "getter should return the property value")
 	})
 
-	t.Run("GetUserStateDetails_NilValue", func(t *testing.T) {
+	t.Run("GetWebhookUserStateDetails_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WebhookEventData{}
-		obj.UserStateDetails = nil
+		obj.WebhookUserStateDetails = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetUserStateDetails(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetWebhookUserStateDetails(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetUserStateDetails_NilReceiver", func(t *testing.T) {
+	t.Run("GetWebhookUserStateDetails_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *WebhookEventData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -75931,7 +76147,7 @@ func TestGettersWebhookEventData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetUserStateDetails() // Should return zero value
+		_ = obj.GetWebhookUserStateDetails() // Should return zero value
 	})
 
 	t.Run("GetCaseStatusDetails", func(t *testing.T) {
@@ -76099,28 +76315,28 @@ func TestGettersWebhookEventData(t *testing.T) {
 		_ = obj.GetTransactionStatusDetails() // Should return zero value
 	})
 
-	t.Run("GetKycStatusDetails", func(t *testing.T) {
+	t.Run("GetWebhookKycStatusDetails", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WebhookEventData{}
-		var expected *KycStatusDetails
-		obj.KycStatusDetails = expected
+		var expected *WebhookKycStatusDetails
+		obj.WebhookKycStatusDetails = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetKycStatusDetails(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetWebhookKycStatusDetails(), "getter should return the property value")
 	})
 
-	t.Run("GetKycStatusDetails_NilValue", func(t *testing.T) {
+	t.Run("GetWebhookKycStatusDetails_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &WebhookEventData{}
-		obj.KycStatusDetails = nil
+		obj.WebhookKycStatusDetails = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetKycStatusDetails(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetWebhookKycStatusDetails(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetKycStatusDetails_NilReceiver", func(t *testing.T) {
+	t.Run("GetWebhookKycStatusDetails_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *WebhookEventData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -76129,7 +76345,7 @@ func TestGettersWebhookEventData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetKycStatusDetails() // Should return zero value
+		_ = obj.GetWebhookKycStatusDetails() // Should return zero value
 	})
 
 	t.Run("GetUserTagsUpdate", func(t *testing.T) {
@@ -76423,6 +76639,14 @@ func TestSettersWebhookKycStatusDetails(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetUserType", func(t *testing.T) {
+		obj := &WebhookKycStatusDetails{}
+		var fernTestValueUserType *UserType
+		obj.SetUserType(fernTestValueUserType)
+		assert.Equal(t, fernTestValueUserType, obj.UserType)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersWebhookKycStatusDetails(t *testing.T) {
@@ -76515,6 +76739,39 @@ func TestGettersWebhookKycStatusDetails(t *testing.T) {
 		_ = obj.GetUserId() // Should return zero value
 	})
 
+	t.Run("GetUserType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &WebhookKycStatusDetails{}
+		var expected *UserType
+		obj.UserType = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetUserType(), "getter should return the property value")
+	})
+
+	t.Run("GetUserType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &WebhookKycStatusDetails{}
+		obj.UserType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetUserType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetUserType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *WebhookKycStatusDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetUserType() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitWebhookKycStatusDetails(t *testing.T) {
@@ -76588,6 +76845,37 @@ func TestSettersMarkExplicitWebhookKycStatusDetails(t *testing.T) {
 
 		// Act
 		obj.SetUserId(fernTestValueUserId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetUserType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &WebhookKycStatusDetails{}
+		var fernTestValueUserType *UserType
+
+		// Act
+		obj.SetUserType(fernTestValueUserType)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -76914,6 +77202,14 @@ func TestSettersWebhookUserStateDetails(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetUserType", func(t *testing.T) {
+		obj := &WebhookUserStateDetails{}
+		var fernTestValueUserType *UserType
+		obj.SetUserType(fernTestValueUserType)
+		assert.Equal(t, fernTestValueUserType, obj.UserType)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersWebhookUserStateDetails(t *testing.T) {
@@ -76996,6 +77292,39 @@ func TestGettersWebhookUserStateDetails(t *testing.T) {
 		_ = obj.GetUserId() // Should return zero value
 	})
 
+	t.Run("GetUserType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &WebhookUserStateDetails{}
+		var expected *UserType
+		obj.UserType = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetUserType(), "getter should return the property value")
+	})
+
+	t.Run("GetUserType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &WebhookUserStateDetails{}
+		obj.UserType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetUserType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetUserType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *WebhookUserStateDetails
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetUserType() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitWebhookUserStateDetails(t *testing.T) {
@@ -77069,6 +77398,37 @@ func TestSettersMarkExplicitWebhookUserStateDetails(t *testing.T) {
 
 		// Act
 		obj.SetUserId(fernTestValueUserId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetUserType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &WebhookUserStateDetails{}
+		var fernTestValueUserType *UserType
+
+		// Act
+		obj.SetUserType(fernTestValueUserType)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
