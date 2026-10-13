@@ -24,6 +24,7 @@ var (
 	achDetailsFieldBeneficiaryName      = big.NewInt(1 << 10)
 	achDetailsFieldEmailId              = big.NewInt(1 << 11)
 	achDetailsFieldTags                 = big.NewInt(1 << 12)
+	achDetailsFieldJointEntity          = big.NewInt(1 << 13)
 )
 
 type AchDetails struct {
@@ -46,7 +47,8 @@ type AchDetails struct {
 	BeneficiaryName *string  `json:"beneficiaryName,omitempty" url:"beneficiaryName,omitempty"`
 	EmailId         *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -144,6 +146,13 @@ func (a *AchDetails) GetTags() []*Tag {
 		return nil
 	}
 	return a.Tags
+}
+
+func (a *AchDetails) GetJointEntity() *JointEntity {
+	if a == nil {
+		return nil
+	}
+	return a.JointEntity
 }
 
 func (a *AchDetails) GetExtraProperties() map[string]interface{} {
@@ -251,6 +260,13 @@ func (a *AchDetails) SetTags(tags []*Tag) {
 	a.require(achDetailsFieldTags)
 }
 
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AchDetails) SetJointEntity(jointEntity *JointEntity) {
+	a.JointEntity = jointEntity
+	a.require(achDetailsFieldJointEntity)
+}
+
 func (a *AchDetails) UnmarshalJSON(data []byte) error {
 	type unmarshaler AchDetails
 	var value unmarshaler
@@ -295,6 +311,182 @@ func (a *AchDetails) String() string {
 
 // Classify the method of payment as "ACH" for ACHDetails
 type AchPaymentMethod = string
+
+// Structured lifecycle details for an account product.
+var (
+	accountProductDetailsFieldAccountNumber = big.NewInt(1 << 0)
+	accountProductDetailsFieldOpeningDate   = big.NewInt(1 << 1)
+	accountProductDetailsFieldStatus        = big.NewInt(1 << 2)
+	accountProductDetailsFieldTags          = big.NewInt(1 << 3)
+	accountProductDetailsFieldJointEntity   = big.NewInt(1 << 4)
+)
+
+type AccountProductDetails struct {
+	// Account or product number associated with the enabled product.
+	AccountNumber *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	// Product opening date (YYYY-MM-DD).
+	OpeningDate *string `json:"openingDate,omitempty" url:"openingDate,omitempty"`
+	// Current lifecycle status of the product.
+	Status *AccountProductDetailsStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Additional information that can be added via tags
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AccountProductDetails) GetAccountNumber() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AccountNumber
+}
+
+func (a *AccountProductDetails) GetOpeningDate() *string {
+	if a == nil {
+		return nil
+	}
+	return a.OpeningDate
+}
+
+func (a *AccountProductDetails) GetStatus() *AccountProductDetailsStatus {
+	if a == nil {
+		return nil
+	}
+	return a.Status
+}
+
+func (a *AccountProductDetails) GetTags() []*Tag {
+	if a == nil {
+		return nil
+	}
+	return a.Tags
+}
+
+func (a *AccountProductDetails) GetJointEntity() *JointEntity {
+	if a == nil {
+		return nil
+	}
+	return a.JointEntity
+}
+
+func (a *AccountProductDetails) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *AccountProductDetails) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccountProductDetails) SetAccountNumber(accountNumber *string) {
+	a.AccountNumber = accountNumber
+	a.require(accountProductDetailsFieldAccountNumber)
+}
+
+// SetOpeningDate sets the OpeningDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccountProductDetails) SetOpeningDate(openingDate *string) {
+	a.OpeningDate = openingDate
+	a.require(accountProductDetailsFieldOpeningDate)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccountProductDetails) SetStatus(status *AccountProductDetailsStatus) {
+	a.Status = status
+	a.require(accountProductDetailsFieldStatus)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccountProductDetails) SetTags(tags []*Tag) {
+	a.Tags = tags
+	a.require(accountProductDetailsFieldTags)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AccountProductDetails) SetJointEntity(jointEntity *JointEntity) {
+	a.JointEntity = jointEntity
+	a.require(accountProductDetailsFieldJointEntity)
+}
+
+func (a *AccountProductDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler AccountProductDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AccountProductDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AccountProductDetails) MarshalJSON() ([]byte, error) {
+	type embed AccountProductDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AccountProductDetails) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Current lifecycle status of the product.
+type AccountProductDetailsStatus string
+
+const (
+	AccountProductDetailsStatusActive   AccountProductDetailsStatus = "ACTIVE"
+	AccountProductDetailsStatusInactive AccountProductDetailsStatus = "INACTIVE"
+)
+
+func NewAccountProductDetailsStatusFromString(s string) (AccountProductDetailsStatus, error) {
+	switch s {
+	case "ACTIVE":
+		return AccountProductDetailsStatusActive, nil
+	case "INACTIVE":
+		return AccountProductDetailsStatusInactive, nil
+	}
+	var t AccountProductDetailsStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AccountProductDetailsStatus) Ptr() *AccountProductDetailsStatus {
+	return &a
+}
 
 // Model for User acquisition channel
 type AcquisitionChannel string
@@ -7016,6 +7208,7 @@ var (
 	cardDetailsFieldCountryOfResidence        = big.NewInt(1 << 24)
 	cardDetailsFieldBankAddress               = big.NewInt(1 << 25)
 	cardDetailsFieldTags                      = big.NewInt(1 << 26)
+	cardDetailsFieldJointEntity               = big.NewInt(1 << 27)
 )
 
 type CardDetails struct {
@@ -7055,7 +7248,8 @@ type CardDetails struct {
 	CountryOfResidence       *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
 	BankAddress              *Address     `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7251,6 +7445,13 @@ func (c *CardDetails) GetTags() []*Tag {
 		return nil
 	}
 	return c.Tags
+}
+
+func (c *CardDetails) GetJointEntity() *JointEntity {
+	if c == nil {
+		return nil
+	}
+	return c.JointEntity
 }
 
 func (c *CardDetails) GetExtraProperties() map[string]interface{} {
@@ -7454,6 +7655,13 @@ func (c *CardDetails) SetBankAddress(bankAddress *Address) {
 func (c *CardDetails) SetTags(tags []*Tag) {
 	c.Tags = tags
 	c.require(cardDetailsFieldTags)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CardDetails) SetJointEntity(jointEntity *JointEntity) {
+	c.JointEntity = jointEntity
+	c.require(cardDetailsFieldJointEntity)
 }
 
 func (c *CardDetails) UnmarshalJSON(data []byte) error {
@@ -8803,6 +9011,7 @@ var (
 	cashDetailsFieldEmailId          = big.NewInt(1 << 4)
 	cashDetailsFieldAccountBalance   = big.NewInt(1 << 5)
 	cashDetailsFieldTags             = big.NewInt(1 << 6)
+	cashDetailsFieldJointEntity      = big.NewInt(1 << 7)
 )
 
 type CashDetails struct {
@@ -8814,7 +9023,8 @@ type CashDetails struct {
 	EmailId        *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	AccountBalance *Amount  `json:"accountBalance,omitempty" url:"accountBalance,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8870,6 +9080,13 @@ func (c *CashDetails) GetTags() []*Tag {
 		return nil
 	}
 	return c.Tags
+}
+
+func (c *CashDetails) GetJointEntity() *JointEntity {
+	if c == nil {
+		return nil
+	}
+	return c.JointEntity
 }
 
 func (c *CashDetails) GetExtraProperties() map[string]interface{} {
@@ -8933,6 +9150,13 @@ func (c *CashDetails) SetAccountBalance(accountBalance *Amount) {
 func (c *CashDetails) SetTags(tags []*Tag) {
 	c.Tags = tags
 	c.require(cashDetailsFieldTags)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CashDetails) SetJointEntity(jointEntity *JointEntity) {
+	c.JointEntity = jointEntity
+	c.require(cashDetailsFieldJointEntity)
 }
 
 func (c *CashDetails) UnmarshalJSON(data []byte) error {
@@ -9030,6 +9254,7 @@ var (
 	checkDetailsFieldCountryOfResidence   = big.NewInt(1 << 12)
 	checkDetailsFieldBankAddress          = big.NewInt(1 << 13)
 	checkDetailsFieldTags                 = big.NewInt(1 << 14)
+	checkDetailsFieldJointEntity          = big.NewInt(1 << 15)
 )
 
 type CheckDetails struct {
@@ -9051,7 +9276,8 @@ type CheckDetails struct {
 	CountryOfResidence   *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
 	BankAddress          *Address     `json:"bankAddress,omitempty" url:"bankAddress,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9163,6 +9389,13 @@ func (c *CheckDetails) GetTags() []*Tag {
 		return nil
 	}
 	return c.Tags
+}
+
+func (c *CheckDetails) GetJointEntity() *JointEntity {
+	if c == nil {
+		return nil
+	}
+	return c.JointEntity
 }
 
 func (c *CheckDetails) GetExtraProperties() map[string]interface{} {
@@ -9282,6 +9515,13 @@ func (c *CheckDetails) SetBankAddress(bankAddress *Address) {
 func (c *CheckDetails) SetTags(tags []*Tag) {
 	c.Tags = tags
 	c.require(checkDetailsFieldTags)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckDetails) SetJointEntity(jointEntity *JointEntity) {
+	c.JointEntity = jointEntity
+	c.require(checkDetailsFieldJointEntity)
 }
 
 func (c *CheckDetails) UnmarshalJSON(data []byte) error {
@@ -16136,6 +16376,7 @@ var (
 	genericBankAccountDetailsFieldAddress                  = big.NewInt(1 << 18)
 	genericBankAccountDetailsFieldRoutingNumber            = big.NewInt(1 << 19)
 	genericBankAccountDetailsFieldCorrespondentBankDetails = big.NewInt(1 << 20)
+	genericBankAccountDetailsFieldJointEntity              = big.NewInt(1 << 21)
 )
 
 type GenericBankAccountDetails struct {
@@ -16173,6 +16414,7 @@ type GenericBankAccountDetails struct {
 	// Routing number of the bank
 	RoutingNumber            *string                            `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
 	CorrespondentBankDetails []*CorrespondentGenericBankDetails `json:"correspondentBankDetails,omitempty" url:"correspondentBankDetails,omitempty"`
+	JointEntity              *JointEntity                       `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -16326,6 +16568,13 @@ func (g *GenericBankAccountDetails) GetCorrespondentBankDetails() []*Corresponde
 		return nil
 	}
 	return g.CorrespondentBankDetails
+}
+
+func (g *GenericBankAccountDetails) GetJointEntity() *JointEntity {
+	if g == nil {
+		return nil
+	}
+	return g.JointEntity
 }
 
 func (g *GenericBankAccountDetails) GetExtraProperties() map[string]interface{} {
@@ -16487,6 +16736,13 @@ func (g *GenericBankAccountDetails) SetRoutingNumber(routingNumber *string) {
 func (g *GenericBankAccountDetails) SetCorrespondentBankDetails(correspondentBankDetails []*CorrespondentGenericBankDetails) {
 	g.CorrespondentBankDetails = correspondentBankDetails
 	g.require(genericBankAccountDetailsFieldCorrespondentBankDetails)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GenericBankAccountDetails) SetJointEntity(jointEntity *JointEntity) {
+	g.JointEntity = jointEntity
+	g.require(genericBankAccountDetailsFieldJointEntity)
 }
 
 func (g *GenericBankAccountDetails) UnmarshalJSON(data []byte) error {
@@ -16900,6 +17156,7 @@ var (
 	ibanDetailsFieldCountryOfNationality = big.NewInt(1 << 13)
 	ibanDetailsFieldCountryOfResidence   = big.NewInt(1 << 14)
 	ibanDetailsFieldTags                 = big.NewInt(1 << 15)
+	ibanDetailsFieldJointEntity          = big.NewInt(1 << 16)
 )
 
 type IbanDetails struct {
@@ -16926,7 +17183,8 @@ type IbanDetails struct {
 	CountryOfNationality *CountryCode `json:"countryOfNationality,omitempty" url:"countryOfNationality,omitempty"`
 	CountryOfResidence   *CountryCode `json:"countryOfResidence,omitempty" url:"countryOfResidence,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -17045,6 +17303,13 @@ func (i *IbanDetails) GetTags() []*Tag {
 		return nil
 	}
 	return i.Tags
+}
+
+func (i *IbanDetails) GetJointEntity() *JointEntity {
+	if i == nil {
+		return nil
+	}
+	return i.JointEntity
 }
 
 func (i *IbanDetails) GetExtraProperties() map[string]interface{} {
@@ -17173,6 +17438,13 @@ func (i *IbanDetails) SetTags(tags []*Tag) {
 	i.require(ibanDetailsFieldTags)
 }
 
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *IbanDetails) SetJointEntity(jointEntity *JointEntity) {
+	i.JointEntity = jointEntity
+	i.require(ibanDetailsFieldJointEntity)
+}
+
 func (i *IbanDetails) UnmarshalJSON(data []byte) error {
 	type unmarshaler IbanDetails
 	var value unmarshaler
@@ -17217,6 +17489,9 @@ func (i *IbanDetails) String() string {
 
 // Classify the method of payment as "IBAN" for IBANDetails
 type IbanPaymentMethod = string
+
+// List of joint entities
+type JointEntity = []string
 
 type KycStatus string
 
@@ -19327,6 +19602,250 @@ func (l ListUpdatedDetailsAction) Ptr() *ListUpdatedDetailsAction {
 	return &l
 }
 
+// Structured lifecycle details for a loan product.
+var (
+	loanProductDetailsFieldAccountNumber   = big.NewInt(1 << 0)
+	loanProductDetailsFieldOpeningDate     = big.NewInt(1 << 1)
+	loanProductDetailsFieldStatus          = big.NewInt(1 << 2)
+	loanProductDetailsFieldMaturityDate    = big.NewInt(1 << 3)
+	loanProductDetailsFieldLoanAmount      = big.NewInt(1 << 4)
+	loanProductDetailsFieldDisbursedAmount = big.NewInt(1 << 5)
+	loanProductDetailsFieldBalance         = big.NewInt(1 << 6)
+	loanProductDetailsFieldTags            = big.NewInt(1 << 7)
+	loanProductDetailsFieldJointEntity     = big.NewInt(1 << 8)
+)
+
+type LoanProductDetails struct {
+	// Account or loan number associated with the enabled product.
+	AccountNumber *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	// Loan opening date (YYYY-MM-DD).
+	OpeningDate *string `json:"openingDate,omitempty" url:"openingDate,omitempty"`
+	// Current lifecycle status of the loan.
+	Status *LoanProductDetailsStatus `json:"status,omitempty" url:"status,omitempty"`
+	// Loan maturity date (YYYY-MM-DD).
+	MaturityDate *string `json:"maturityDate,omitempty" url:"maturityDate,omitempty"`
+	// Total loan amount in major currency units.
+	LoanAmount *float64 `json:"loanAmount,omitempty" url:"loanAmount,omitempty"`
+	// Total amount disbursed in major currency units.
+	DisbursedAmount *float64 `json:"disbursedAmount,omitempty" url:"disbursedAmount,omitempty"`
+	// Current outstanding balance in major currency units.
+	Balance *float64 `json:"balance,omitempty" url:"balance,omitempty"`
+	// Additional information that can be added via tags
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *LoanProductDetails) GetAccountNumber() *string {
+	if l == nil {
+		return nil
+	}
+	return l.AccountNumber
+}
+
+func (l *LoanProductDetails) GetOpeningDate() *string {
+	if l == nil {
+		return nil
+	}
+	return l.OpeningDate
+}
+
+func (l *LoanProductDetails) GetStatus() *LoanProductDetailsStatus {
+	if l == nil {
+		return nil
+	}
+	return l.Status
+}
+
+func (l *LoanProductDetails) GetMaturityDate() *string {
+	if l == nil {
+		return nil
+	}
+	return l.MaturityDate
+}
+
+func (l *LoanProductDetails) GetLoanAmount() *float64 {
+	if l == nil {
+		return nil
+	}
+	return l.LoanAmount
+}
+
+func (l *LoanProductDetails) GetDisbursedAmount() *float64 {
+	if l == nil {
+		return nil
+	}
+	return l.DisbursedAmount
+}
+
+func (l *LoanProductDetails) GetBalance() *float64 {
+	if l == nil {
+		return nil
+	}
+	return l.Balance
+}
+
+func (l *LoanProductDetails) GetTags() []*Tag {
+	if l == nil {
+		return nil
+	}
+	return l.Tags
+}
+
+func (l *LoanProductDetails) GetJointEntity() *JointEntity {
+	if l == nil {
+		return nil
+	}
+	return l.JointEntity
+}
+
+func (l *LoanProductDetails) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *LoanProductDetails) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanProductDetails) SetAccountNumber(accountNumber *string) {
+	l.AccountNumber = accountNumber
+	l.require(loanProductDetailsFieldAccountNumber)
+}
+
+// SetOpeningDate sets the OpeningDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanProductDetails) SetOpeningDate(openingDate *string) {
+	l.OpeningDate = openingDate
+	l.require(loanProductDetailsFieldOpeningDate)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanProductDetails) SetStatus(status *LoanProductDetailsStatus) {
+	l.Status = status
+	l.require(loanProductDetailsFieldStatus)
+}
+
+// SetMaturityDate sets the MaturityDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanProductDetails) SetMaturityDate(maturityDate *string) {
+	l.MaturityDate = maturityDate
+	l.require(loanProductDetailsFieldMaturityDate)
+}
+
+// SetLoanAmount sets the LoanAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanProductDetails) SetLoanAmount(loanAmount *float64) {
+	l.LoanAmount = loanAmount
+	l.require(loanProductDetailsFieldLoanAmount)
+}
+
+// SetDisbursedAmount sets the DisbursedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanProductDetails) SetDisbursedAmount(disbursedAmount *float64) {
+	l.DisbursedAmount = disbursedAmount
+	l.require(loanProductDetailsFieldDisbursedAmount)
+}
+
+// SetBalance sets the Balance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanProductDetails) SetBalance(balance *float64) {
+	l.Balance = balance
+	l.require(loanProductDetailsFieldBalance)
+}
+
+// SetTags sets the Tags field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanProductDetails) SetTags(tags []*Tag) {
+	l.Tags = tags
+	l.require(loanProductDetailsFieldTags)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LoanProductDetails) SetJointEntity(jointEntity *JointEntity) {
+	l.JointEntity = jointEntity
+	l.require(loanProductDetailsFieldJointEntity)
+}
+
+func (l *LoanProductDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler LoanProductDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LoanProductDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LoanProductDetails) MarshalJSON() ([]byte, error) {
+	type embed LoanProductDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *LoanProductDetails) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+// Current lifecycle status of the loan.
+type LoanProductDetailsStatus string
+
+const (
+	LoanProductDetailsStatusActive   LoanProductDetailsStatus = "ACTIVE"
+	LoanProductDetailsStatusInactive LoanProductDetailsStatus = "INACTIVE"
+)
+
+func NewLoanProductDetailsStatusFromString(s string) (LoanProductDetailsStatus, error) {
+	switch s {
+	case "ACTIVE":
+		return LoanProductDetailsStatusActive, nil
+	case "INACTIVE":
+		return LoanProductDetailsStatusInactive, nil
+	}
+	var t LoanProductDetailsStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LoanProductDetailsStatus) Ptr() *LoanProductDetailsStatus {
+	return &l
+}
+
 var (
 	mccDetailsFieldCode        = big.NewInt(1 << 0)
 	mccDetailsFieldDescription = big.NewInt(1 << 1)
@@ -19471,6 +19990,7 @@ var (
 	mpesaDetailsFieldName              = big.NewInt(1 << 5)
 	mpesaDetailsFieldAddress           = big.NewInt(1 << 6)
 	mpesaDetailsFieldTags              = big.NewInt(1 << 7)
+	mpesaDetailsFieldJointEntity       = big.NewInt(1 << 8)
 )
 
 type MpesaDetails struct {
@@ -19485,7 +20005,8 @@ type MpesaDetails struct {
 	Name    *string  `json:"name,omitempty" url:"name,omitempty"`
 	Address *Address `json:"address,omitempty" url:"address,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -19548,6 +20069,13 @@ func (m *MpesaDetails) GetTags() []*Tag {
 		return nil
 	}
 	return m.Tags
+}
+
+func (m *MpesaDetails) GetJointEntity() *JointEntity {
+	if m == nil {
+		return nil
+	}
+	return m.JointEntity
 }
 
 func (m *MpesaDetails) GetExtraProperties() map[string]interface{} {
@@ -19618,6 +20146,13 @@ func (m *MpesaDetails) SetAddress(address *Address) {
 func (m *MpesaDetails) SetTags(tags []*Tag) {
 	m.Tags = tags
 	m.require(mpesaDetailsFieldTags)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MpesaDetails) SetJointEntity(jointEntity *JointEntity) {
+	m.JointEntity = jointEntity
+	m.require(mpesaDetailsFieldJointEntity)
 }
 
 func (m *MpesaDetails) UnmarshalJSON(data []byte) error {
@@ -19720,6 +20255,7 @@ var (
 	nppDetailsFieldMessageFormat         = big.NewInt(1 << 18)
 	nppDetailsFieldBankName              = big.NewInt(1 << 19)
 	nppDetailsFieldAddress               = big.NewInt(1 << 20)
+	nppDetailsFieldJointEntity           = big.NewInt(1 << 21)
 )
 
 type NppDetails struct {
@@ -19759,8 +20295,9 @@ type NppDetails struct {
 	// Format of the NPP message (e.g., JSON, XML)
 	MessageFormat *string `json:"messageFormat,omitempty" url:"messageFormat,omitempty"`
 	// Name of the bank associated with the account
-	BankName *string  `json:"bankName,omitempty" url:"bankName,omitempty"`
-	Address  *Address `json:"address,omitempty" url:"address,omitempty"`
+	BankName    *string      `json:"bankName,omitempty" url:"bankName,omitempty"`
+	Address     *Address     `json:"address,omitempty" url:"address,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -19914,6 +20451,13 @@ func (n *NppDetails) GetAddress() *Address {
 		return nil
 	}
 	return n.Address
+}
+
+func (n *NppDetails) GetJointEntity() *JointEntity {
+	if n == nil {
+		return nil
+	}
+	return n.JointEntity
 }
 
 func (n *NppDetails) GetExtraProperties() map[string]interface{} {
@@ -20075,6 +20619,13 @@ func (n *NppDetails) SetBankName(bankName *string) {
 func (n *NppDetails) SetAddress(address *Address) {
 	n.Address = address
 	n.require(nppDetailsFieldAddress)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NppDetails) SetJointEntity(jointEntity *JointEntity) {
+	n.JointEntity = jointEntity
+	n.require(nppDetailsFieldJointEntity)
 }
 
 func (n *NppDetails) UnmarshalJSON(data []byte) error {
@@ -21278,10 +21829,12 @@ func (p *PlaceOfBirth) String() string {
 
 var (
 	productsEnabledFieldProductName = big.NewInt(1 << 0)
+	productsEnabledFieldDetails     = big.NewInt(1 << 1)
 )
 
 type ProductsEnabled struct {
-	ProductName *string `json:"productName,omitempty" url:"productName,omitempty"`
+	ProductName *string                 `json:"productName,omitempty" url:"productName,omitempty"`
+	Details     *ProductsEnabledDetails `json:"details,omitempty" url:"details,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -21295,6 +21848,13 @@ func (p *ProductsEnabled) GetProductName() *string {
 		return nil
 	}
 	return p.ProductName
+}
+
+func (p *ProductsEnabled) GetDetails() *ProductsEnabledDetails {
+	if p == nil {
+		return nil
+	}
+	return p.Details
 }
 
 func (p *ProductsEnabled) GetExtraProperties() map[string]interface{} {
@@ -21316,6 +21876,13 @@ func (p *ProductsEnabled) require(field *big.Int) {
 func (p *ProductsEnabled) SetProductName(productName *string) {
 	p.ProductName = productName
 	p.require(productsEnabledFieldProductName)
+}
+
+// SetDetails sets the Details field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProductsEnabled) SetDetails(details *ProductsEnabledDetails) {
+	p.Details = details
+	p.require(productsEnabledFieldDetails)
 }
 
 func (p *ProductsEnabled) UnmarshalJSON(data []byte) error {
@@ -21346,6 +21913,107 @@ func (p *ProductsEnabled) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProductsEnabled) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// Structured product lifecycle details attached to a product enabled for the user.
+var (
+	productsEnabledDetailsFieldAccount = big.NewInt(1 << 0)
+	productsEnabledDetailsFieldLoan    = big.NewInt(1 << 1)
+)
+
+type ProductsEnabledDetails struct {
+	Account *AccountProductDetails `json:"account,omitempty" url:"account,omitempty"`
+	Loan    *LoanProductDetails    `json:"loan,omitempty" url:"loan,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *ProductsEnabledDetails) GetAccount() *AccountProductDetails {
+	if p == nil {
+		return nil
+	}
+	return p.Account
+}
+
+func (p *ProductsEnabledDetails) GetLoan() *LoanProductDetails {
+	if p == nil {
+		return nil
+	}
+	return p.Loan
+}
+
+func (p *ProductsEnabledDetails) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *ProductsEnabledDetails) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetAccount sets the Account field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProductsEnabledDetails) SetAccount(account *AccountProductDetails) {
+	p.Account = account
+	p.require(productsEnabledDetailsFieldAccount)
+}
+
+// SetLoan sets the Loan field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProductsEnabledDetails) SetLoan(loan *LoanProductDetails) {
+	p.Loan = loan
+	p.require(productsEnabledDetailsFieldLoan)
+}
+
+func (p *ProductsEnabledDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler ProductsEnabledDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = ProductsEnabledDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ProductsEnabledDetails) MarshalJSON() ([]byte, error) {
+	type embed ProductsEnabledDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *ProductsEnabledDetails) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -22399,6 +23067,7 @@ var (
 	swiftDetailsFieldAddress                  = big.NewInt(1 << 14)
 	swiftDetailsFieldCorrespondentBankDetails = big.NewInt(1 << 15)
 	swiftDetailsFieldTags                     = big.NewInt(1 << 16)
+	swiftDetailsFieldJointEntity              = big.NewInt(1 << 17)
 )
 
 type SwiftDetails struct {
@@ -22427,7 +23096,8 @@ type SwiftDetails struct {
 	Address                  *Address                    `json:"address,omitempty" url:"address,omitempty"`
 	CorrespondentBankDetails []*CorrespondentBankDetails `json:"correspondentBankDetails,omitempty" url:"correspondentBankDetails,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -22553,6 +23223,13 @@ func (s *SwiftDetails) GetTags() []*Tag {
 		return nil
 	}
 	return s.Tags
+}
+
+func (s *SwiftDetails) GetJointEntity() *JointEntity {
+	if s == nil {
+		return nil
+	}
+	return s.JointEntity
 }
 
 func (s *SwiftDetails) GetExtraProperties() map[string]interface{} {
@@ -22686,6 +23363,13 @@ func (s *SwiftDetails) SetCorrespondentBankDetails(correspondentBankDetails []*C
 func (s *SwiftDetails) SetTags(tags []*Tag) {
 	s.Tags = tags
 	s.require(swiftDetailsFieldTags)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SwiftDetails) SetJointEntity(jointEntity *JointEntity) {
+	s.JointEntity = jointEntity
+	s.require(swiftDetailsFieldJointEntity)
 }
 
 func (s *SwiftDetails) UnmarshalJSON(data []byte) error {
@@ -27638,6 +28322,7 @@ var (
 	upiDetailsFieldAddress           = big.NewInt(1 << 5)
 	upiDetailsFieldEmailId           = big.NewInt(1 << 6)
 	upiDetailsFieldTags              = big.NewInt(1 << 7)
+	upiDetailsFieldJointEntity       = big.NewInt(1 << 8)
 )
 
 type UpiDetails struct {
@@ -27653,7 +28338,8 @@ type UpiDetails struct {
 	Address *Address `json:"address,omitempty" url:"address,omitempty"`
 	EmailId *EmailId `json:"emailId,omitempty" url:"emailId,omitempty"`
 	// Additional information that can be added via tags
-	Tags []*Tag `json:"tags,omitempty" url:"tags,omitempty"`
+	Tags        []*Tag       `json:"tags,omitempty" url:"tags,omitempty"`
+	JointEntity *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -27716,6 +28402,13 @@ func (u *UpiDetails) GetTags() []*Tag {
 		return nil
 	}
 	return u.Tags
+}
+
+func (u *UpiDetails) GetJointEntity() *JointEntity {
+	if u == nil {
+		return nil
+	}
+	return u.JointEntity
 }
 
 func (u *UpiDetails) GetExtraProperties() map[string]interface{} {
@@ -27786,6 +28479,13 @@ func (u *UpiDetails) SetEmailId(emailId *EmailId) {
 func (u *UpiDetails) SetTags(tags []*Tag) {
 	u.Tags = tags
 	u.require(upiDetailsFieldTags)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UpiDetails) SetJointEntity(jointEntity *JointEntity) {
+	u.JointEntity = jointEntity
+	u.require(upiDetailsFieldJointEntity)
 }
 
 func (u *UpiDetails) UnmarshalJSON(data []byte) error {
@@ -31983,6 +32683,7 @@ var (
 	walletDetailsFieldAuthorizedRepresentative = big.NewInt(1 << 15)
 	walletDetailsFieldDateOfBirth              = big.NewInt(1 << 16)
 	walletDetailsFieldTransactionHash          = big.NewInt(1 << 17)
+	walletDetailsFieldJointEntity              = big.NewInt(1 << 18)
 )
 
 type WalletDetails struct {
@@ -32012,7 +32713,8 @@ type WalletDetails struct {
 	// Date of birth of the account holder (YYYY-MM-DD)
 	DateOfBirth *string `json:"dateOfBirth,omitempty" url:"dateOfBirth,omitempty"`
 	// A hash is a cryptographic fingerprint that uniquely identifies a blockchain transaction on the network, whereas a transactionId is just an internal reference used by a wallet or platform to track the transaction in its own system.
-	TransactionHash *string `json:"transactionHash,omitempty" url:"transactionHash,omitempty"`
+	TransactionHash *string      `json:"transactionHash,omitempty" url:"transactionHash,omitempty"`
+	JointEntity     *JointEntity `json:"jointEntity,omitempty" url:"jointEntity,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -32145,6 +32847,13 @@ func (w *WalletDetails) GetTransactionHash() *string {
 		return nil
 	}
 	return w.TransactionHash
+}
+
+func (w *WalletDetails) GetJointEntity() *JointEntity {
+	if w == nil {
+		return nil
+	}
+	return w.JointEntity
 }
 
 func (w *WalletDetails) GetExtraProperties() map[string]interface{} {
@@ -32285,6 +32994,13 @@ func (w *WalletDetails) SetDateOfBirth(dateOfBirth *string) {
 func (w *WalletDetails) SetTransactionHash(transactionHash *string) {
 	w.TransactionHash = transactionHash
 	w.require(walletDetailsFieldTransactionHash)
+}
+
+// SetJointEntity sets the JointEntity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WalletDetails) SetJointEntity(jointEntity *JointEntity) {
+	w.JointEntity = jointEntity
+	w.require(walletDetailsFieldJointEntity)
 }
 
 func (w *WalletDetails) UnmarshalJSON(data []byte) error {
