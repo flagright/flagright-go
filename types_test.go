@@ -94225,6 +94225,447 @@ func TestEnumWalletNetwork(t *testing.T) {
 		assert.Equal(t, WalletNetwork("TEMPO_TESTNET"), val, "enum value should match expected wire value")
 	})
 
+	t.Run("NewFromString_MONAD", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("MONAD")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("MONAD"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_MORPH", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("MORPH")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("MORPH"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_PLASMA", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("PLASMA")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("PLASMA"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_INK", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("INK")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("INK"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ROBINHOOD_CHAIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("ROBINHOOD_CHAIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("ROBINHOOD_CHAIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_BITTENSOR", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("BITTENSOR")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("BITTENSOR"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ARC", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("ARC")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("ARC"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ANUBIS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("ANUBIS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("ANUBIS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_X_LAYER", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("X_LAYER")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("X_LAYER"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_STARKNET", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("STARKNET")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("STARKNET"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_CRONOS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("CRONOS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("CRONOS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_PROVENANCE", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("PROVENANCE")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("PROVENANCE"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_FLARE", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("FLARE")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("FLARE"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_MANTLE", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("MANTLE")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("MANTLE"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_GNOSIS_CHAIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("GNOSIS_CHAIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("GNOSIS_CHAIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_STACKS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("STACKS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("STACKS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ROOTSTOCK", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("ROOTSTOCK")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("ROOTSTOCK"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_MEZO", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("MEZO")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("MEZO"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_MIXIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("MIXIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("MIXIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_PHAROS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("PHAROS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("PHAROS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_PULSECHAIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("PULSECHAIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("PULSECHAIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_DYDX", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("DYDX")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("DYDX"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_HYDRATION", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("HYDRATION")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("HYDRATION"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_APTOS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("APTOS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("APTOS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_TON", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("TON")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("TON"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_XPR_NETWORK", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("XPR_NETWORK")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("XPR_NETWORK"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_WORLD_CHAIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("WORLD_CHAIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("WORLD_CHAIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_KATANA", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("KATANA")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("KATANA"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_BERACHAIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("BERACHAIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("BERACHAIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_THORCHAIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("THORCHAIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("THORCHAIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_SEI", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("SEI")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("SEI"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_RISE", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("RISE")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("RISE"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_BOT_CHAIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("BOT_CHAIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("BOT_CHAIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_BLAST", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("BLAST")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("BLAST"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_UNICHAIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("UNICHAIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("UNICHAIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_STABLE", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("STABLE")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("STABLE"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_LINEA", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("LINEA")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("LINEA"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_KAVA", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("KAVA")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("KAVA"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_FRAXTAL", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("FRAXTAL")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("FRAXTAL"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_MEGAETH", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("MEGAETH")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("MEGAETH"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_CELO", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("CELO")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("CELO"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_CHAINFLIP", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("CHAINFLIP")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("CHAINFLIP"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_STRATO_CHAIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("STRATO_CHAIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("STRATO_CHAIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ETHERLINK", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("ETHERLINK")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("ETHERLINK"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_BIFROST_NETWORK", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("BIFROST_NETWORK")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("BIFROST_NETWORK"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ZKSYNC_ERA", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("ZKSYNC_ERA")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("ZKSYNC_ERA"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_INTERNET_COMPUTER", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("INTERNET_COMPUTER")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("INTERNET_COMPUTER"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_MULTIVERSX", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("MULTIVERSX")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("MULTIVERSX"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ROLLUX", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("ROLLUX")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("ROLLUX"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_INJECTIVE", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("INJECTIVE")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("INJECTIVE"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_KAIA", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("KAIA")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("KAIA"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_SCROLL", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("SCROLL")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("SCROLL"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_TAIKO", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("TAIKO")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("TAIKO"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_IOTA", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("IOTA")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("IOTA"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_CANTON_NETWORK", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("CANTON_NETWORK")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("CANTON_NETWORK"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_FILECOIN", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("FILECOIN")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("FILECOIN"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ETHEREUM_CLASSIC", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("ETHEREUM_CLASSIC")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("ETHEREUM_CLASSIC"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_STORY", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("STORY")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("STORY"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_OSMOSIS", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("OSMOSIS")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("OSMOSIS"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_XDC_NETWORK", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("XDC_NETWORK")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("XDC_NETWORK"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_FLOW", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("FLOW")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("FLOW"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_ARWEAVE", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("ARWEAVE")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("ARWEAVE"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_IMMUTABLE_X", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewWalletNetworkFromString("IMMUTABLE_X")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, WalletNetwork("IMMUTABLE_X"), val, "enum value should match expected wire value")
+	})
+
 	t.Run("NewFromString_Invalid", func(t *testing.T) {
 		_, err := NewWalletNetworkFromString("invalid_value_that_does_not_exist")
 		assert.Error(t, err)

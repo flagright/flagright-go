@@ -33049,37 +33049,100 @@ func (w *WalletDetails) String() string {
 type WalletNetwork string
 
 const (
-	WalletNetworkBitcoin         WalletNetwork = "BITCOIN"
-	WalletNetworkEthereum        WalletNetwork = "ETHEREUM"
-	WalletNetworkPolygon         WalletNetwork = "POLYGON"
-	WalletNetworkBnbSmartChain   WalletNetwork = "BNB_SMART_CHAIN"
-	WalletNetworkBnbBeaconChain  WalletNetwork = "BNB_BEACON_CHAIN"
-	WalletNetworkArbitrumL2      WalletNetwork = "ARBITRUM_L2"
-	WalletNetworkSolana          WalletNetwork = "SOLANA"
-	WalletNetworkAvalancheCChain WalletNetwork = "AVALANCHE_C_CHAIN"
-	WalletNetworkTezos           WalletNetwork = "TEZOS"
-	WalletNetworkViction         WalletNetwork = "VICTION"
-	WalletNetworkLitecoin        WalletNetwork = "LITECOIN"
-	WalletNetworkBitcoinCash     WalletNetwork = "BITCOIN_CASH"
-	WalletNetworkRipple          WalletNetwork = "RIPPLE"
-	WalletNetworkHyperliquid     WalletNetwork = "HYPERLIQUID"
-	WalletNetworkStellar         WalletNetwork = "STELLAR"
-	WalletNetworkEosPublic       WalletNetwork = "EOS_PUBLIC"
-	WalletNetworkTron            WalletNetwork = "TRON"
-	WalletNetworkCardano         WalletNetwork = "CARDANO"
-	WalletNetworkPolkadot        WalletNetwork = "POLKADOT"
-	WalletNetworkNearProtocol    WalletNetwork = "NEAR_PROTOCOL"
-	WalletNetworkCosmos          WalletNetwork = "COSMOS"
-	WalletNetworkDogecoin        WalletNetwork = "DOGECOIN"
-	WalletNetworkOptimismMainnet WalletNetwork = "OPTIMISM_MAINNET"
-	WalletNetworkFantom          WalletNetwork = "FANTOM"
-	WalletNetworkHedera          WalletNetwork = "HEDERA"
-	WalletNetworkAlgorand        WalletNetwork = "ALGORAND"
-	WalletNetworkCelestia        WalletNetwork = "CELESTIA"
-	WalletNetworkBase            WalletNetwork = "BASE"
-	WalletNetworkSui             WalletNetwork = "SUI"
-	WalletNetworkTempo           WalletNetwork = "TEMPO"
-	WalletNetworkTempoTestnet    WalletNetwork = "TEMPO_TESTNET"
+	WalletNetworkBitcoin          WalletNetwork = "BITCOIN"
+	WalletNetworkEthereum         WalletNetwork = "ETHEREUM"
+	WalletNetworkPolygon          WalletNetwork = "POLYGON"
+	WalletNetworkBnbSmartChain    WalletNetwork = "BNB_SMART_CHAIN"
+	WalletNetworkBnbBeaconChain   WalletNetwork = "BNB_BEACON_CHAIN"
+	WalletNetworkArbitrumL2       WalletNetwork = "ARBITRUM_L2"
+	WalletNetworkSolana           WalletNetwork = "SOLANA"
+	WalletNetworkAvalancheCChain  WalletNetwork = "AVALANCHE_C_CHAIN"
+	WalletNetworkTezos            WalletNetwork = "TEZOS"
+	WalletNetworkViction          WalletNetwork = "VICTION"
+	WalletNetworkLitecoin         WalletNetwork = "LITECOIN"
+	WalletNetworkBitcoinCash      WalletNetwork = "BITCOIN_CASH"
+	WalletNetworkRipple           WalletNetwork = "RIPPLE"
+	WalletNetworkHyperliquid      WalletNetwork = "HYPERLIQUID"
+	WalletNetworkStellar          WalletNetwork = "STELLAR"
+	WalletNetworkEosPublic        WalletNetwork = "EOS_PUBLIC"
+	WalletNetworkTron             WalletNetwork = "TRON"
+	WalletNetworkCardano          WalletNetwork = "CARDANO"
+	WalletNetworkPolkadot         WalletNetwork = "POLKADOT"
+	WalletNetworkNearProtocol     WalletNetwork = "NEAR_PROTOCOL"
+	WalletNetworkCosmos           WalletNetwork = "COSMOS"
+	WalletNetworkDogecoin         WalletNetwork = "DOGECOIN"
+	WalletNetworkOptimismMainnet  WalletNetwork = "OPTIMISM_MAINNET"
+	WalletNetworkFantom           WalletNetwork = "FANTOM"
+	WalletNetworkHedera           WalletNetwork = "HEDERA"
+	WalletNetworkAlgorand         WalletNetwork = "ALGORAND"
+	WalletNetworkCelestia         WalletNetwork = "CELESTIA"
+	WalletNetworkBase             WalletNetwork = "BASE"
+	WalletNetworkSui              WalletNetwork = "SUI"
+	WalletNetworkTempo            WalletNetwork = "TEMPO"
+	WalletNetworkTempoTestnet     WalletNetwork = "TEMPO_TESTNET"
+	WalletNetworkMonad            WalletNetwork = "MONAD"
+	WalletNetworkMorph            WalletNetwork = "MORPH"
+	WalletNetworkPlasma           WalletNetwork = "PLASMA"
+	WalletNetworkInk              WalletNetwork = "INK"
+	WalletNetworkRobinhoodChain   WalletNetwork = "ROBINHOOD_CHAIN"
+	WalletNetworkBittensor        WalletNetwork = "BITTENSOR"
+	WalletNetworkArc              WalletNetwork = "ARC"
+	WalletNetworkAnubis           WalletNetwork = "ANUBIS"
+	WalletNetworkXLayer           WalletNetwork = "X_LAYER"
+	WalletNetworkStarknet         WalletNetwork = "STARKNET"
+	WalletNetworkCronos           WalletNetwork = "CRONOS"
+	WalletNetworkProvenance       WalletNetwork = "PROVENANCE"
+	WalletNetworkFlare            WalletNetwork = "FLARE"
+	WalletNetworkMantle           WalletNetwork = "MANTLE"
+	WalletNetworkGnosisChain      WalletNetwork = "GNOSIS_CHAIN"
+	WalletNetworkStacks           WalletNetwork = "STACKS"
+	WalletNetworkRootstock        WalletNetwork = "ROOTSTOCK"
+	WalletNetworkMezo             WalletNetwork = "MEZO"
+	WalletNetworkMixin            WalletNetwork = "MIXIN"
+	WalletNetworkPharos           WalletNetwork = "PHAROS"
+	WalletNetworkPulsechain       WalletNetwork = "PULSECHAIN"
+	WalletNetworkDydx             WalletNetwork = "DYDX"
+	WalletNetworkHydration        WalletNetwork = "HYDRATION"
+	WalletNetworkAptos            WalletNetwork = "APTOS"
+	WalletNetworkTon              WalletNetwork = "TON"
+	WalletNetworkXprNetwork       WalletNetwork = "XPR_NETWORK"
+	WalletNetworkWorldChain       WalletNetwork = "WORLD_CHAIN"
+	WalletNetworkKatana           WalletNetwork = "KATANA"
+	WalletNetworkBerachain        WalletNetwork = "BERACHAIN"
+	WalletNetworkThorchain        WalletNetwork = "THORCHAIN"
+	WalletNetworkSei              WalletNetwork = "SEI"
+	WalletNetworkRise             WalletNetwork = "RISE"
+	WalletNetworkBotChain         WalletNetwork = "BOT_CHAIN"
+	WalletNetworkBlast            WalletNetwork = "BLAST"
+	WalletNetworkUnichain         WalletNetwork = "UNICHAIN"
+	WalletNetworkStable           WalletNetwork = "STABLE"
+	WalletNetworkLinea            WalletNetwork = "LINEA"
+	WalletNetworkKava             WalletNetwork = "KAVA"
+	WalletNetworkFraxtal          WalletNetwork = "FRAXTAL"
+	WalletNetworkMegaeth          WalletNetwork = "MEGAETH"
+	WalletNetworkCelo             WalletNetwork = "CELO"
+	WalletNetworkChainflip        WalletNetwork = "CHAINFLIP"
+	WalletNetworkStratoChain      WalletNetwork = "STRATO_CHAIN"
+	WalletNetworkEtherlink        WalletNetwork = "ETHERLINK"
+	WalletNetworkBifrostNetwork   WalletNetwork = "BIFROST_NETWORK"
+	WalletNetworkZksyncEra        WalletNetwork = "ZKSYNC_ERA"
+	WalletNetworkInternetComputer WalletNetwork = "INTERNET_COMPUTER"
+	WalletNetworkMultiversx       WalletNetwork = "MULTIVERSX"
+	WalletNetworkRollux           WalletNetwork = "ROLLUX"
+	WalletNetworkInjective        WalletNetwork = "INJECTIVE"
+	WalletNetworkKaia             WalletNetwork = "KAIA"
+	WalletNetworkScroll           WalletNetwork = "SCROLL"
+	WalletNetworkTaiko            WalletNetwork = "TAIKO"
+	WalletNetworkIota             WalletNetwork = "IOTA"
+	WalletNetworkCantonNetwork    WalletNetwork = "CANTON_NETWORK"
+	WalletNetworkFilecoin         WalletNetwork = "FILECOIN"
+	WalletNetworkEthereumClassic  WalletNetwork = "ETHEREUM_CLASSIC"
+	WalletNetworkStory            WalletNetwork = "STORY"
+	WalletNetworkOsmosis          WalletNetwork = "OSMOSIS"
+	WalletNetworkXdcNetwork       WalletNetwork = "XDC_NETWORK"
+	WalletNetworkFlow             WalletNetwork = "FLOW"
+	WalletNetworkArweave          WalletNetwork = "ARWEAVE"
+	WalletNetworkImmutableX       WalletNetwork = "IMMUTABLE_X"
 )
 
 func NewWalletNetworkFromString(s string) (WalletNetwork, error) {
@@ -33146,6 +33209,132 @@ func NewWalletNetworkFromString(s string) (WalletNetwork, error) {
 		return WalletNetworkTempo, nil
 	case "TEMPO_TESTNET":
 		return WalletNetworkTempoTestnet, nil
+	case "MONAD":
+		return WalletNetworkMonad, nil
+	case "MORPH":
+		return WalletNetworkMorph, nil
+	case "PLASMA":
+		return WalletNetworkPlasma, nil
+	case "INK":
+		return WalletNetworkInk, nil
+	case "ROBINHOOD_CHAIN":
+		return WalletNetworkRobinhoodChain, nil
+	case "BITTENSOR":
+		return WalletNetworkBittensor, nil
+	case "ARC":
+		return WalletNetworkArc, nil
+	case "ANUBIS":
+		return WalletNetworkAnubis, nil
+	case "X_LAYER":
+		return WalletNetworkXLayer, nil
+	case "STARKNET":
+		return WalletNetworkStarknet, nil
+	case "CRONOS":
+		return WalletNetworkCronos, nil
+	case "PROVENANCE":
+		return WalletNetworkProvenance, nil
+	case "FLARE":
+		return WalletNetworkFlare, nil
+	case "MANTLE":
+		return WalletNetworkMantle, nil
+	case "GNOSIS_CHAIN":
+		return WalletNetworkGnosisChain, nil
+	case "STACKS":
+		return WalletNetworkStacks, nil
+	case "ROOTSTOCK":
+		return WalletNetworkRootstock, nil
+	case "MEZO":
+		return WalletNetworkMezo, nil
+	case "MIXIN":
+		return WalletNetworkMixin, nil
+	case "PHAROS":
+		return WalletNetworkPharos, nil
+	case "PULSECHAIN":
+		return WalletNetworkPulsechain, nil
+	case "DYDX":
+		return WalletNetworkDydx, nil
+	case "HYDRATION":
+		return WalletNetworkHydration, nil
+	case "APTOS":
+		return WalletNetworkAptos, nil
+	case "TON":
+		return WalletNetworkTon, nil
+	case "XPR_NETWORK":
+		return WalletNetworkXprNetwork, nil
+	case "WORLD_CHAIN":
+		return WalletNetworkWorldChain, nil
+	case "KATANA":
+		return WalletNetworkKatana, nil
+	case "BERACHAIN":
+		return WalletNetworkBerachain, nil
+	case "THORCHAIN":
+		return WalletNetworkThorchain, nil
+	case "SEI":
+		return WalletNetworkSei, nil
+	case "RISE":
+		return WalletNetworkRise, nil
+	case "BOT_CHAIN":
+		return WalletNetworkBotChain, nil
+	case "BLAST":
+		return WalletNetworkBlast, nil
+	case "UNICHAIN":
+		return WalletNetworkUnichain, nil
+	case "STABLE":
+		return WalletNetworkStable, nil
+	case "LINEA":
+		return WalletNetworkLinea, nil
+	case "KAVA":
+		return WalletNetworkKava, nil
+	case "FRAXTAL":
+		return WalletNetworkFraxtal, nil
+	case "MEGAETH":
+		return WalletNetworkMegaeth, nil
+	case "CELO":
+		return WalletNetworkCelo, nil
+	case "CHAINFLIP":
+		return WalletNetworkChainflip, nil
+	case "STRATO_CHAIN":
+		return WalletNetworkStratoChain, nil
+	case "ETHERLINK":
+		return WalletNetworkEtherlink, nil
+	case "BIFROST_NETWORK":
+		return WalletNetworkBifrostNetwork, nil
+	case "ZKSYNC_ERA":
+		return WalletNetworkZksyncEra, nil
+	case "INTERNET_COMPUTER":
+		return WalletNetworkInternetComputer, nil
+	case "MULTIVERSX":
+		return WalletNetworkMultiversx, nil
+	case "ROLLUX":
+		return WalletNetworkRollux, nil
+	case "INJECTIVE":
+		return WalletNetworkInjective, nil
+	case "KAIA":
+		return WalletNetworkKaia, nil
+	case "SCROLL":
+		return WalletNetworkScroll, nil
+	case "TAIKO":
+		return WalletNetworkTaiko, nil
+	case "IOTA":
+		return WalletNetworkIota, nil
+	case "CANTON_NETWORK":
+		return WalletNetworkCantonNetwork, nil
+	case "FILECOIN":
+		return WalletNetworkFilecoin, nil
+	case "ETHEREUM_CLASSIC":
+		return WalletNetworkEthereumClassic, nil
+	case "STORY":
+		return WalletNetworkStory, nil
+	case "OSMOSIS":
+		return WalletNetworkOsmosis, nil
+	case "XDC_NETWORK":
+		return WalletNetworkXdcNetwork, nil
+	case "FLOW":
+		return WalletNetworkFlow, nil
+	case "ARWEAVE":
+		return WalletNetworkArweave, nil
+	case "IMMUTABLE_X":
+		return WalletNetworkImmutableX, nil
 	}
 	var t WalletNetwork
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
