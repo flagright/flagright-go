@@ -59046,6 +59046,54 @@ func TestSettersTransactionLimits(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetMinimumDailyTransactionLimit", func(t *testing.T) {
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumDailyTransactionLimit *Amount
+		obj.SetMinimumDailyTransactionLimit(fernTestValueMinimumDailyTransactionLimit)
+		assert.Equal(t, fernTestValueMinimumDailyTransactionLimit, obj.MinimumDailyTransactionLimit)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetMinimumWeeklyTransactionLimit", func(t *testing.T) {
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumWeeklyTransactionLimit *Amount
+		obj.SetMinimumWeeklyTransactionLimit(fernTestValueMinimumWeeklyTransactionLimit)
+		assert.Equal(t, fernTestValueMinimumWeeklyTransactionLimit, obj.MinimumWeeklyTransactionLimit)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetMinimumMonthlyTransactionLimit", func(t *testing.T) {
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumMonthlyTransactionLimit *Amount
+		obj.SetMinimumMonthlyTransactionLimit(fernTestValueMinimumMonthlyTransactionLimit)
+		assert.Equal(t, fernTestValueMinimumMonthlyTransactionLimit, obj.MinimumMonthlyTransactionLimit)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetMinimumQuarterlyTransactionLimit", func(t *testing.T) {
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumQuarterlyTransactionLimit *Amount
+		obj.SetMinimumQuarterlyTransactionLimit(fernTestValueMinimumQuarterlyTransactionLimit)
+		assert.Equal(t, fernTestValueMinimumQuarterlyTransactionLimit, obj.MinimumQuarterlyTransactionLimit)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetMinimumYearlyTransactionLimit", func(t *testing.T) {
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumYearlyTransactionLimit *Amount
+		obj.SetMinimumYearlyTransactionLimit(fernTestValueMinimumYearlyTransactionLimit)
+		assert.Equal(t, fernTestValueMinimumYearlyTransactionLimit, obj.MinimumYearlyTransactionLimit)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetMinimumTransactionLimit", func(t *testing.T) {
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumTransactionLimit *Amount
+		obj.SetMinimumTransactionLimit(fernTestValueMinimumTransactionLimit)
+		assert.Equal(t, fernTestValueMinimumTransactionLimit, obj.MinimumTransactionLimit)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersTransactionLimits(t *testing.T) {
@@ -59280,6 +59328,204 @@ func TestGettersTransactionLimits(t *testing.T) {
 		_ = obj.GetPaymentMethodLimits() // Should return zero value
 	})
 
+	t.Run("GetMinimumDailyTransactionLimit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var expected *Amount
+		obj.MinimumDailyTransactionLimit = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetMinimumDailyTransactionLimit(), "getter should return the property value")
+	})
+
+	t.Run("GetMinimumDailyTransactionLimit_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		obj.MinimumDailyTransactionLimit = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMinimumDailyTransactionLimit(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetMinimumDailyTransactionLimit_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TransactionLimits
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetMinimumDailyTransactionLimit() // Should return zero value
+	})
+
+	t.Run("GetMinimumWeeklyTransactionLimit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var expected *Amount
+		obj.MinimumWeeklyTransactionLimit = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetMinimumWeeklyTransactionLimit(), "getter should return the property value")
+	})
+
+	t.Run("GetMinimumWeeklyTransactionLimit_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		obj.MinimumWeeklyTransactionLimit = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMinimumWeeklyTransactionLimit(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetMinimumWeeklyTransactionLimit_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TransactionLimits
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetMinimumWeeklyTransactionLimit() // Should return zero value
+	})
+
+	t.Run("GetMinimumMonthlyTransactionLimit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var expected *Amount
+		obj.MinimumMonthlyTransactionLimit = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetMinimumMonthlyTransactionLimit(), "getter should return the property value")
+	})
+
+	t.Run("GetMinimumMonthlyTransactionLimit_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		obj.MinimumMonthlyTransactionLimit = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMinimumMonthlyTransactionLimit(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetMinimumMonthlyTransactionLimit_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TransactionLimits
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetMinimumMonthlyTransactionLimit() // Should return zero value
+	})
+
+	t.Run("GetMinimumQuarterlyTransactionLimit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var expected *Amount
+		obj.MinimumQuarterlyTransactionLimit = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetMinimumQuarterlyTransactionLimit(), "getter should return the property value")
+	})
+
+	t.Run("GetMinimumQuarterlyTransactionLimit_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		obj.MinimumQuarterlyTransactionLimit = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMinimumQuarterlyTransactionLimit(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetMinimumQuarterlyTransactionLimit_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TransactionLimits
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetMinimumQuarterlyTransactionLimit() // Should return zero value
+	})
+
+	t.Run("GetMinimumYearlyTransactionLimit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var expected *Amount
+		obj.MinimumYearlyTransactionLimit = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetMinimumYearlyTransactionLimit(), "getter should return the property value")
+	})
+
+	t.Run("GetMinimumYearlyTransactionLimit_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		obj.MinimumYearlyTransactionLimit = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMinimumYearlyTransactionLimit(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetMinimumYearlyTransactionLimit_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TransactionLimits
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetMinimumYearlyTransactionLimit() // Should return zero value
+	})
+
+	t.Run("GetMinimumTransactionLimit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var expected *Amount
+		obj.MinimumTransactionLimit = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetMinimumTransactionLimit(), "getter should return the property value")
+	})
+
+	t.Run("GetMinimumTransactionLimit_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		obj.MinimumTransactionLimit = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMinimumTransactionLimit(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetMinimumTransactionLimit_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TransactionLimits
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetMinimumTransactionLimit() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitTransactionLimits(t *testing.T) {
@@ -59477,6 +59723,192 @@ func TestSettersMarkExplicitTransactionLimits(t *testing.T) {
 
 		// Act
 		obj.SetPaymentMethodLimits(fernTestValuePaymentMethodLimits)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetMinimumDailyTransactionLimit_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumDailyTransactionLimit *Amount
+
+		// Act
+		obj.SetMinimumDailyTransactionLimit(fernTestValueMinimumDailyTransactionLimit)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetMinimumWeeklyTransactionLimit_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumWeeklyTransactionLimit *Amount
+
+		// Act
+		obj.SetMinimumWeeklyTransactionLimit(fernTestValueMinimumWeeklyTransactionLimit)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetMinimumMonthlyTransactionLimit_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumMonthlyTransactionLimit *Amount
+
+		// Act
+		obj.SetMinimumMonthlyTransactionLimit(fernTestValueMinimumMonthlyTransactionLimit)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetMinimumQuarterlyTransactionLimit_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumQuarterlyTransactionLimit *Amount
+
+		// Act
+		obj.SetMinimumQuarterlyTransactionLimit(fernTestValueMinimumQuarterlyTransactionLimit)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetMinimumYearlyTransactionLimit_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumYearlyTransactionLimit *Amount
+
+		// Act
+		obj.SetMinimumYearlyTransactionLimit(fernTestValueMinimumYearlyTransactionLimit)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetMinimumTransactionLimit_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionLimits{}
+		var fernTestValueMinimumTransactionLimit *Amount
+
+		// Act
+		obj.SetMinimumTransactionLimit(fernTestValueMinimumTransactionLimit)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

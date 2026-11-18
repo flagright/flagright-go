@@ -25997,6 +25997,12 @@ var (
 	transactionLimitsFieldMaximumTransactionLimit          = big.NewInt(1 << 4)
 	transactionLimitsFieldMaximumYearlyTransactionLimit    = big.NewInt(1 << 5)
 	transactionLimitsFieldPaymentMethodLimits              = big.NewInt(1 << 6)
+	transactionLimitsFieldMinimumDailyTransactionLimit     = big.NewInt(1 << 7)
+	transactionLimitsFieldMinimumWeeklyTransactionLimit    = big.NewInt(1 << 8)
+	transactionLimitsFieldMinimumMonthlyTransactionLimit   = big.NewInt(1 << 9)
+	transactionLimitsFieldMinimumQuarterlyTransactionLimit = big.NewInt(1 << 10)
+	transactionLimitsFieldMinimumYearlyTransactionLimit    = big.NewInt(1 << 11)
+	transactionLimitsFieldMinimumTransactionLimit          = big.NewInt(1 << 12)
 )
 
 type TransactionLimits struct {
@@ -26007,6 +26013,18 @@ type TransactionLimits struct {
 	MaximumTransactionLimit          *Amount                               `json:"maximumTransactionLimit,omitempty" url:"maximumTransactionLimit,omitempty"`
 	MaximumYearlyTransactionLimit    *Amount                               `json:"maximumYearlyTransactionLimit,omitempty" url:"maximumYearlyTransactionLimit,omitempty"`
 	PaymentMethodLimits              *TransactionLimitsPaymentMethodLimits `json:"paymentMethodLimits,omitempty" url:"paymentMethodLimits,omitempty"`
+	// Minimum daily transaction limit. Must not be greater than `maximumDailyTransactionLimit` when both use the same currency
+	MinimumDailyTransactionLimit *Amount `json:"minimumDailyTransactionLimit,omitempty" url:"minimumDailyTransactionLimit,omitempty"`
+	// Minimum weekly transaction limit. Must not be greater than `maximumWeeklyTransactionLimit` when both use the same currency
+	MinimumWeeklyTransactionLimit *Amount `json:"minimumWeeklyTransactionLimit,omitempty" url:"minimumWeeklyTransactionLimit,omitempty"`
+	// Minimum monthly transaction limit. Must not be greater than `maximumMonthlyTransactionLimit` when both use the same currency
+	MinimumMonthlyTransactionLimit *Amount `json:"minimumMonthlyTransactionLimit,omitempty" url:"minimumMonthlyTransactionLimit,omitempty"`
+	// Minimum quarterly transaction limit. Must not be greater than `maximumQuarterlyTransactionLimit` when both use the same currency
+	MinimumQuarterlyTransactionLimit *Amount `json:"minimumQuarterlyTransactionLimit,omitempty" url:"minimumQuarterlyTransactionLimit,omitempty"`
+	// Minimum yearly transaction limit. Must not be greater than `maximumYearlyTransactionLimit` when both use the same currency
+	MinimumYearlyTransactionLimit *Amount `json:"minimumYearlyTransactionLimit,omitempty" url:"minimumYearlyTransactionLimit,omitempty"`
+	// Minimum amount of a single transaction. Must not be greater than `maximumTransactionLimit` when both use the same currency
+	MinimumTransactionLimit *Amount `json:"minimumTransactionLimit,omitempty" url:"minimumTransactionLimit,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -26062,6 +26080,48 @@ func (t *TransactionLimits) GetPaymentMethodLimits() *TransactionLimitsPaymentMe
 		return nil
 	}
 	return t.PaymentMethodLimits
+}
+
+func (t *TransactionLimits) GetMinimumDailyTransactionLimit() *Amount {
+	if t == nil {
+		return nil
+	}
+	return t.MinimumDailyTransactionLimit
+}
+
+func (t *TransactionLimits) GetMinimumWeeklyTransactionLimit() *Amount {
+	if t == nil {
+		return nil
+	}
+	return t.MinimumWeeklyTransactionLimit
+}
+
+func (t *TransactionLimits) GetMinimumMonthlyTransactionLimit() *Amount {
+	if t == nil {
+		return nil
+	}
+	return t.MinimumMonthlyTransactionLimit
+}
+
+func (t *TransactionLimits) GetMinimumQuarterlyTransactionLimit() *Amount {
+	if t == nil {
+		return nil
+	}
+	return t.MinimumQuarterlyTransactionLimit
+}
+
+func (t *TransactionLimits) GetMinimumYearlyTransactionLimit() *Amount {
+	if t == nil {
+		return nil
+	}
+	return t.MinimumYearlyTransactionLimit
+}
+
+func (t *TransactionLimits) GetMinimumTransactionLimit() *Amount {
+	if t == nil {
+		return nil
+	}
+	return t.MinimumTransactionLimit
 }
 
 func (t *TransactionLimits) GetExtraProperties() map[string]interface{} {
@@ -26125,6 +26185,48 @@ func (t *TransactionLimits) SetMaximumYearlyTransactionLimit(maximumYearlyTransa
 func (t *TransactionLimits) SetPaymentMethodLimits(paymentMethodLimits *TransactionLimitsPaymentMethodLimits) {
 	t.PaymentMethodLimits = paymentMethodLimits
 	t.require(transactionLimitsFieldPaymentMethodLimits)
+}
+
+// SetMinimumDailyTransactionLimit sets the MinimumDailyTransactionLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionLimits) SetMinimumDailyTransactionLimit(minimumDailyTransactionLimit *Amount) {
+	t.MinimumDailyTransactionLimit = minimumDailyTransactionLimit
+	t.require(transactionLimitsFieldMinimumDailyTransactionLimit)
+}
+
+// SetMinimumWeeklyTransactionLimit sets the MinimumWeeklyTransactionLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionLimits) SetMinimumWeeklyTransactionLimit(minimumWeeklyTransactionLimit *Amount) {
+	t.MinimumWeeklyTransactionLimit = minimumWeeklyTransactionLimit
+	t.require(transactionLimitsFieldMinimumWeeklyTransactionLimit)
+}
+
+// SetMinimumMonthlyTransactionLimit sets the MinimumMonthlyTransactionLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionLimits) SetMinimumMonthlyTransactionLimit(minimumMonthlyTransactionLimit *Amount) {
+	t.MinimumMonthlyTransactionLimit = minimumMonthlyTransactionLimit
+	t.require(transactionLimitsFieldMinimumMonthlyTransactionLimit)
+}
+
+// SetMinimumQuarterlyTransactionLimit sets the MinimumQuarterlyTransactionLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionLimits) SetMinimumQuarterlyTransactionLimit(minimumQuarterlyTransactionLimit *Amount) {
+	t.MinimumQuarterlyTransactionLimit = minimumQuarterlyTransactionLimit
+	t.require(transactionLimitsFieldMinimumQuarterlyTransactionLimit)
+}
+
+// SetMinimumYearlyTransactionLimit sets the MinimumYearlyTransactionLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionLimits) SetMinimumYearlyTransactionLimit(minimumYearlyTransactionLimit *Amount) {
+	t.MinimumYearlyTransactionLimit = minimumYearlyTransactionLimit
+	t.require(transactionLimitsFieldMinimumYearlyTransactionLimit)
+}
+
+// SetMinimumTransactionLimit sets the MinimumTransactionLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionLimits) SetMinimumTransactionLimit(minimumTransactionLimit *Amount) {
+	t.MinimumTransactionLimit = minimumTransactionLimit
+	t.require(transactionLimitsFieldMinimumTransactionLimit)
 }
 
 func (t *TransactionLimits) UnmarshalJSON(data []byte) error {
