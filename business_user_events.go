@@ -364,10 +364,11 @@ var (
 	businessUserEventsCreateResponseFieldAdverseMediaStatus            = big.NewInt(1 << 29)
 	businessUserEventsCreateResponseFieldExternalLinks                 = big.NewInt(1 << 30)
 	businessUserEventsCreateResponseFieldCustomObject                  = big.NewInt(1 << 31)
-	businessUserEventsCreateResponseFieldExecutedRules                 = big.NewInt(1 << 32)
-	businessUserEventsCreateResponseFieldHitRules                      = big.NewInt(1 << 33)
-	businessUserEventsCreateResponseFieldRiskScoreDetails              = big.NewInt(1 << 34)
-	businessUserEventsCreateResponseFieldMessage                       = big.NewInt(1 << 35)
+	businessUserEventsCreateResponseFieldReRunRiskScoring              = big.NewInt(1 << 32)
+	businessUserEventsCreateResponseFieldExecutedRules                 = big.NewInt(1 << 33)
+	businessUserEventsCreateResponseFieldHitRules                      = big.NewInt(1 << 34)
+	businessUserEventsCreateResponseFieldRiskScoreDetails              = big.NewInt(1 << 35)
+	businessUserEventsCreateResponseFieldMessage                       = big.NewInt(1 << 36)
 )
 
 type BusinessUserEventsCreateResponse struct {
@@ -417,7 +418,9 @@ type BusinessUserEventsCreateResponse struct {
 	// External links related to the business user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	// Typed Object defined on the console for additional data
-	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
+	// Controls if user risk score should be calculated on risk scoring re-runs. If left unset risk scoring is calcuated need to be explicity set to false to stop calculations.
+	ReRunRiskScoring *bool                  `json:"reRunRiskScoring,omitempty" url:"reRunRiskScoring,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -652,6 +655,13 @@ func (b *BusinessUserEventsCreateResponse) GetCustomObject() map[string]any {
 		return nil
 	}
 	return b.CustomObject
+}
+
+func (b *BusinessUserEventsCreateResponse) GetReRunRiskScoring() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.ReRunRiskScoring
 }
 
 func (b *BusinessUserEventsCreateResponse) GetExecutedRules() []*ExecutedRulesResult {
@@ -918,6 +928,13 @@ func (b *BusinessUserEventsCreateResponse) SetExternalLinks(externalLinks []stri
 func (b *BusinessUserEventsCreateResponse) SetCustomObject(customObject map[string]any) {
 	b.CustomObject = customObject
 	b.require(businessUserEventsCreateResponseFieldCustomObject)
+}
+
+// SetReRunRiskScoring sets the ReRunRiskScoring field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessUserEventsCreateResponse) SetReRunRiskScoring(reRunRiskScoring *bool) {
+	b.ReRunRiskScoring = reRunRiskScoring
+	b.require(businessUserEventsCreateResponseFieldReRunRiskScoring)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;

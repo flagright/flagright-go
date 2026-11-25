@@ -948,8 +948,9 @@ var (
 	batchBusinessUserWithRulesResultFieldAdverseMediaStatus            = big.NewInt(1 << 29)
 	batchBusinessUserWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 30)
 	batchBusinessUserWithRulesResultFieldCustomObject                  = big.NewInt(1 << 31)
-	batchBusinessUserWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 32)
-	batchBusinessUserWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 33)
+	batchBusinessUserWithRulesResultFieldReRunRiskScoring              = big.NewInt(1 << 32)
+	batchBusinessUserWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 33)
+	batchBusinessUserWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 34)
 )
 
 type BatchBusinessUserWithRulesResult struct {
@@ -999,7 +1000,9 @@ type BatchBusinessUserWithRulesResult struct {
 	// External links related to the business user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	// Typed Object defined on the console for additional data
-	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
+	// Controls if user risk score should be calculated on risk scoring re-runs. If left unset risk scoring is calcuated need to be explicity set to false to stop calculations.
+	ReRunRiskScoring *bool                  `json:"reRunRiskScoring,omitempty" url:"reRunRiskScoring,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -1232,6 +1235,13 @@ func (b *BatchBusinessUserWithRulesResult) GetCustomObject() map[string]any {
 		return nil
 	}
 	return b.CustomObject
+}
+
+func (b *BatchBusinessUserWithRulesResult) GetReRunRiskScoring() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.ReRunRiskScoring
 }
 
 func (b *BatchBusinessUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -1484,6 +1494,13 @@ func (b *BatchBusinessUserWithRulesResult) SetExternalLinks(externalLinks []stri
 func (b *BatchBusinessUserWithRulesResult) SetCustomObject(customObject map[string]any) {
 	b.CustomObject = customObject
 	b.require(batchBusinessUserWithRulesResultFieldCustomObject)
+}
+
+// SetReRunRiskScoring sets the ReRunRiskScoring field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchBusinessUserWithRulesResult) SetReRunRiskScoring(reRunRiskScoring *bool) {
+	b.ReRunRiskScoring = reRunRiskScoring
+	b.require(batchBusinessUserWithRulesResultFieldReRunRiskScoring)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;
@@ -2532,8 +2549,9 @@ var (
 	batchConsumerUserWithRulesResultFieldProductsEnabled               = big.NewInt(1 << 32)
 	batchConsumerUserWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 33)
 	batchConsumerUserWithRulesResultFieldCustomObject                  = big.NewInt(1 << 34)
-	batchConsumerUserWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 35)
-	batchConsumerUserWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 36)
+	batchConsumerUserWithRulesResultFieldReRunRiskScoring              = big.NewInt(1 << 35)
+	batchConsumerUserWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 36)
+	batchConsumerUserWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 37)
 )
 
 type BatchConsumerUserWithRulesResult struct {
@@ -2581,7 +2599,9 @@ type BatchConsumerUserWithRulesResult struct {
 	// External links related to the consumer user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	// Typed Object defined on the console for additional data
-	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
+	// Controls if user risk score should be calculated on risk scoring re-runs. If left unset risk scoring is calcuated need to be explicity set to false to stop calculations.
+	ReRunRiskScoring *bool                  `json:"reRunRiskScoring,omitempty" url:"reRunRiskScoring,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
 
@@ -2835,6 +2855,13 @@ func (b *BatchConsumerUserWithRulesResult) GetCustomObject() map[string]any {
 		return nil
 	}
 	return b.CustomObject
+}
+
+func (b *BatchConsumerUserWithRulesResult) GetReRunRiskScoring() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.ReRunRiskScoring
 }
 
 func (b *BatchConsumerUserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -3108,6 +3135,13 @@ func (b *BatchConsumerUserWithRulesResult) SetExternalLinks(externalLinks []stri
 func (b *BatchConsumerUserWithRulesResult) SetCustomObject(customObject map[string]any) {
 	b.CustomObject = customObject
 	b.require(batchConsumerUserWithRulesResultFieldCustomObject)
+}
+
+// SetReRunRiskScoring sets the ReRunRiskScoring field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchConsumerUserWithRulesResult) SetReRunRiskScoring(reRunRiskScoring *bool) {
+	b.ReRunRiskScoring = reRunRiskScoring
+	b.require(batchConsumerUserWithRulesResultFieldReRunRiskScoring)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;

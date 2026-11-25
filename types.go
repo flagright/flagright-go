@@ -3088,6 +3088,7 @@ var (
 	businessFieldAdverseMediaStatus            = big.NewInt(1 << 29)
 	businessFieldExternalLinks                 = big.NewInt(1 << 30)
 	businessFieldCustomObject                  = big.NewInt(1 << 31)
+	businessFieldReRunRiskScoring              = big.NewInt(1 << 32)
 )
 
 type Business struct {
@@ -3138,6 +3139,8 @@ type Business struct {
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	// Typed Object defined on the console for additional data
 	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
+	// Controls if user risk score should be calculated on risk scoring re-runs. If left unset risk scoring is calcuated need to be explicity set to false to stop calculations.
+	ReRunRiskScoring *bool `json:"reRunRiskScoring,omitempty" url:"reRunRiskScoring,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3368,6 +3371,13 @@ func (b *Business) GetCustomObject() map[string]any {
 		return nil
 	}
 	return b.CustomObject
+}
+
+func (b *Business) GetReRunRiskScoring() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.ReRunRiskScoring
 }
 
 func (b *Business) GetExtraProperties() map[string]interface{} {
@@ -3606,6 +3616,13 @@ func (b *Business) SetExternalLinks(externalLinks []string) {
 func (b *Business) SetCustomObject(customObject map[string]any) {
 	b.CustomObject = customObject
 	b.require(businessFieldCustomObject)
+}
+
+// SetReRunRiskScoring sets the ReRunRiskScoring field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *Business) SetReRunRiskScoring(reRunRiskScoring *bool) {
+	b.ReRunRiskScoring = reRunRiskScoring
+	b.require(businessFieldReRunRiskScoring)
 }
 
 func (b *Business) UnmarshalJSON(data []byte) error {
@@ -3925,6 +3942,7 @@ var (
 	businessOptionalFieldAdverseMediaStatus            = big.NewInt(1 << 27)
 	businessOptionalFieldExternalLinks                 = big.NewInt(1 << 28)
 	businessOptionalFieldCustomObject                  = big.NewInt(1 << 29)
+	businessOptionalFieldReRunRiskScoring              = big.NewInt(1 << 30)
 )
 
 type BusinessOptional struct {
@@ -3971,6 +3989,8 @@ type BusinessOptional struct {
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	// Typed Object defined on the console for additional data
 	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
+	// Controls if user risk score should be calculated on risk scoring re-runs. If left unset risk scoring is calcuated need to be explicity set to false to stop calculations.
+	ReRunRiskScoring *bool `json:"reRunRiskScoring,omitempty" url:"reRunRiskScoring,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4187,6 +4207,13 @@ func (b *BusinessOptional) GetCustomObject() map[string]any {
 		return nil
 	}
 	return b.CustomObject
+}
+
+func (b *BusinessOptional) GetReRunRiskScoring() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.ReRunRiskScoring
 }
 
 func (b *BusinessOptional) GetExtraProperties() map[string]interface{} {
@@ -4411,6 +4438,13 @@ func (b *BusinessOptional) SetExternalLinks(externalLinks []string) {
 func (b *BusinessOptional) SetCustomObject(customObject map[string]any) {
 	b.CustomObject = customObject
 	b.require(businessOptionalFieldCustomObject)
+}
+
+// SetReRunRiskScoring sets the ReRunRiskScoring field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessOptional) SetReRunRiskScoring(reRunRiskScoring *bool) {
+	b.ReRunRiskScoring = reRunRiskScoring
+	b.require(businessOptionalFieldReRunRiskScoring)
 }
 
 func (b *BusinessOptional) UnmarshalJSON(data []byte) error {
@@ -5643,9 +5677,10 @@ var (
 	businessWithRulesResultFieldAdverseMediaStatus            = big.NewInt(1 << 29)
 	businessWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 30)
 	businessWithRulesResultFieldCustomObject                  = big.NewInt(1 << 31)
-	businessWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 32)
-	businessWithRulesResultFieldHitRules                      = big.NewInt(1 << 33)
-	businessWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 34)
+	businessWithRulesResultFieldReRunRiskScoring              = big.NewInt(1 << 32)
+	businessWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 33)
+	businessWithRulesResultFieldHitRules                      = big.NewInt(1 << 34)
+	businessWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 35)
 )
 
 type BusinessWithRulesResult struct {
@@ -5695,7 +5730,9 @@ type BusinessWithRulesResult struct {
 	// External links related to the business user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	// Typed Object defined on the console for additional data
-	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
+	// Controls if user risk score should be calculated on risk scoring re-runs. If left unset risk scoring is calcuated need to be explicity set to false to stop calculations.
+	ReRunRiskScoring *bool                  `json:"reRunRiskScoring,omitempty" url:"reRunRiskScoring,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -5929,6 +5966,13 @@ func (b *BusinessWithRulesResult) GetCustomObject() map[string]any {
 		return nil
 	}
 	return b.CustomObject
+}
+
+func (b *BusinessWithRulesResult) GetReRunRiskScoring() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.ReRunRiskScoring
 }
 
 func (b *BusinessWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -6188,6 +6232,13 @@ func (b *BusinessWithRulesResult) SetExternalLinks(externalLinks []string) {
 func (b *BusinessWithRulesResult) SetCustomObject(customObject map[string]any) {
 	b.CustomObject = customObject
 	b.require(businessWithRulesResultFieldCustomObject)
+}
+
+// SetReRunRiskScoring sets the ReRunRiskScoring field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessWithRulesResult) SetReRunRiskScoring(reRunRiskScoring *bool) {
+	b.ReRunRiskScoring = reRunRiskScoring
+	b.require(businessWithRulesResultFieldReRunRiskScoring)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;
@@ -28671,6 +28722,7 @@ var (
 	userFieldProductsEnabled               = big.NewInt(1 << 32)
 	userFieldExternalLinks                 = big.NewInt(1 << 33)
 	userFieldCustomObject                  = big.NewInt(1 << 34)
+	userFieldReRunRiskScoring              = big.NewInt(1 << 35)
 )
 
 type User struct {
@@ -28719,6 +28771,8 @@ type User struct {
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	// Typed Object defined on the console for additional data
 	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
+	// Controls if user risk score should be calculated on risk scoring re-runs. If left unset risk scoring is calcuated need to be explicity set to false to stop calculations.
+	ReRunRiskScoring *bool `json:"reRunRiskScoring,omitempty" url:"reRunRiskScoring,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -28970,6 +29024,13 @@ func (u *User) GetCustomObject() map[string]any {
 		return nil
 	}
 	return u.CustomObject
+}
+
+func (u *User) GetReRunRiskScoring() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.ReRunRiskScoring
 }
 
 func (u *User) GetExtraProperties() map[string]interface{} {
@@ -29229,6 +29290,13 @@ func (u *User) SetExternalLinks(externalLinks []string) {
 func (u *User) SetCustomObject(customObject map[string]any) {
 	u.CustomObject = customObject
 	u.require(userFieldCustomObject)
+}
+
+// SetReRunRiskScoring sets the ReRunRiskScoring field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *User) SetReRunRiskScoring(reRunRiskScoring *bool) {
+	u.ReRunRiskScoring = reRunRiskScoring
+	u.require(userFieldReRunRiskScoring)
 }
 
 func (u *User) UnmarshalJSON(data []byte) error {
@@ -29761,6 +29829,7 @@ var (
 	userOptionalFieldProductsEnabled               = big.NewInt(1 << 30)
 	userOptionalFieldExternalLinks                 = big.NewInt(1 << 31)
 	userOptionalFieldCustomObject                  = big.NewInt(1 << 32)
+	userOptionalFieldReRunRiskScoring              = big.NewInt(1 << 33)
 )
 
 type UserOptional struct {
@@ -29805,6 +29874,8 @@ type UserOptional struct {
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	// Typed Object defined on the console for additional data
 	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
+	// Controls if user risk score should be calculated on risk scoring re-runs. If left unset risk scoring is calcuated need to be explicity set to false to stop calculations.
+	ReRunRiskScoring *bool `json:"reRunRiskScoring,omitempty" url:"reRunRiskScoring,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -30042,6 +30113,13 @@ func (u *UserOptional) GetCustomObject() map[string]any {
 		return nil
 	}
 	return u.CustomObject
+}
+
+func (u *UserOptional) GetReRunRiskScoring() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.ReRunRiskScoring
 }
 
 func (u *UserOptional) GetExtraProperties() map[string]interface{} {
@@ -30287,6 +30365,13 @@ func (u *UserOptional) SetExternalLinks(externalLinks []string) {
 func (u *UserOptional) SetCustomObject(customObject map[string]any) {
 	u.CustomObject = customObject
 	u.require(userOptionalFieldCustomObject)
+}
+
+// SetReRunRiskScoring sets the ReRunRiskScoring field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserOptional) SetReRunRiskScoring(reRunRiskScoring *bool) {
+	u.ReRunRiskScoring = reRunRiskScoring
+	u.require(userOptionalFieldReRunRiskScoring)
 }
 
 func (u *UserOptional) UnmarshalJSON(data []byte) error {
@@ -31782,9 +31867,10 @@ var (
 	userWithRulesResultFieldProductsEnabled               = big.NewInt(1 << 32)
 	userWithRulesResultFieldExternalLinks                 = big.NewInt(1 << 33)
 	userWithRulesResultFieldCustomObject                  = big.NewInt(1 << 34)
-	userWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 35)
-	userWithRulesResultFieldHitRules                      = big.NewInt(1 << 36)
-	userWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 37)
+	userWithRulesResultFieldReRunRiskScoring              = big.NewInt(1 << 35)
+	userWithRulesResultFieldExecutedRules                 = big.NewInt(1 << 36)
+	userWithRulesResultFieldHitRules                      = big.NewInt(1 << 37)
+	userWithRulesResultFieldRiskScoreDetails              = big.NewInt(1 << 38)
 )
 
 type UserWithRulesResult struct {
@@ -31832,7 +31918,9 @@ type UserWithRulesResult struct {
 	// External links related to the consumer user
 	ExternalLinks []string `json:"externalLinks,omitempty" url:"externalLinks,omitempty"`
 	// Typed Object defined on the console for additional data
-	CustomObject     map[string]any         `json:"customObject,omitempty" url:"customObject,omitempty"`
+	CustomObject map[string]any `json:"customObject,omitempty" url:"customObject,omitempty"`
+	// Controls if user risk score should be calculated on risk scoring re-runs. If left unset risk scoring is calcuated need to be explicity set to false to stop calculations.
+	ReRunRiskScoring *bool                  `json:"reRunRiskScoring,omitempty" url:"reRunRiskScoring,omitempty"`
 	ExecutedRules    []*ExecutedRulesResult `json:"executedRules,omitempty" url:"executedRules,omitempty"`
 	HitRules         []*HitRulesDetails     `json:"hitRules,omitempty" url:"hitRules,omitempty"`
 	RiskScoreDetails *UserRiskScoreDetails  `json:"riskScoreDetails,omitempty" url:"riskScoreDetails,omitempty"`
@@ -32087,6 +32175,13 @@ func (u *UserWithRulesResult) GetCustomObject() map[string]any {
 		return nil
 	}
 	return u.CustomObject
+}
+
+func (u *UserWithRulesResult) GetReRunRiskScoring() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.ReRunRiskScoring
 }
 
 func (u *UserWithRulesResult) GetExecutedRules() []*ExecutedRulesResult {
@@ -32367,6 +32462,13 @@ func (u *UserWithRulesResult) SetExternalLinks(externalLinks []string) {
 func (u *UserWithRulesResult) SetCustomObject(customObject map[string]any) {
 	u.CustomObject = customObject
 	u.require(userWithRulesResultFieldCustomObject)
+}
+
+// SetReRunRiskScoring sets the ReRunRiskScoring field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserWithRulesResult) SetReRunRiskScoring(reRunRiskScoring *bool) {
+	u.ReRunRiskScoring = reRunRiskScoring
+	u.require(userWithRulesResultFieldReRunRiskScoring)
 }
 
 // SetExecutedRules sets the ExecutedRules field and marks it as non-optional;
